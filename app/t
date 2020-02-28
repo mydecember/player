@@ -1,0 +1,861 @@
+--------- beginning of main
+11-21 15:59:00.916  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:00.923   701  1853 D libsensor-B2SNotifier: Backlight2SlpiNotifier brightness = 734
+11-21 15:59:00.923   729  1310 D SurfaceFlinger: updateHBMOverlayTarget brightness=734, mSupportMulExpo=0
+11-21 15:59:01.418  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:01.454   669   669 W health@2.0-serv: type=1400 audit(0.0:577834): avc: denied { read } for name="type" dev="sysfs" ino=55767 scontext=u:r:hal_health_default:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-21 15:59:01.461   658   658 W healthd : type=1400 audit(0.0:577835): avc: denied { read } for name="type" dev="sysfs" ino=55767 scontext=u:r:healthd:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-21 15:59:01.920  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:01.934   701  1853 D libsensor-B2SNotifier: Backlight2SlpiNotifier brightness = 733
+11-21 15:59:01.934   729  1310 D SurfaceFlinger: updateHBMOverlayTarget brightness=733, mSupportMulExpo=0
+11-21 15:59:02.422  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:02.923  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:02.930   701  1853 D libsensor-B2SNotifier: Backlight2SlpiNotifier brightness = 732
+11-21 15:59:02.931   729  1310 D SurfaceFlinger: updateHBMOverlayTarget brightness=732, mSupportMulExpo=0
+11-21 15:59:03.425  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:03.926  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:03.937   701  1853 D libsensor-B2SNotifier: Backlight2SlpiNotifier brightness = 731
+11-21 15:59:03.937   729  1310 D SurfaceFlinger: updateHBMOverlayTarget brightness=731, mSupportMulExpo=0
+11-21 15:59:04.428  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:07.440  9187 17480 I chatty  : uid=10072(com.miui.analytics) Thread-4 identical 6 lines
+11-21 15:59:07.942  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:07.988   658   658 W healthd : type=1400 audit(0.0:577836): avc: denied { read } for name="type" dev="sysfs" ino=55767 scontext=u:r:healthd:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-21 15:59:07.991   669   669 W health@2.0-serv: type=1400 audit(0.0:577837): avc: denied { read } for name="type" dev="sysfs" ino=55767 scontext=u:r:hal_health_default:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-21 15:59:08.001  2018  2018 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-21 15:59:08.002  2209  2209 D QtiCarrierConfigHelper: WARNING, no carrier configs on phone Id: 0
+11-21 15:59:08.003  2901  2901 D NfcService: Received android.intent.action.BATTERY_CHANGED
+11-21 15:59:08.004  4218  4531 D PowerCheckerService: onBatteryChanged, mBatteryLevel = 99, status = 2, level = 99, plug = 2, scale = 100
+11-21 15:59:08.004  3128  3128 I BatteryInfoReceiver: ACTION_BATTERY_CHANGED
+11-21 15:59:08.011  4218  4558 D ThermalTempInfoHelper: thermal sensor66 temp is 34460
+11-21 15:59:08.013  4218  4558 D ThermalTempInfoHelper: thermal sensor66 temp is 34460
+11-21 15:59:08.024   669   669 W health@2.0-serv: type=1400 audit(0.0:577838): avc: denied { read } for name="type" dev="sysfs" ino=55767 scontext=u:r:hal_health_default:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-21 15:59:08.030  2018  2018 D KeyguardUpdateMonitor: received broadcast android.intent.action.BATTERY_CHANGED
+11-21 15:59:08.031  2209  2209 D QtiCarrierConfigHelper: WARNING, no carrier configs on phone Id: 0
+11-21 15:59:08.032  2901  2901 D NfcService: Received android.intent.action.BATTERY_CHANGED
+11-21 15:59:08.024   658   658 W healthd : type=1400 audit(0.0:577839): avc: denied { read } for name="type" dev="sysfs" ino=55767 scontext=u:r:healthd:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-21 15:59:08.032  3128  3128 I BatteryInfoReceiver: ACTION_BATTERY_CHANGED
+11-21 15:59:08.032  4218  4531 D PowerCheckerService: onBatteryChanged, mBatteryLevel = 99, status = 2, level = 99, plug = 2, scale = 100
+11-21 15:59:08.034  4218  4558 D ThermalTempInfoHelper: thermal sensor66 temp is 34509
+11-21 15:59:08.036  4218  4558 D ThermalTempInfoHelper: thermal sensor66 temp is 34509
+11-21 15:59:08.443  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+--------- beginning of system
+11-21 15:59:03.928  1596  1739 I BackLightController:  grayScale = 0.69803923 level = 2 factor = 0.95244676 inBrightness = 768 outBrightness = 731
+11-21 15:59:09.382  1596  1691 E BatteryExternalStatsWorker: no controller energy info supplied for bluetooth
+11-21 15:59:08.945  9187 17480 I chatty  : uid=10072(com.miui.analytics) Thread-4 identical 1 line
+11-21 15:59:09.447  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:09.894   658   658 W healthd : type=1400 audit(0.0:577840): avc: denied { read } for name="type" dev="sysfs" ino=55767 scontext=u:r:healthd:s0 tcontext=u:object_r:sysfs:s0 tclass=file permissive=0
+11-21 15:59:09.949  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:11.083  1596  7082 I ActivityManager: Force stopping com.xm.testcodec appid=10184 user=0: from process:27526
+11-21 15:59:11.084  1596  7082 I AutoStartManagerService: MIUILOG- Reject RestartService packageName :com.xm.testcodec uid : 10184
+11-21 15:59:10.451  9187 17480 I chatty  : uid=10072(com.miui.analytics) Thread-4 identical 1 line
+11-21 15:59:10.953  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:11.093  2209  2209 E PhoneInterfaceManager: [PhoneIntfMgr] getCarrierPackageNamesForIntent: No UICC
+11-21 15:59:11.094  2209  2209 D CarrierSvcBindHelper: No carrier app for: 0
+11-21 15:59:11.094  2901  2901 D RegisteredServicesCache: Intent action: android.intent.action.PACKAGE_RESTARTED
+11-21 15:59:11.098  2209  2209 E PhoneInterfaceManager: [PhoneIntfMgr] getCarrierPackageNamesForIntent: No UICC
+11-21 15:59:11.098  2209  2209 D CarrierSvcBindHelper: No carrier app for: 1
+11-21 15:59:11.108  2901  2901 E RegisteredServicesCache: Skipping application component ComponentInfo{com.taobao.taobao/com.alibaba.ariver.commonability.device.jsapi.nfc.service.TinyAppHostApduService}: it must request the permission android.permission.NFC
+11-21 15:59:11.109  2901  2901 E RegisteredServicesCache: Skipping application component ComponentInfo{me.ele/com.alibaba.ariver.commonability.device.jsapi.nfc.service.TinyAppHostApduService}: it must request the permission android.permission.NFC
+11-21 15:59:11.109  2901  2901 D RegisteredServicesCache: Adding service: ComponentInfo{com.eg.android.AlipayGphone/com.alibaba.ariver.commonability.device.jsapi.nfc.service.TinyAppHostApduService} AIDs: []
+11-21 15:59:11.109  2901  2901 D RegisteredServicesCache: Adding service: ComponentInfo{com.eg.android.AlipayGphone/com.alipay.android.phone.offlinepay.nfc.CardService} AIDs: [B06937896756002478]
+11-21 15:59:11.109  2901  2901 D RegisteredServicesCache: Adding service: ComponentInfo{com.eg.android.AlipayGphone/com.alipay.mobile.aompdevice.nfc.service.TinyAppHostApduService} AIDs: []
+11-21 15:59:11.109  2901  2901 D RegisteredServicesCache: Adding service: ComponentInfo{com.sankuai.meituan/com.meituan.android.quickpass.manage.lib.service.ApduService} AIDs: [325041592E5359532E4444463031, A000000333010101, A000000333010102, A000000333010103, A000000333010106]
+11-21 15:59:11.109  2901  2901 D RegisteredServicesCache:  Reading service state data always from file
+11-21 15:59:11.110  2901  2901 D RegisteredServicesCache: ServiceStateFileVersion=1.0
+11-21 15:59:11.110  2901  2901 E RegisteredServicesCache: Next Tag=services
+11-21 15:59:11.111  2901  2901 E RegisteredServicesCache: 1invalidateCache:WriteServiceStateToFile
+11-21 15:59:11.111  2901  2901 E RegisteredServicesCache:  Writing service state Data Always
+11-21 15:59:11.116  2901  2901 D CardEmulationManager: Current default: ComponentInfo{com.eg.android.AlipayGphone/com.alipay.android.phone.offlinepay.nfc.CardService}
+11-21 15:59:11.116  2901  2901 D RegisteredAidCache: onServicesUpdated
+11-21 15:59:11.117  2901  2901 D RegisteredAidCache: generateServiceMap component: ComponentInfo{com.eg.android.AlipayGphone/com.alibaba.ariver.commonability.device.jsapi.nfc.service.TinyAppHostApduService}
+11-21 15:59:11.117  2901  2901 D RegisteredAidCache: generateServiceMap component: ComponentInfo{com.eg.android.AlipayGphone/com.alipay.android.phone.offlinepay.nfc.CardService}
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: generateServiceMap component: ComponentInfo{com.eg.android.AlipayGphone/com.alipay.mobile.aompdevice.nfc.service.TinyAppHostApduService}
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: generateServiceMap component: ComponentInfo{com.sankuai.meituan/com.meituan.android.quickpass.manage.lib.service.ApduService}
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: generateAidCacheLocked: starting with aid 325041592E5359532E4444463031
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: Exact AID, resolving.
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: resolveAidLocked: (Ignoring handling service ComponentInfo{com.sankuai.meituan/com.meituan.android.quickpass.manage.lib.service.ApduService} because it's not the payment default.)
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: resolveAidLocked: DECISION: routing to all matching services
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: AIDs: [325041592E5359532E4444463031] were resolved.
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: generateAidCacheLocked: starting with aid A000000333010101
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: Exact AID, resolving.
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: resolveAidLocked: (Ignoring handling service ComponentInfo{com.sankuai.meituan/com.meituan.android.quickpass.manage.lib.service.ApduService} because it's not the payment default.)
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: resolveAidLocked: DECISION: routing to all matching services
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: AIDs: [A000000333010101] were resolved.
+11-21 15:59:11.118  2901  2901 D RegisteredAidCache: generateAidCacheLocked: starting with aid A000000333010102
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: Exact AID, resolving.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: resolveAidLocked: (Ignoring handling service ComponentInfo{com.sankuai.meituan/com.meituan.android.quickpass.manage.lib.service.ApduService} because it's not the payment default.)
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: resolveAidLocked: DECISION: routing to all matching services
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: AIDs: [A000000333010102] were resolved.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: generateAidCacheLocked: starting with aid A000000333010103
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: Exact AID, resolving.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: resolveAidLocked: (Ignoring handling service ComponentInfo{com.sankuai.meituan/com.meituan.android.quickpass.manage.lib.service.ApduService} because it's not the payment default.)
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: resolveAidLocked: DECISION: routing to all matching services
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: AIDs: [A000000333010103] were resolved.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: generateAidCacheLocked: starting with aid A000000333010106
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: Exact AID, resolving.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: resolveAidLocked: (Ignoring handling service ComponentInfo{com.sankuai.meituan/com.meituan.android.quickpass.manage.lib.service.ApduService} because it's not the payment default.)
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: resolveAidLocked: DECISION: routing to all matching services
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: AIDs: [A000000333010106] were resolved.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: generateAidCacheLocked: starting with aid B06937896756002478
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: Exact AID, resolving.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: resolveAidLocked: DECISION: routing to payment default default ApduService: ComponentInfo{com.eg.android.AlipayGphone/com.alipay.android.phone.offlinepay.nfc.CardService}, description: 支付宝, Static AID Groups: Category: payment, AIDs:B06937896756002478, , Dynamic AID Groups: 
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: AIDs: [B06937896756002478] were resolved.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: Exact or Prefix AID.B06937896756002478
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: AIDs: [B06937896756002478] were resolved.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: Exact or Prefix AID.A000000333010106
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: AIDs: [A000000333010106] were resolved.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: Exact or Prefix AID.A000000333010103
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: AIDs: [A000000333010103] were resolved.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: Exact or Prefix AID.A000000333010102
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: AIDs: [A000000333010102] were resolved.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: Exact or Prefix AID.A000000333010101
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: AIDs: [A000000333010101] were resolved.
+11-21 15:59:11.119  2901  2901 D RegisteredAidCache: Exact or Prefix AID.325041592E5359532E4444463031
+11-21 15:59:11.120  2901  2901 D RegisteredAidCache: AIDs: [325041592E5359532E4444463031] were resolved.
+11-21 15:59:11.120  2901  2901 E RegisteredAidCache: updateRoutingLocked(): enter...
+11-21 15:59:11.120  2901  2901 D RegisteredAidCache:  AID power state B06937896756002478 17 route 0
+11-21 15:59:11.120  2901  2901 I libnfc_nci: [INFO:phNxpConfig.cpp(909)] find found DEFAULT_AID_ROUTE=(0x1)
+11-21 15:59:11.120  2901  2901 I libnfc_nci: 
+11-21 15:59:11.120  2901  2901 I libnfc_nci: [INFO:phNxpConfig.cpp(909)] find found DEFAULT_AID_PWR_STATE=(0x39)
+11-21 15:59:11.120  2901  2901 I libnfc_nci: 
+11-21 15:59:11.120  2901  2901 D NfcService: defaultAidRoute : 313
+11-21 15:59:11.120  2901  2901 D NfcService: GetDefaultRouteLoc  :1
+11-21 15:59:11.120  2901  2901 I libnfc_nci: [INFO:phNxpConfig.cpp(909)] find found DEFAULT_AID_ROUTE=(0x1)
+11-21 15:59:11.120  2901  2901 I libnfc_nci: 
+11-21 15:59:11.120  2901  2901 I libnfc_nci: [INFO:phNxpConfig.cpp(909)] find found DEFAULT_AID_PWR_STATE=(0x39)
+11-21 15:59:11.120  2901  2901 I libnfc_nci: 
+11-21 15:59:11.120  2901  2901 D NfcService: defaultAidRoute : 313
+11-21 15:59:11.120  2901  2901 I libnfc_nci: [INFO:phNxpConfig.cpp(909)] find found DEFAULT_AID_ROUTE=(0x1)
+11-21 15:59:11.120  2901  2901 I libnfc_nci: 
+11-21 15:59:11.120  2901  2901 I libnfc_nci: [INFO:phNxpConfig.cpp(909)] find found DEFAULT_AID_PWR_STATE=(0x39)
+11-21 15:59:11.120  2901  2901 I libnfc_nci: 
+11-21 15:59:11.120  2901  2901 D NfcService: defaultAidRoute : 313
+11-21 15:59:11.120  2901  2901 D NfcService: GetDefaultRouteLoc  :1
+11-21 15:59:11.120  2901  2901 D AidRoutingManager: mCurrDefaultAidRoute 1
+11-21 15:59:11.120  2901  2901 E AidRoutingManager: Size of routing table 506
+11-21 15:59:11.120  2901  2901 D AidRoutingManager: #######Routing AID B06937896756002478 to route 0 with power 17
+11-21 15:59:11.120  2901  2901 D AidRoutingManager: Routing table unchanged, but commit the routing
+11-21 15:59:11.122  2901  2901 E RegisteredServicesCache: 3updateStatusOfServices:WriteServiceStateToFile
+11-21 15:59:11.122  2901  2901 E RegisteredServicesCache:  Writing service state Data Always
+11-21 15:59:11.127  2901  2901 E RegisteredAidCache: updateRoutingLocked(): exit...
+11-21 15:59:11.127  2901  2901 D RegisteredServicesCache: ApduService: ComponentInfo{com.eg.android.AlipayGphone/com.alibaba.ariver.commonability.device.jsapi.nfc.service.TinyAppHostApduService}, description: 支付宝(Alipay) NFC, Static AID Groups: , Dynamic AID Groups: 
+11-21 15:59:11.127  2901  2901 D RegisteredServicesCache: ApduService: ComponentInfo{com.eg.android.AlipayGphone/com.alipay.android.phone.offlinepay.nfc.CardService}, description: 支付宝, Static AID Groups: Category: payment, AIDs:B06937896756002478, , Dynamic AID Groups: 
+11-21 15:59:11.127  2901  2901 D RegisteredServicesCache: ApduService: ComponentInfo{com.eg.android.AlipayGphone/com.alipay.mobile.aompdevice.nfc.service.TinyAppHostApduService}, description: 支付宝(Alipay) NFC, Static AID Groups: , Dynamic AID Groups: 
+11-21 15:59:11.127  2901  2901 D RegisteredServicesCache: ApduService: ComponentInfo{com.sankuai.meituan/com.meituan.android.quickpass.manage.lib.service.ApduService}, description: 美团支付云闪付 点评版, Static AID Groups: Category: payment, AIDs:325041592E5359532E4444463031, A000000333010101, A000000333010102, A000000333010103, A000000333010106, , Dynamic AID Groups: 
+11-21 15:59:11.129  2901  2901 D RegisteredNfcFServicesCache: Service unchanged, not updating
+11-21 15:59:11.129  2901  2901 E libnfc_nci: [ERROR:RoutingManager.cpp(1934)] RoutingManager::removeApduRouting: enter
+11-21 15:59:11.129  2901  3260 I libnfc_nci: [INFO:RoutingManager.cpp(851)] RoutingManager::nfaEeCallback: NFA_EE_REMOVE_APDU_EVT  status=0
+11-21 15:59:11.129  2901  2901 E libnfc_nci: [ERROR:RoutingManager.cpp(1940)] RoutingManager::removeApduRouting: removed APDU pattern successfully
+11-21 15:59:11.187  1596  7082 I SplashScreenServiceDelegate: None for com.xm.testcodec
+11-21 15:59:11.187  1596  7082 I ActivityManager: START u0 {act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10000000 cmp=com.xm.testcodec/.MainActivity} from uid 2000
+11-21 15:59:11.193   687   749 E ANDR-PERF-MPCTL: Invalid profile no. 0, total profiles 0 only
+11-21 15:59:11.195  1596  7082 E ANDR-PERF-JNI: com_qualcomm_qtiperformance_native_perf_io_prefetch_start
+11-21 15:59:11.196   686   686 E ANDR-IOP: IOP HAL: Received pkg_name = com.xm.testcodec pid = -1
+11-21 15:59:11.216  1596  7082 D CompatibilityInfo: mCompatibilityFlags - 0
+11-21 15:59:11.217  1596  7082 D CompatibilityInfo: applicationDensity - 440
+11-21 15:59:11.217  1596  7082 D CompatibilityInfo: applicationScale - 1.0
+11-21 15:59:11.217   686   735 E ANDR-IOP: io prefetch is disabled
+11-21 15:59:11.217  1596  7082 D ActivityTrigger: ActivityTrigger activityPauseTrigger 
+11-21 15:59:11.219 27818 27818 D Launcher.Lifecycle: onPause:UserHandle{0},5802d94,true
+11-21 15:59:11.253 27818 27867 D Launcher: disableStatusBarClock:false
+11-21 15:59:11.261  1596  1685 I set_top_app: success /proc/27818/top_app:0
+11-21 15:59:11.289  1596  1687 D Boost   : hostingType=activity, hostingName=com.xm.testcodec/.MainActivity, callerPackage=null, isSystem=true, isBoostNeeded=false.
+11-21 15:59:11.291  1596  1687 I ActivityManager: Start proc 27538:com.xm.testcodec/u0a184 for activity com.xm.testcodec/.MainActivity caller=null
+11-21 15:59:11.295 27538 27538 I om.xm.testcode: Late-enabling -Xcheck:jni
+11-21 15:59:11.356  1596  7082 D CompatibilityInfo: mCompatibilityFlags - 0
+11-21 15:59:11.356  1596  7082 D CompatibilityInfo: applicationDensity - 440
+11-21 15:59:11.356  1596  7082 D CompatibilityInfo: applicationScale - 1.0
+11-21 15:59:11.361  1596  7082 I set_top_app: success /proc/27538/top_app:1
+11-21 15:59:11.361  1596  7082 D CompatibilityInfo: mCompatibilityFlags - 0
+11-21 15:59:11.361  1596  7082 D CompatibilityInfo: applicationDensity - 440
+11-21 15:59:11.361  1596  7082 D CompatibilityInfo: applicationScale - 1.0
+11-21 15:59:11.362  4218 18230 D PowerKeeper: PerfEngineController:ForegroundInfo{mForegroundPackageName='com.xm.testcodec', mForegroundUid=10184, mForegroundPid=27538, mLastForegroundPackageName='com.miui.home', mLastForegroundUid=10060, mLastForegroundPid=27818, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=1}
+11-21 15:59:11.363  4218  4556 D PowerKeeper: PowerStateMachine:Enter power state id=0 name=normal
+11-21 15:59:11.364  4218  4482 D ProcessObserver: onScreenAppChanged, FgUid: 10184, FgPackageName: com.xm.testcodec
+11-21 15:59:11.364  4218  4482 D ProcessObserver: onScreenAppChanged, PreTaskUid: 10060, PreTaskPackageName: com.miui.home
+11-21 15:59:11.364  4218  4482 D ProcessObserver: Uid: 10184 Foreground
+11-21 15:59:11.364  4218  4531 D PowerCheckerService: updateForFgUidChangedLocked, mScreenOn = true uid = 10184 foreground = true
+11-21 15:59:11.365  4218  4471 D AppActiveChecker: updateDownloadStateForFgUidChangedLocked, mScreenOn = true uid = 10184 foreground = true
+11-21 15:59:11.365  4218  4471 D AppActiveChecker: removeMessages: hasMessage, uid = 10184
+11-21 15:59:11.365  4218  4471 D DeviceIdleAppRuleChecker: updateStateForInteractiveUidChangedLocked: uid = 10184 foreground = true
+11-21 15:59:11.365  4218  4471 D KillProcessAppRuleChecker: updateStateForInteractiveUidChangedLocked: uid = 10184 foreground = true
+11-21 15:59:11.365  4218  4471 D HideModeStateMachine: updateForForegroundUidChangedLocked: uid = 10184 foreground = true
+11-21 15:59:11.365  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st |-> setForegroundActive
+11-21 15:59:11.365  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: location |-> setSubStateForegroundActive
+11-21 15:59:11.365  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: sensor |-> setSubStateForegroundActive
+11-21 15:59:11.365  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: appIdle |-> setSubStateForegroundActive
+11-21 15:59:11.365  2704  2760 I octvm_power: power mode [normal] start 1574323151
+11-21 15:59:11.365  4218  4471 I HideModeStateMachine: Uid: 10184 State: active |-> setForegroundActive
+11-21 15:59:11.365  4218  4471 D ActiveStateController: updateStateForFgUidChangedLocked: uid = 10184 foreground = true
+11-21 15:59:11.365  4218  4471 D ActiveStateController: updateRuleForUidLocked, uid = 10184 property = 0
+11-21 15:59:11.365  3128  3162 D GameBoosterService: onGameStatusChange foreground:ForegroundInfo{mForegroundPackageName='com.xm.testcodec', mForegroundUid=10184, mForegroundPid=27538, mLastForegroundPackageName='com.miui.home', mLastForegroundUid=10060, mLastForegroundPid=27818, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=1}
+11-21 15:59:11.365  2704  2760 I octvm_power: Action: set_bcbc_cust_state(disable) for [foreground_change]
+11-21 15:59:11.366  4218  4531 D PowerChecker.BaStats: uid = 10184, uidForeground = true, lastBytes = -2, curBytes = -2, deltaBytes = 0
+11-21 15:59:11.366  4218  4471 D PowerKeeperConfigureProvider: appActiveTable insert 2532
+11-21 15:59:11.367  1596  1686 V UidProcStateHelper: foreground changed:[27538,10184,true]
+11-21 15:59:11.368  4218  4482 D ProcessObserver: onForegroundActivitiesChanged, pid: 27538 uid: 10184 foregroundActivities: true
+11-21 15:59:11.368   702   702 D DisplayFeatureHal: setFeatureEnable(displayId=0 caseId=18 modeId=0 cookie=0)
+11-21 15:59:11.368   702   702 D DisplayFeatureHal: current wcg state 0, setting to 0
+11-21 15:59:11.368   702   702 D DisplayFeatureHal: notifySFWcgState enable = 0
+11-21 15:59:11.368   668   696 I SDM     : CoreInterface::SetWCGStatus: SetWCGStatus wcg enable 0
+11-21 15:59:11.369   702   702 D DisplayFeatureHal: notifyQservice cmd 47 value 0 ret 0
+11-21 15:59:11.369  2704  2760 I octvm_drv_xm: platform_set_bcbc_cust_state disable success
+11-21 15:59:11.369  2704  2760 I octvm_power: Action: set_dfps_cust_state(disable) for [foreground_change]
+11-21 15:59:11.369  2704  2760 I octvm_drv: common drv: platform_set_dfps_cust_state -> platform not support
+11-21 15:59:11.369  2704  2760 I octvm_power: Action: set_lcd_mode(default) for [foreground_change]
+11-21 15:59:11.369   702   789 D DisplayFeatureHal: HandleBCBCCustom  enable:0
+11-21 15:59:11.369   702   789 D ColorManager: handleHistogramCmd disable histogram
+11-21 15:59:11.374   702   702 D DisplayFeatureHal: setFeatureEnable(displayId=0 caseId=7 modeId=1 cookie=0)
+11-21 15:59:11.374   702   702 D DisplayFeatureHal: current wcg state 0, setting to 0
+11-21 15:59:11.374   702   702 D DisplayFeatureHal: notifySFWcgState enable = 0
+11-21 15:59:11.375  1596  1739 I BackLightController:  grayScale = 0.6 level = -1 factor = 1.0 inBrightness = 768 outBrightness = 768
+11-21 15:59:11.376   729  1430 D SurfaceFlinger: updateWCGState enable = 0
+11-21 15:59:11.377   729  1430 D SurfaceFlinger: updateWCGState enable = 0
+11-21 15:59:11.377   668   696 I SDM     : CoreInterface::SetWCGStatus: SetWCGStatus wcg enable 0
+11-21 15:59:11.377   702   702 D DisplayFeatureHal: notifyQservice cmd 47 value 0 ret 0
+11-21 15:59:11.377   702   789 D DisplayFeatureHal: HandleCabcModeCustom enter 1 0
+11-21 15:59:11.377   702   789 W DisplayFeatureHal: ---skip setting acl feature currently, return!
+11-21 15:59:11.377   702   789 D DisplayFeatureHal: HandleCabcModeCustom exit 0x1000
+11-21 15:59:11.378  2704  2760 I octvm_drv_xm: platform_set_lcd_mode default(1) success
+11-21 15:59:11.378  2704  2760 I octvm_power: Action: set_thermal_config(restore) for [foreground_change]
+11-21 15:59:11.378  2704  2760 I octvm_drv: platform_set_thermal_mode cur_global_config:[], target mode:[restore], profile=0, ret=0
+11-21 15:59:11.379  2704  2760 I octvm_power: onPowerModeChanged[normal] called
+11-21 15:59:11.380  1596  1857 I Timeline: Timeline: App_transition_ready time:869409340
+11-21 15:59:11.384  2018  2018 D StatusBar: disable<e i a s b h r c s > disable2<q i n g r >
+11-21 15:59:11.387  2018  2018 D PhoneStatusBar/NavigationBarView: setDisabledFlags back:false home:false recent:false
+11-21 15:59:11.387  2018  2018 D StatusBarClock:  isNormalMode= true clock visible=true
+11-21 15:59:11.390 27818 27818 D Launcher.Lifecycle: onWindowFocusChanged:false,UserHandle{0},5802d94,true
+11-21 15:59:11.394   701  1853 D libsensor-B2SNotifier: Backlight2SlpiNotifier brightness = 732
+11-21 15:59:11.394   729  1310 D SurfaceFlinger: updateHBMOverlayTarget brightness=732, mSupportMulExpo=0
+11-21 15:59:11.408   729  1310 D SurfaceFlinger: updateHBMOverlayTarget brightness=740, mSupportMulExpo=0
+11-21 15:59:11.417   701  1853 D libsensor-B2SNotifier: Backlight2SlpiNotifier brightness = 747
+11-21 15:59:11.428   729  1310 D SurfaceFlinger: updateHBMOverlayTarget brightness=747, mSupportMulExpo=0
+11-21 15:59:11.433   701  1853 D libsensor-B2SNotifier: Backlight2SlpiNotifier brightness = 754
+11-21 15:59:11.444   729  1310 D SurfaceFlinger: updateHBMOverlayTarget brightness=754, mSupportMulExpo=0
+11-21 15:59:11.444   701  1853 D libsensor-B2SNotifier: Backlight2SlpiNotifier brightness = 754
+11-21 15:59:11.454  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:11.458   701  1853 D libsensor-B2SNotifier: Backlight2SlpiNotifier brightness = 762
+11-21 15:59:11.458   729  1310 D SurfaceFlinger: updateHBMOverlayTarget brightness=762, mSupportMulExpo=0
+11-21 15:59:11.461  1596  1739 I BackLightController:  grayScale = 0.6 level = -1 factor = 1.0 inBrightness = 768 outBrightness = 768
+11-21 15:59:11.474   701  1853 D libsensor-B2SNotifier: Backlight2SlpiNotifier brightness = 768
+11-21 15:59:11.474   729  1310 D SurfaceFlinger: updateHBMOverlayTarget brightness=768, mSupportMulExpo=0
+11-21 15:59:11.494 27538 27538 I Perf    : Connecting to perf service.
+11-21 15:59:11.558 27538 27572 I om.xm.testcode: The ClassLoaderContext is a special shared library.
+11-21 15:59:11.561 27538 27538 W Binder:intercep: type=1400 audit(0.0:577841): avc: denied { getattr } for path="/data/data/com.miui.contentcatcher" dev="sda33" ino=5516 scontext=u:r:untrusted_app:s0:c184,c256,c512,c768 tcontext=u:object_r:system_app_data_file:s0 tclass=dir permissive=0
+11-21 15:59:11.572 27538 27572 D ViewContentFactory: initViewContentFetcherClass
+11-21 15:59:11.572 27538 27572 D ViewContentFactory: getInterceptorPackageInfo
+11-21 15:59:11.572 27538 27572 W om.xm.testcode: Accessing hidden method Landroid/app/AppGlobals;->getInitialApplication()Landroid/app/Application; (light greylist, linking)
+11-21 15:59:11.573 27538 27572 D ViewContentFactory: getInitialApplication took 2ms
+11-21 15:59:11.573 27538 27572 D ViewContentFactory: packageInfo.packageName: com.miui.catcherpatch
+11-21 15:59:11.581 27538 27538 W Binder:intercep: type=1400 audit(0.0:577842): avc: denied { getattr } for path="/data/data/com.miui.catcherpatch" dev="sda33" ino=5841 scontext=u:r:untrusted_app:s0:c184,c256,c512,c768 tcontext=u:object_r:system_app_data_file:s0 tclass=dir permissive=0
+11-21 15:59:11.589 27538 27572 D ViewContentFactory: initViewContentFetcherClass took 18ms
+11-21 15:59:11.590 27538 27572 I ContentCatcher: ViewContentFetcher : ViewContentFetcher
+11-21 15:59:11.590 27538 27572 D ViewContentFactory: createInterceptor took 19ms
+11-21 15:59:11.595 27538 27538 W om.xm.testcode: Accessing hidden method Landroid/view/View;->computeFitSystemWindows(Landroid/graphics/Rect;Landroid/graphics/Rect;)Z (light greylist, reflection)
+11-21 15:59:11.597 27538 27538 W om.xm.testcode: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (light greylist, reflection)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: get metaData of com.xm.testcodec failed
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.os.Bundle.getBoolean(java.lang.String, boolean)' on a null object reference
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.isUsingMiuiFont(TypefaceUtils.java:300)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.usingMiuiFonts(TypefaceUtils.java:289)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.replaceTypeface(TypefaceUtils.java:570)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.widget.TextView.replaceTypeface(TextView.java:3937)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:3926)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:2147)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.setTypeface(AppCompatTextView.java:708)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.widget.TextView.resolveStyleAndSetTypeface(TextView.java:2037)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypefaceFromAttrs(TextView.java:2008)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.widget.TextView.applyTextAppearance(TextView.java:3647)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.widget.TextView.<init>(TextView.java:1498)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.widget.TextView.<init>(TextView.java:869)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:99)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:95)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:91)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.Toolbar.setTitle(Toolbar.java:763)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ToolbarWidgetWrapper.setTitleInt(ToolbarWidgetWrapper.java:262)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ToolbarWidgetWrapper.setWindowTitle(ToolbarWidgetWrapper.java:244)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ActionBarOverlayLayout.setWindowTitle(ActionBarOverlayLayout.java:670)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.ensureSubDecor(AppCompatDelegateImpl.java:665)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.setContentView(AppCompatDelegateImpl.java:552)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatActivity.setContentView(AppCompatActivity.java:161)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at com.xm.testcodec.MainActivity.onCreate(MainActivity.java:26)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7232)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7221)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1272)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2972)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3127)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:78)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:108)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:68)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1847)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.os.Looper.loop(Looper.java:201)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.main(ActivityThread.java:6893)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at java.lang.reflect.Method.invoke(Native Method)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+11-21 15:59:11.606 27538 27538 W TypefaceUtils: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:873)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: get metaData of com.xm.testcodec failed
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.os.Bundle.getBoolean(java.lang.String, boolean)' on a null object reference
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.isUsingMiuiFont(TypefaceUtils.java:300)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.usingMiuiFonts(TypefaceUtils.java:289)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.replaceTypeface(TypefaceUtils.java:570)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.widget.TextView.replaceTypeface(TextView.java:3937)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:3926)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:2147)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.setTypeface(AppCompatTextView.java:708)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextHelper.loadFromAttributes(AppCompatTextHelper.java:221)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:105)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:95)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:91)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.Toolbar.setTitle(Toolbar.java:763)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ToolbarWidgetWrapper.setTitleInt(ToolbarWidgetWrapper.java:262)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ToolbarWidgetWrapper.setWindowTitle(ToolbarWidgetWrapper.java:244)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ActionBarOverlayLayout.setWindowTitle(ActionBarOverlayLayout.java:670)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.ensureSubDecor(AppCompatDelegateImpl.java:665)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.setContentView(AppCompatDelegateImpl.java:552)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatActivity.setContentView(AppCompatActivity.java:161)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at com.xm.testcodec.MainActivity.onCreate(MainActivity.java:26)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7232)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7221)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1272)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2972)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3127)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:78)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:108)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:68)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1847)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.os.Looper.loop(Looper.java:201)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.main(ActivityThread.java:6893)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at java.lang.reflect.Method.invoke(Native Method)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+11-21 15:59:11.613 27538 27538 W TypefaceUtils: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:873)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: get metaData of com.xm.testcodec failed
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.os.Bundle.getBoolean(java.lang.String, boolean)' on a null object reference
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.isUsingMiuiFont(TypefaceUtils.java:300)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.usingMiuiFonts(TypefaceUtils.java:289)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.replaceTypeface(TypefaceUtils.java:570)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.widget.TextView.replaceTypeface(TextView.java:3937)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:3926)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:2147)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.setTypeface(AppCompatTextView.java:708)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.widget.TextView.resolveStyleAndSetTypeface(TextView.java:2037)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypefaceFromAttrs(TextView.java:2008)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.widget.TextView.applyTextAppearance(TextView.java:3647)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTextAppearance(TextView.java:3417)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.setTextAppearance(AppCompatTextView.java:185)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.Toolbar.setTitle(Toolbar.java:767)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ToolbarWidgetWrapper.setTitleInt(ToolbarWidgetWrapper.java:262)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ToolbarWidgetWrapper.setWindowTitle(ToolbarWidgetWrapper.java:244)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ActionBarOverlayLayout.setWindowTitle(ActionBarOverlayLayout.java:670)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.ensureSubDecor(AppCompatDelegateImpl.java:665)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.setContentView(AppCompatDelegateImpl.java:552)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatActivity.setContentView(AppCompatActivity.java:161)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at com.xm.testcodec.MainActivity.onCreate(MainActivity.java:26)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7232)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7221)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1272)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2972)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3127)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:78)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:108)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:68)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1847)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.os.Looper.loop(Looper.java:201)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.main(ActivityThread.java:6893)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at java.lang.reflect.Method.invoke(Native Method)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+11-21 15:59:11.618 27538 27538 W TypefaceUtils: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:873)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: get metaData of com.xm.testcodec failed
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.os.Bundle.getBoolean(java.lang.String, boolean)' on a null object reference
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.isUsingMiuiFont(TypefaceUtils.java:300)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.usingMiuiFonts(TypefaceUtils.java:289)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.replaceTypeface(TypefaceUtils.java:570)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.widget.TextView.replaceTypeface(TextView.java:3937)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:3926)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:2147)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.setTypeface(AppCompatTextView.java:708)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextHelper.onSetTextAppearance(AppCompatTextHelper.java:523)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.setTextAppearance(AppCompatTextView.java:187)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.Toolbar.setTitle(Toolbar.java:767)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ToolbarWidgetWrapper.setTitleInt(ToolbarWidgetWrapper.java:262)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ToolbarWidgetWrapper.setWindowTitle(ToolbarWidgetWrapper.java:244)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.ActionBarOverlayLayout.setWindowTitle(ActionBarOverlayLayout.java:670)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.ensureSubDecor(AppCompatDelegateImpl.java:665)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.setContentView(AppCompatDelegateImpl.java:552)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatActivity.setContentView(AppCompatActivity.java:161)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at com.xm.testcodec.MainActivity.onCreate(MainActivity.java:26)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7232)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7221)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1272)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2972)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3127)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:78)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:108)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:68)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1847)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.os.Looper.loop(Looper.java:201)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.main(ActivityThread.java:6893)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at java.lang.reflect.Method.invoke(Native Method)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+11-21 15:59:11.621 27538 27538 W TypefaceUtils: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:873)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: get metaData of com.xm.testcodec failed
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.os.Bundle.getBoolean(java.lang.String, boolean)' on a null object reference
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.isUsingMiuiFont(TypefaceUtils.java:300)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.usingMiuiFonts(TypefaceUtils.java:289)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.replaceTypeface(TypefaceUtils.java:570)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.widget.TextView.replaceTypeface(TextView.java:3937)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:3926)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:2147)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.setTypeface(AppCompatTextView.java:708)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.widget.TextView.resolveStyleAndSetTypeface(TextView.java:2037)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypefaceFromAttrs(TextView.java:2008)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.widget.TextView.applyTextAppearance(TextView.java:3647)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.widget.TextView.<init>(TextView.java:1498)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.widget.TextView.<init>(TextView.java:869)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:99)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:95)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatViewInflater.createTextView(AppCompatViewInflater.java:182)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatViewInflater.createView(AppCompatViewInflater.java:103)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.createView(AppCompatDelegateImpl.java:1407)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.onCreateView(AppCompatDelegateImpl.java:1457)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:776)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:734)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.rInflate(LayoutInflater.java:867)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.rInflateChildren(LayoutInflater.java:828)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:519)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:427)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:374)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.setContentView(AppCompatDelegateImpl.java:555)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatActivity.setContentView(AppCompatActivity.java:161)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at com.xm.testcodec.MainActivity.onCreate(MainActivity.java:26)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7232)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7221)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1272)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2972)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3127)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:78)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:108)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:68)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1847)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.os.Looper.loop(Looper.java:201)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.main(ActivityThread.java:6893)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at java.lang.reflect.Method.invoke(Native Method)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+11-21 15:59:11.631 27538 27538 W TypefaceUtils: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:873)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: get metaData of com.xm.testcodec failed
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.os.Bundle.getBoolean(java.lang.String, boolean)' on a null object reference
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.isUsingMiuiFont(TypefaceUtils.java:300)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.usingMiuiFonts(TypefaceUtils.java:289)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.replaceTypeface(TypefaceUtils.java:570)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.widget.TextView.replaceTypeface(TextView.java:3937)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:3926)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:2147)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.setTypeface(AppCompatTextView.java:708)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextHelper.loadFromAttributes(AppCompatTextHelper.java:221)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:105)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:95)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatViewInflater.createTextView(AppCompatViewInflater.java:182)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatViewInflater.createView(AppCompatViewInflater.java:103)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.createView(AppCompatDelegateImpl.java:1407)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.onCreateView(AppCompatDelegateImpl.java:1457)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:776)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:734)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.rInflate(LayoutInflater.java:867)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.rInflateChildren(LayoutInflater.java:828)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:519)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:427)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:374)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.setContentView(AppCompatDelegateImpl.java:555)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatActivity.setContentView(AppCompatActivity.java:161)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at com.xm.testcodec.MainActivity.onCreate(MainActivity.java:26)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7232)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7221)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1272)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2972)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3127)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:78)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:108)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:68)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1847)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.os.Looper.loop(Looper.java:201)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.main(ActivityThread.java:6893)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at java.lang.reflect.Method.invoke(Native Method)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+11-21 15:59:11.634 27538 27538 W TypefaceUtils: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:873)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: get metaData of com.xm.testcodec failed
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.os.Bundle.getBoolean(java.lang.String, boolean)' on a null object reference
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.isUsingMiuiFont(TypefaceUtils.java:300)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.usingMiuiFonts(TypefaceUtils.java:289)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.replaceTypeface(TypefaceUtils.java:570)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.widget.TextView.replaceTypeface(TextView.java:3937)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:3926)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:2147)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.widget.TextView.resolveStyleAndSetTypeface(TextView.java:2037)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypefaceFromAttrs(TextView.java:2008)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.widget.TextView.applyTextAppearance(TextView.java:3647)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.widget.TextView.<init>(TextView.java:1498)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.widget.Button.<init>(Button.java:166)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.widget.Button.<init>(Button.java:141)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatButton.<init>(AppCompatButton.java:72)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatButton.<init>(AppCompatButton.java:68)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatViewInflater.createButton(AppCompatViewInflater.java:192)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatViewInflater.createView(AppCompatViewInflater.java:111)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.createView(AppCompatDelegateImpl.java:1407)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.onCreateView(AppCompatDelegateImpl.java:1457)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:776)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:734)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.rInflate(LayoutInflater.java:867)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.rInflateChildren(LayoutInflater.java:828)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:519)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:427)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:374)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.setContentView(AppCompatDelegateImpl.java:555)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatActivity.setContentView(AppCompatActivity.java:161)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at com.xm.testcodec.MainActivity.onCreate(MainActivity.java:26)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7232)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7221)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1272)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2972)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3127)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:78)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:108)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:68)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1847)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.os.Looper.loop(Looper.java:201)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.main(ActivityThread.java:6893)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at java.lang.reflect.Method.invoke(Native Method)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+11-21 15:59:11.648 27538 27538 W TypefaceUtils: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:873)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: get metaData of com.xm.testcodec failed
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: java.lang.NullPointerException: Attempt to invoke virtual method 'boolean android.os.Bundle.getBoolean(java.lang.String, boolean)' on a null object reference
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.isUsingMiuiFont(TypefaceUtils.java:300)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.usingMiuiFonts(TypefaceUtils.java:289)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at miui.util.TypefaceUtils.replaceTypeface(TypefaceUtils.java:570)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.widget.TextView.replaceTypeface(TextView.java:3937)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:3926)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.widget.TextView.setTypeface(TextView.java:2147)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatTextHelper.loadFromAttributes(AppCompatTextHelper.java:221)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatButton.<init>(AppCompatButton.java:78)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at androidx.appcompat.widget.AppCompatButton.<init>(AppCompatButton.java:68)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatViewInflater.createButton(AppCompatViewInflater.java:192)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatViewInflater.createView(AppCompatViewInflater.java:111)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.createView(AppCompatDelegateImpl.java:1407)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.onCreateView(AppCompatDelegateImpl.java:1457)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:776)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:734)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.rInflate(LayoutInflater.java:867)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.rInflateChildren(LayoutInflater.java:828)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:519)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:427)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.view.LayoutInflater.inflate(LayoutInflater.java:374)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatDelegateImpl.setContentView(AppCompatDelegateImpl.java:555)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at androidx.appcompat.app.AppCompatActivity.setContentView(AppCompatActivity.java:161)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at com.xm.testcodec.MainActivity.onCreate(MainActivity.java:26)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7232)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.app.Activity.performCreate(Activity.java:7221)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1272)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2972)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:3127)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.LaunchActivityItem.execute(LaunchActivityItem.java:78)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.executeCallbacks(TransactionExecutor.java:108)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:68)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:1847)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.os.Handler.dispatchMessage(Handler.java:106)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.os.Looper.loop(Looper.java:201)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at android.app.ActivityThread.main(ActivityThread.java:6893)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at java.lang.reflect.Method.invoke(Native Method)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+11-21 15:59:11.651 27538 27538 W TypefaceUtils: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:873)
+11-21 15:59:11.683  1596  1895 V UiModeManager: switch night mode to 1
+11-21 15:59:11.732 27538 27573 I Adreno  : QUALCOMM build                   : 86a5ee6, Id697a1ddee
+11-21 15:59:11.732 27538 27573 I Adreno  : Build Date                       : 03/18/19
+11-21 15:59:11.732 27538 27573 I Adreno  : OpenGL ES Shader Compiler Version: EV031.25.14.03
+11-21 15:59:11.732 27538 27573 I Adreno  : Local Branch                     : 
+11-21 15:59:11.732 27538 27573 I Adreno  : Remote Branch                    : refs/tags/AU_LINUX_ANDROID_LA.UM.7.9.R1.08.00.00.500.048
+11-21 15:59:11.732 27538 27573 I Adreno  : Remote Branch                    : NONE
+11-21 15:59:11.732 27538 27573 I Adreno  : Reconstruct Branch               : NOTHING
+11-21 15:59:11.732 27538 27573 I Adreno  : Build Config                     : S P 6.0.9 AArch64
+11-21 15:59:11.737 27538 27573 I Adreno  : PFP: 0x016ee177, ME: 0x00000000
+11-21 15:59:11.744 27538 27573 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasWideColorDisplay retrieved: 1
+11-21 15:59:11.747 27538 27573 I ConfigStore: android::hardware::configstore::V1_0::ISurfaceFlingerConfigs::hasHDRDisplay retrieved: 1
+11-21 15:59:11.748 27538 27573 D OpenGLRenderer: Swap behavior 2
+11-21 15:59:11.788  1596  1729 I ActivityManager: Displayed com.xm.testcodec/.MainActivity: +556ms
+11-21 15:59:11.794   702   786 W DisplayFeatureHal: histogram_operation-Get, histgram status is wrong, status:0!
+11-21 15:59:11.794   702   786 W DisplayFeatureHal: histogram_operation-Stop, histgram status is wrong, status:0!
+11-21 15:59:11.810  1596  1729 I Timeline: Timeline: Activity_windows_visible id: ActivityRecord{3f5009e u0 com.xm.testcodec/.MainActivity t2572} time:869409770
+11-21 15:59:11.811  2018  2018 D EventBus: [2018, u0] send(AppTransitionFinishedEvent)
+11-21 15:59:11.812  2018  2018 D EventBus: [2018, u0]  -> ForcedResizableInfoActivityController [0x8c70f30, P1] onBusEvent(AppTransitionFinishedEvent)
+11-21 15:59:11.812  2018  2018 D EventBus: [2018, u0] onBusEvent(AppTransitionFinishedEvent) duration: 22 microseconds, avg: 538
+11-21 15:59:11.812  2018  2018 D EventBus: [2018, u0] send(AppTransitionFinishedEvent)
+11-21 15:59:11.812  1596  1857 I Timeline: Timeline: App_transition_stopped time:869409772
+11-21 15:59:11.812  2018  2018 D EventBus: [2018, u0]  -> ForcedResizableInfoActivityController [0x8c70f30, P1] onBusEvent(AppTransitionFinishedEvent)
+11-21 15:59:11.812  2018  2018 D EventBus: [2018, u0] onBusEvent(AppTransitionFinishedEvent) duration: 19 microseconds, avg: 538
+11-21 15:59:11.824  1596  7082 I SplashScreenServiceDelegate: None for com.xm.testcodec
+11-21 15:59:11.832  1596  7082 D ActivityTrigger: ActivityTrigger activityStopTrigger 
+11-21 15:59:11.850 27818 27818 D Launcher.Lifecycle: onStop:UserHandle{0},5802d94,false
+11-21 15:59:11.862  1596  1686 V UidProcStateHelper: foreground changed:[27818,10060,false]
+11-21 15:59:11.862  4218  4482 D ProcessObserver: onForegroundActivitiesChanged, pid: 27818 uid: 10060 foregroundActivities: false
+11-21 15:59:11.862  4218  4482 D ProcessObserver: Uid: 10060 Background
+11-21 15:59:11.862  1596  3867 D CompatibilityInfo: mCompatibilityFlags - 0
+11-21 15:59:11.862  1596  3867 D CompatibilityInfo: applicationDensity - 440
+11-21 15:59:11.862  1596  3867 D CompatibilityInfo: applicationScale - 1.0
+11-21 15:59:11.862  4218  4531 D PowerCheckerService: updateForFgUidChangedLocked, mScreenOn = true uid = 10060 foreground = false
+11-21 15:59:11.863  4218  4531 D PowerChecker.BaStats: uid = 10060, uidForeground = false, lastBytes = 7972041, curBytes = 7972041, deltaBytes = 0
+11-21 15:59:11.863  4218  4471 D AppActiveChecker: updateDownloadStateForFgUidChangedLocked, mScreenOn = true uid = 10060 foreground = false
+11-21 15:59:11.863  4218  4471 D AppActiveChecker: updateAppActiveStateForUidLocked, uid = 10060 appActiveState = 1
+11-21 15:59:11.863  4218  4471 D DeviceIdleAppRuleChecker: updateStateForInteractiveUidChangedLocked: uid = 10060 foreground = false
+11-21 15:59:11.863  4218  4471 D KillProcessAppRuleChecker: updateStateForInteractiveUidChangedLocked: uid = 10060 foreground = false
+11-21 15:59:11.863  4218  4471 D HideModeStateMachine: updateForForegroundUidChangedLocked: uid = 10060 foreground = false
+11-21 15:59:11.863  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st |-> startRun
+11-21 15:59:11.863  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st Feature: location |-> startRun
+11-21 15:59:11.863  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st Feature: location |-> setActive
+11-21 15:59:11.863  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st Feature: sensor |-> startRun
+11-21 15:59:11.863  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st Feature: sensor |-> setActive
+11-21 15:59:11.863  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st Feature: appIdle |-> startRun
+11-21 15:59:11.863  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st Feature: appIdle |-> setActive
+11-21 15:59:11.863  4218  4471 D ActiveStateController: updateStateForFgUidChangedLocked: uid = 10060 foreground = false
+11-21 15:59:11.889  2950  3457 D com.xiaomi.common.Network: Http POST Response Code: 200
+11-21 15:59:11.890  2950  3457 W PushService: 2019-11-21 15:59:11,890 - [WARN::PushService] - [Thread:134] HTTP len=2053 url=http://data.mistat.xiaomi.com/mistats/v3
+11-21 15:59:11.954  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:11.960   729  1430 W SurfaceFlinger: Attempting to set client state on removed layer: Splash Screen com.xm.testcodec#0
+11-21 15:59:11.960   729  1430 W SurfaceFlinger: Attempting to destroy on removed layer: Splash Screen com.xm.testcodec#0
+11-21 15:59:12.455  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:12.785   687   750 W ANDR-PERF-LM: FeatureState: readState() 149: warning: appName is NULL, returning default State
+11-21 15:59:12.785   687   750 W ANDR-PERF-LM: FeatureState: readState() 149: warning: appName is NULL, returning default State
+11-21 15:59:12.785   687   750 W ANDR-PERF-LM: MetaMeter: handleSecondaryAsync() 149: AdaptLaunch MetaMeterThread start(). No MeterMgr Available to handle this Secondary/Data Async. !!!! 
+11-21 15:59:12.868 27538 27538 I codec   : to start
+11-21 15:59:12.869 27538 27580 I codec   : to open /sdcard/voip-data/dou.mp4
+11-21 15:59:12.957  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+--------- beginning of crash
+11-21 15:59:13.052 27538 27580 F libc    : Fatal signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0xc in tid 27580 (om.xm.testcodec), pid 27538 (om.xm.testcodec)
+11-21 15:59:13.204 27583 27583 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstone
+11-21 15:59:13.206  1007  1007 I /system/bin/tombstoned: received crash request for pid 27580
+11-21 15:59:13.207 27583 27583 I crash_dump64: performing dump of process 27538 (target tid = 27580)
+11-21 15:59:13.217 27583 27583 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+11-21 15:59:13.217 27583 27583 F DEBUG   : Build fingerprint: 'Xiaomi/tucana/tucana:9/PKQ1.190302.001/9.10.16:user/release-keys'
+11-21 15:59:13.217 27583 27583 F DEBUG   : Revision: '0'
+11-21 15:59:13.217 27583 27583 F DEBUG   : ABI: 'arm64'
+11-21 15:59:13.217 27583 27583 F DEBUG   : pid: 27538, tid: 27580, name: om.xm.testcodec  >>> com.xm.testcodec <<<
+11-21 15:59:13.217 27583 27583 F DEBUG   : signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0xc
+11-21 15:59:13.217 27583 27583 F DEBUG   : Cause: null pointer dereference
+11-21 15:59:13.217 27583 27583 F DEBUG   :     x0  0000000000000000  x1  0000007533a3f020  x2  0000000000000000  x3  0066000000000000
+11-21 15:59:13.217 27583 27583 F DEBUG   :     x4  0080000000000000  x5  0000000000000000  x6  0000000000008000  x7  64ff6264636e6260
+11-21 15:59:13.217 27583 27583 F DEBUG   :     x8  0000000000000000  x9  0000007533b0ef00  x10 0000000000000334  x11 0000000000000030
+11-21 15:59:13.217 27583 27583 F DEBUG   :     x12 0000000000000008  x13 000000000000000d  x14 0000000000000000  x15 00000075bc570000
+11-21 15:59:13.217 27583 27583 F DEBUG   :     x16 00000075218d3cb8  x17 0000007521542c9c  x18 0000000000000000  x19 0000000000000000
+11-21 15:59:13.217 27583 27583 F DEBUG   :     x20 0000007533a3f020  x21 00000075201014f0  x22 0000007520484830  x23 00000075213c6118
+11-21 15:59:13.217 27583 27583 F DEBUG   :     x24 0000007520101570  x25 0000007520004000  x26 00000075c09355e0  x27 0000000000000002
+11-21 15:59:13.217 27583 27583 F DEBUG   :     x28 0000000000000000  x29 0000007520101150
+11-21 15:59:13.217 27583 27583 F DEBUG   :     sp  0000007520100eb0  lr  00000075213c2cdc  pc  0000007521542cb4
+11-21 15:59:13.218 27583 27583 F DEBUG   : 
+11-21 15:59:13.218 27583 27583 F DEBUG   : backtrace:
+11-21 15:59:13.219 27583 27583 F DEBUG   :     #00 pc 0000000000200cb4  /data/app/com.xm.testcodec-GtdhiPod-gETqVOqjS5uag==/lib/arm64/libnative-lib.so (avcodec_parameters_to_context+24)
+11-21 15:59:13.219 27583 27583 F DEBUG   :     #01 pc 0000000000080cd8  /data/app/com.xm.testcodec-GtdhiPod-gETqVOqjS5uag==/lib/arm64/libnative-lib.so (Demuxer::Open(std::__ndk1::basic_string<char, std::__ndk1::char_traits<char>, std::__ndk1::allocator<char>>, int)+892)
+11-21 15:59:13.219 27583 27583 F DEBUG   :     #02 pc 0000000000083180  /data/app/com.xm.testcodec-GtdhiPod-gETqVOqjS5uag==/lib/arm64/libnative-lib.so (Run()+148)
+11-21 15:59:13.219 27583 27583 F DEBUG   :     #03 pc 0000000000084260  /data/app/com.xm.testcodec-GtdhiPod-gETqVOqjS5uag==/lib/arm64/libnative-lib.so (_ZNSt6__ndk114__thread_proxyINS_5tupleIJNS_10unique_ptrINS_15__thread_structENS_14default_deleteIS3_EEEEPFvvEEEEEEPvSA_+328)
+11-21 15:59:13.219 27583 27583 F DEBUG   :     #04 pc 00000000000900d4  /system/lib64/libc.so (__pthread_start(void*)+36)
+11-21 15:59:13.219 27583 27583 F DEBUG   :     #05 pc 00000000000239a8  /system/lib64/libc.so (__start_thread+68)
+11-21 15:59:13.224   687   749 E ANDR-PERF-RESOURCEQS: Failed to reset optimization [3, 0]
+11-21 15:59:13.458  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:13.959  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:14.215 27583 27583 E MIUINDBG: miui_native_debug_process_O
+11-21 15:59:14.222 27583 27583 E MIUINDBG: AM read ack success: No such file or directory
+11-21 15:59:14.223 27583 27583 E MIUINDBG: core type: 0: No such file or directory
+11-21 15:59:14.223 27583 27583 E MIUINDBG: lsof type: 0: No such file or directory
+11-21 15:59:14.223 27583 27583 I MIUINDBG: dump_core pid = 27538 core_rule = 0 
+11-21 15:59:14.228  1007  1007 E /system/bin/tombstoned: Tombstone written to: /data/tombstones/tombstone_07
+11-21 15:59:14.232  1596 27590 W ActivityManager:   Force finishing activity com.xm.testcodec/.MainActivity
+11-21 15:59:14.237  1596  1725 I BootReceiver: Copying /data/tombstones/tombstone_07 to DropBox (SYSTEM_TOMBSTONE)
+11-21 15:59:14.240 27818 28187 D Launcher: get showing item successandroid.graphics.Bitmap@171d3ff
+11-21 15:59:14.240  1596 27590 D ActivityTrigger: ActivityTrigger activityPauseTrigger 
+11-21 15:59:14.245  1596  4607 D OpenGLRenderer: Swap behavior 2
+11-21 15:59:14.257   687   749 E ANDR-PERF-MPCTL: Invalid profile no. 0, total profiles 0 only
+11-21 15:59:14.264  1596  7082 I set_top_app: success /proc/27818/top_app:1
+11-21 15:59:14.265  1596  7082 I set_top_app: success /proc/27538/top_app:0
+11-21 15:59:14.270  1596  1931 D ActivityManagerServiceInjector: Begin to report package foreground events...
+11-21 15:59:14.271  4218  4556 D PowerKeeper: PowerStateMachine:Enter power state id=3 name=home
+11-21 15:59:14.272  3128  3162 D GameBoosterService: onGameStatusChange foreground:ForegroundInfo{mForegroundPackageName='com.miui.home', mForegroundUid=10060, mForegroundPid=27818, mLastForegroundPackageName='com.xm.testcodec', mLastForegroundUid=10184, mLastForegroundPid=27538, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-21 15:59:14.272  4218  4482 D ProcessObserver: onScreenAppChanged, FgUid: 10060, FgPackageName: com.miui.home
+11-21 15:59:14.272  4218  4482 D ProcessObserver: onScreenAppChanged, PreTaskUid: 10184, PreTaskPackageName: com.xm.testcodec
+11-21 15:59:14.272  4218  4482 D ProcessObserver: Uid: 10060 Foreground
+11-21 15:59:14.273  4218  4531 D PowerCheckerService: updateForFgUidChangedLocked, mScreenOn = true uid = 10060 foreground = true
+11-21 15:59:14.273  4218 24615 D PowerKeeper: PerfEngineController:ForegroundInfo{mForegroundPackageName='com.miui.home', mForegroundUid=10060, mForegroundPid=27818, mLastForegroundPackageName='com.xm.testcodec', mLastForegroundUid=10184, mLastForegroundPid=27538, mMultiWindowForegroundPackageName='null', mMultiWindowForegroundUid=-1, mFlags=0}
+11-21 15:59:14.273  4218  4471 D AppActiveChecker: updateDownloadStateForFgUidChangedLocked, mScreenOn = true uid = 10060 foreground = true
+11-21 15:59:14.273  4218  4471 D AppActiveChecker: updateAppActiveStateForUidLocked, uid = 10060 appActiveState = 0
+11-21 15:59:14.273  4218  4471 D DeviceIdleAppRuleChecker: updateStateForInteractiveUidChangedLocked: uid = 10060 foreground = true
+11-21 15:59:14.273  4218  4471 D KillProcessAppRuleChecker: updateStateForInteractiveUidChangedLocked: uid = 10060 foreground = true
+11-21 15:59:14.273  4218  4471 D HideModeStateMachine: updateForForegroundUidChangedLocked: uid = 10060 foreground = true
+11-21 15:59:14.273  2704  2760 I octvm_power: power mode [home] start 1574323154
+11-21 15:59:14.273  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st |-> setForegroundActive
+11-21 15:59:14.273  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st Feature: location |-> setSubStateForegroundActive
+11-21 15:59:14.273  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st Feature: sensor |-> setSubStateForegroundActive
+11-21 15:59:14.273  4218  4471 I HideModeStateMachine: Uid: 10060 State: inactive_level_1st Feature: appIdle |-> setSubStateForegroundActive
+11-21 15:59:14.274  4218  4471 I HideModeStateMachine: Uid: 10060 State: active |-> setForegroundActive
+11-21 15:59:14.274  4218  4471 D ActiveStateController: updateStateForFgUidChangedLocked: uid = 10060 foreground = true
+11-21 15:59:14.274  2704  2760 I octvm_power: Action: set_bcbc_cust_state(enable) for [foreground_change]
+11-21 15:59:14.274  4218  4531 D PowerChecker.BaStats: uid = 10060, uidForeground = true, lastBytes = 7972041, curBytes = 7972041, deltaBytes = 0
+11-21 15:59:14.276   702   702 D DisplayFeatureHal: setFeatureEnable(displayId=0 caseId=18 modeId=1 cookie=0)
+11-21 15:59:14.276   702   702 D DisplayFeatureHal: current wcg state 0, setting to 0
+11-21 15:59:14.276   702   702 D DisplayFeatureHal: notifySFWcgState enable = 0
+11-21 15:59:14.277   668   696 I SDM     : CoreInterface::SetWCGStatus: SetWCGStatus wcg enable 0
+11-21 15:59:14.277   702   702 D DisplayFeatureHal: notifyQservice cmd 47 value 0 ret 0
+11-21 15:59:14.277   729  1880 D SurfaceFlinger: updateWCGState enable = 0
+11-21 15:59:14.277   702   789 D DisplayFeatureHal: HandleBCBCCustom  enable:1
+11-21 15:59:14.277   702   786 D ColorManager: handleHistogramCmd enable histogram
+11-21 15:59:14.277  1596  7082 I Timeline: Timeline: App_transition_ready time:869412237
+11-21 15:59:14.277  2704  2760 I octvm_drv_xm: platform_set_bcbc_cust_state enable success
+11-21 15:59:14.278  2704  2760 I octvm_power: Action: set_dfps_cust_state(disable) for [foreground_change]
+11-21 15:59:14.278  2704  2760 I octvm_drv: common drv: platform_set_dfps_cust_state -> platform not support
+11-21 15:59:14.278  2704  2760 I octvm_power: Action: set_lcd_mode(default) for [foreground_change]
+11-21 15:59:14.280   702   702 D DisplayFeatureHal: setFeatureEnable(displayId=0 caseId=7 modeId=1 cookie=0)
+11-21 15:59:14.280   702   702 D DisplayFeatureHal: current wcg state 0, setting to 0
+11-21 15:59:14.280   702   702 D DisplayFeatureHal: notifySFWcgState enable = 0
+11-21 15:59:14.280  1596  6071 I Timeline: Timeline: App_transition_ready time:869412240
+11-21 15:59:14.282   668   696 I SDM     : CoreInterface::SetWCGStatus: SetWCGStatus wcg enable 0
+11-21 15:59:14.283   702   702 D DisplayFeatureHal: notifyQservice cmd 47 value 0 ret 0
+11-21 15:59:14.283   702   789 D DisplayFeatureHal: HandleCabcModeCustom enter 1 0
+11-21 15:59:14.283   702   789 W DisplayFeatureHal: ---skip setting acl feature currently, return!
+11-21 15:59:14.283   702   789 D DisplayFeatureHal: HandleCabcModeCustom exit 0x1000
+11-21 15:59:14.283  2704  2760 I octvm_drv_xm: platform_set_lcd_mode default(1) success
+11-21 15:59:14.283  2704  2760 I octvm_power: Action: set_thermal_config(restore) for [foreground_change]
+11-21 15:59:14.284   729  1430 D SurfaceFlinger: updateWCGState enable = 0
+11-21 15:59:14.286  2704  2760 I octvm_drv: platform_set_thermal_mode cur_global_config:[], target mode:[restore], profile=0, ret=0
+11-21 15:59:14.286  2704  2760 I octvm_power: onPowerModeChanged[home] called
+11-21 15:59:14.289  1596  1686 D TypefaceUtils: getProperWeight, fontNames = [mipro-medium], style = 0, idx = 5, weight = 500
+11-21 15:59:14.291 27818 27818 D Launcher.Lifecycle: onStart:UserHandle{0},5802d94,false
+11-21 15:59:14.294  2018  2018 D StatusBar: recevie broadbcast ACTION_APPLICATION_MESSAGE_QUERY, requestFirstTime=false
+11-21 15:59:14.295 27818 28108 I RenderThread: RenderThread resumed
+11-21 15:59:14.295 27818 28108 I RenderThread: All controllers paused.
+11-21 15:59:14.295 27818 28108 I RenderThread: RenderThread paused, waiting for signal
+11-21 15:59:14.297 27818 27818 D Launcher.Lifecycle: onResume:UserHandle{0},5802d94,false
+11-21 15:59:14.298 27818 27818 D Launcher.XOutUtils: canRecommendScreenShow, isShowXout=false
+11-21 15:59:14.298  1596  1857 I Timeline: Timeline: App_transition_ready time:869412258
+11-21 15:59:14.298 27818 27818 D Launcher.RecommendController: folder display and try to request recommend list
+11-21 15:59:14.298 27818 27818 D Launcher_DesktopWallpaperManager: adapterHomeToWallpaperAsync in launcher resume
+11-21 15:59:14.298 27818 27818 D Launcher_DesktopWallpaperManager: adaptHomeToWallpaperAsync
+11-21 15:59:14.300  1596  1895 V UiModeManager: switch night mode to 1
+11-21 15:59:14.300 27818 28108 I RenderThread: RenderThread resumed
+11-21 15:59:14.303 27818 27867 D Launcher: disableStatusBarClock:false
+11-21 15:59:14.303 27818 28108 I RenderThread: All controllers paused.
+11-21 15:59:14.303 27818 28108 I RenderThread: RenderThread paused, waiting for signal
+11-21 15:59:14.313  1596  3867 I Timeline: Timeline: App_transition_ready time:869412272
+11-21 15:59:14.314 27818 27883 D Launcher_WallpaperManagerCompatVOMR1: getWallpaperColorMode, staticWallpaperColorMode=0
+11-21 15:59:14.315  1596 27594 W ContextImpl: Calling a method in the system process without a qualified user: android.app.ContextImpl.bindService:1621 android.content.ContextWrapper.bindService:708 miui.os.DropBoxManager.dm:361 miui.os.DropBoxManager.a:350 miui.os.DropBoxManager.addText:314 
+11-21 15:59:14.315 27818 27883 D Launcher_WallpaperManagerCompatVOMR1: getStatusBarColorMode, statusBarRect=Rect(0, 0 - 1080, 80)
+11-21 15:59:14.316 27818 27818 W StaticLayout: maxLineHeight should not be -1.  maxLines:2 lineCount:2
+11-21 15:59:14.319  1596  1686 D TypefaceUtils: getProperWeight, fontNames = [mipro-medium], style = 0, idx = 5, weight = 500
+11-21 15:59:14.320  1596  1686 I chatty  : uid=1000(system) android.ui identical 1 line
+11-21 15:59:14.322  1596  1686 D TypefaceUtils: getProperWeight, fontNames = [mipro-medium], style = 0, idx = 5, weight = 500
+11-21 15:59:14.323  1596  1686 D miui_anim: handleViewTouch for com.miui.internal.widget.GroupButton{3d36aca VFED..C.. ......I. 0,0-0,0 #1020019 android:id/button1}
+11-21 15:59:14.324  1596  1686 D miui_anim: handleViewTouch for com.miui.internal.widget.GroupButton{6256996 VFED..C.. ......I. 0,0-0,0 #102001a android:id/button2}
+11-21 15:59:14.325  1596  1686 D miui_anim: handleViewTouch for com.miui.internal.widget.GroupButton{cb214e9 VFED..C.. ......I. 0,0-0,0 #102001b android:id/button3}
+11-21 15:59:14.329  1596  1857 I Timeline: Timeline: App_transition_ready time:869412289
+11-21 15:59:14.329  1596 27594 D CompatibilityInfo: mCompatibilityFlags - 0
+11-21 15:59:14.329  1596 27594 D CompatibilityInfo: applicationDensity - 440
+11-21 15:59:14.329  1596 27594 D CompatibilityInfo: applicationScale - 1.0
+11-21 15:59:14.332  1596  1596 W Binder  : Outgoing transactions from this process must be FLAG_ONEWAY
+11-21 15:59:14.332  1596  1596 W Binder  : java.lang.Throwable
+11-21 15:59:14.332  1596  1596 W Binder  : 	at android.os.BinderProxy.transact(BinderProxy.java:460)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at com.miui.internal.server.IDropBoxManagerService$Stub$Proxy.add(SourceFile:134)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at miui.os.DropBoxManager$2.onServiceConnected(SourceFile:286)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at android.app.LoadedApk$ServiceDispatcher.doConnected(LoadedApk.java:1738)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at android.app.LoadedApk$ServiceDispatcher$RunConnection.run(LoadedApk.java:1770)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at android.os.Handler.handleCallback(Handler.java:873)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at android.os.Handler.dispatchMessage(Handler.java:99)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at android.os.Looper.loop(Looper.java:201)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at com.android.server.SystemServer.run(SystemServer.java:475)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at com.android.server.SystemServer.main(SystemServer.java:309)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at java.lang.reflect.Method.invoke(Native Method)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:547)
+11-21 15:59:14.332  1596  1596 W Binder  : 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:853)
+11-21 15:59:14.336  1596  1882 W InputDispatcher: channel 'a0cb0b2 com.xm.testcodec/com.xm.testcodec.MainActivity (server)' ~ Consumer closed input channel or an error occurred.  events=0x9
+11-21 15:59:14.336  1596  1882 E InputDispatcher: channel 'a0cb0b2 com.xm.testcodec/com.xm.testcodec.MainActivity (server)' ~ Channel is unrecoverably broken and will be disposed!
+11-21 15:59:14.339  1596  7082 I ActivityManager: Process com.xm.testcodec (pid 27538) has died: vis  +99TOP 
+11-21 15:59:14.339   597   597 I Zygote  : Process 27538 exited due to signal (11)
+11-21 15:59:14.340  1596  1688 W libprocessgroup: kill(-27538, 9) failed: No such process
+11-21 15:59:14.340  1596  1688 I libprocessgroup: Successfully killed process cgroup uid 10184 pid 27538 in 0ms
+11-21 15:59:14.341   969  1173 E storaged: getDiskStats failed with result NOT_SUPPORTED and size 0
+11-21 15:59:14.345  1596  3867 I WindowManager: WIN DEATH: Window{a0cb0b2 u0 com.xm.testcodec/com.xm.testcodec.MainActivity}
+11-21 15:59:14.345  1596  3867 W InputDispatcher: Attempted to unregister already unregistered input channel 'a0cb0b2 com.xm.testcodec/com.xm.testcodec.MainActivity (server)'
+11-21 15:59:14.348  1596  3867 I Timeline: Timeline: App_transition_ready time:869412308
+11-21 15:59:14.353   729  2633 W SurfaceFlinger: Attempting to set client state on removed layer: com.xm.testcodec/com.xm.testcodec.MainActivity#0
+11-21 15:59:14.353   729  2633 W SurfaceFlinger: Attempting to destroy on removed layer: com.xm.testcodec/com.xm.testcodec.MainActivity#0
+11-21 15:59:14.353  1596  7082 I Timeline: Timeline: App_transition_ready time:869412313
+11-21 15:59:14.357 27818 27818 D Launcher.Lifecycle: onWindowFocusChanged:true,UserHandle{0},5802d94,false
+11-21 15:59:14.361  1596  1857 I Timeline: Timeline: App_transition_ready time:869412320
+11-21 15:59:14.361  1596  1857 I Timeline: Timeline: App_transition_stopped time:869412321
+11-21 15:59:14.380  1596  1686 W Looper  : Slow dispatch took 129ms android.ui h=com.android.server.am.ActivityManagerService$UiHandler c=null m=1
+11-21 15:59:14.381  1596  1686 V UidProcStateHelper: foreground changed:[27818,10060,true]
+11-21 15:59:14.381  2018  2018 D EventBus: [2018, u0] send(AppTransitionFinishedEvent)
+11-21 15:59:14.381  2018  2018 D EventBus: [2018, u0]  -> ForcedResizableInfoActivityController [0x8c70f30, P1] onBusEvent(AppTransitionFinishedEvent)
+11-21 15:59:14.381  2018  2018 D EventBus: [2018, u0] onBusEvent(AppTransitionFinishedEvent) duration: 21 microseconds, avg: 538
+11-21 15:59:14.381  4218  4482 D ProcessObserver: onForegroundActivitiesChanged, pid: 27818 uid: 10060 foregroundActivities: true
+11-21 15:59:14.381  2018  2018 D EventBus: [2018, u0] send(AppTransitionFinishedEvent)
+11-21 15:59:14.381  2018  2018 D EventBus: [2018, u0]  -> ForcedResizableInfoActivityController [0x8c70f30, P1] onBusEvent(AppTransitionFinishedEvent)
+11-21 15:59:14.381  2018  2018 D EventBus: [2018, u0] onBusEvent(AppTransitionFinishedEvent) duration: 16 microseconds, avg: 538
+11-21 15:59:14.382  2018  2018 D EventBus: [2018, u0] send(AppTransitionFinishedEvent)
+11-21 15:59:14.382  2018  2018 D EventBus: [2018, u0]  -> ForcedResizableInfoActivityController [0x8c70f30, P1] onBusEvent(AppTransitionFinishedEvent)
+11-21 15:59:14.382  2018  2018 D EventBus: [2018, u0] onBusEvent(AppTransitionFinishedEvent) duration: 16 microseconds, avg: 538
+11-21 15:59:14.384  1596  1729 W ActivityManager: setHasOverlayUi called on unknown pid: 27538
+11-21 15:59:14.388  1596  1729 I Timeline: Timeline: Activity_windows_visible id: ActivityRecord{c2404e2 u0 com.miui.home/.launcher.Launcher t1} time:869412347
+11-21 15:59:14.389  1596  1686 V UidProcStateHelper: process died:[27538,10184]
+11-21 15:59:14.389  4218  4482 D ProcessObserver: Uid: 10184 Background
+11-21 15:59:14.390  4218  4531 D PowerCheckerService: updateForFgUidChangedLocked, mScreenOn = true uid = 10184 foreground = false
+11-21 15:59:14.392  4218  4531 D PowerChecker.BaStats: uid = 10184, uidForeground = false, lastBytes = -2, curBytes = -2, deltaBytes = 0
+11-21 15:59:14.393  4218  4471 D AppActiveChecker: updateDownloadStateForFgUidChangedLocked, mScreenOn = true uid = 10184 foreground = false
+11-21 15:59:14.394  4218  4471 D AppActiveChecker: sendMessageDelayed: uid = 10184 delayMillis = 180000 elapsedRealtime = 881344120
+11-21 15:59:14.394  4218  4471 D AppActiveChecker: updateAppActiveStateForUidLocked, uid = 10184 appActiveState = 0
+11-21 15:59:14.394  4218  4471 D DeviceIdleAppRuleChecker: updateStateForInteractiveUidChangedLocked: uid = 10184 foreground = false
+11-21 15:59:14.394  4218  4471 D KillProcessAppRuleChecker: updateStateForInteractiveUidChangedLocked: uid = 10184 foreground = false
+11-21 15:59:14.394  4218  4471 D HideModeStateMachine: updateForForegroundUidChangedLocked: uid = 10184 foreground = false
+11-21 15:59:14.394  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st |-> startRun
+11-21 15:59:14.394  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: location |-> startRun
+11-21 15:59:14.394  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: sensor |-> startRun
+11-21 15:59:14.394  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: appIdle |-> startRun
+11-21 15:59:14.394  4218  4471 D ActiveStateController: updateStateForFgUidChangedLocked: uid = 10184 foreground = false
+11-21 15:59:14.394  4218  4471 D ActiveStateController: updateRuleForUidLocked, uid = 10184 property = 32
+11-21 15:59:14.395  4218  4471 D PowerKeeperConfigureProvider: appActiveTable insert 2533
+11-21 15:59:14.396  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: sensor |-> updateRule, Rule = restrict
+11-21 15:59:14.396  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: sensor |-> subFeatureRuleChangedCallback, Rule = restrict
+11-21 15:59:14.396  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: appIdle |-> updateRule, Rule = restrict
+11-21 15:59:14.396  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: appIdle |-> subFeatureRuleChangedCallback, Rule = restrict
+11-21 15:59:14.396  4218  4471 D ActiveStateController: updateStateForUidActiveChangedLocked, uid: 10184 active: false
+11-21 15:59:14.396  4218  4471 D ActiveStateController: updateRuleForUidLocked, uid = 10184 property = 0
+11-21 15:59:14.397  4218  4471 D PowerKeeperConfigureProvider: appActiveTable insert 2534
+11-21 15:59:14.398  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: sensor |-> updateRule, Rule = allow
+11-21 15:59:14.398  4218  4471 I HideModeStateMachine: Uid: 10184 State: inactive_level_1st Feature: appIdle |-> updateRule, Rule = allow
+11-21 15:59:14.398  4218  4471 D ActiveStateController: updateStateForUidActiveChangedLocked, uid: 10184 active: true
+11-21 15:59:14.398  4218  4471 D ActiveStateController: updateRuleForUidLocked, uid = 10184 property = 32
+11-21 15:59:14.398  4218  4471 D PowerKeeperConfigureProvider: appActiveTable insert 2535
+11-21 15:59:14.399  4218  4471 I HideModeStateMachine: Uid: 10184 Feature: sensor Rule: restrict |-> notifyAppRuleChangedListeners
+11-21 15:59:14.399  4218  4471 I HideModeStateMachine: Uid: 10184 Feature: appIdle Rule: restrict |-> notifyAppRuleChangedListeners
+11-21 15:59:14.399  4218  4471 I HideModeStateMachine: Uid: 10184 Feature: sensor Rule: allow |-> notifyAppRuleChangedListeners
+11-21 15:59:14.399  4218  4471 I HideModeStateMachine: Uid: 10184 Feature: appIdle Rule: allow |-> notifyAppRuleChangedListeners
+11-21 15:59:14.399  4218  4471 D PowerKeeper.Sensor: setUidState, uid = 10184 allow = false
+11-21 15:59:14.400  4218  4471 D PowerKeeper.AppStandby: setUidState, uid = 10184 allow = false
+11-21 15:59:14.401  4218  4471 D PowerKeeper.Sensor: setUidState, uid = 10184 allow = true
+11-21 15:59:14.405  4218  4471 D PowerKeeper.AppStandby: setUidState, uid = 10184 allow = true
+11-21 15:59:14.413  1596  2464 I SplashScreenServiceDelegate: None for com.miui.home
+11-21 15:59:14.442  2018  2018 D StatusBar: disable<e i a s b h r c s > disable2<q i n g r >
+11-21 15:59:14.443  2018  2018 D PhoneStatusBar/NavigationBarView: setDisabledFlags back:false home:false recent:false
+11-21 15:59:14.444  2018  2018 D StatusBarClock:  isNormalMode= true clock visible=true
+11-21 15:59:14.455 27818 27818 D Launcher.Lifecycle: onWindowFocusChanged:false,UserHandle{0},5802d94,true
+11-21 15:59:14.460  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
+11-21 15:59:14.549 27818 27883 D Launcher_WallpaperManagerCompatVOMR1: getStatusBarColorMode, static wallpaper, statusBarColorMode=0
+11-21 15:59:14.549 27818 27883 D Launcher_StaticWallpaper: current wallpaper is static wallpaper
+11-21 15:59:14.646 27818 27883 D Launcher_WallpaperManagerCompatVOMR1: getIsCurrentWallpaperScrollable, isCurrentWallpaperScrollable=false
+11-21 15:59:14.646 27818 27818 D Launcher_DesktopWallpaperManager: adaptHomeToWallpaper, notify everyone
+11-21 15:59:14.647 27818 27818 D TypefaceUtils: getProperWeight, fontNames = [mipro], style = 1, idx = 4, weight = 500
+11-21 15:59:14.649 27818 27818 D Launcher_WallpaperUtils: changeStatusBarMode:false
+11-21 15:59:14.660   687   749 E ANDR-PERF-RESOURCEQS: Failed to reset optimization [3, 0]
+11-21 15:59:14.669 27818 27818 E Launcher: changeViewByFsGestureState,  view=FitSystemWindowView,  alpha=1.0,  scale=1.0
+11-21 15:59:14.669 27818 27818 E Launcher: changeViewByFsGestureState,  view=ShortcutMenuLayer,  alpha=1.0,  scale=1.0
+11-21 15:59:14.759  1596  1607 I system_server: NativeAlloc concurrent copying GC freed 236727(10MB) AllocSpace objects, 76(4MB) LOS objects, 41% free, 33MB/57MB, paused 211us total 329.217ms
+11-21 15:59:14.871 27818 27884 D Launcher_WallpaperManagerCompatVOMR1: getGadgetAreaColorMode, static wallpaper, rect=Rect(33, 164 - 1049, 706), colorMode=0
+11-21 15:59:14.872 27818 27884 D Launcher_DesktopWallpaperManager: updateGadgetColorByWallpaperInner, gadget(GadgetInfo, id=3, itemType=5, user=UserHandle{0}, mCategoryId=2, title=时钟, screenId=1, container=-100, cellX=0, cellY=0, spanX=4, spanY=2, isLandscapePos=false), rect=Rect(33, 164 - 1049, 706), colorMode=0
+11-21 15:59:14.961  9187 17480 E SecurityDeviceCredentialManager: getService: NULL binder, retry...
