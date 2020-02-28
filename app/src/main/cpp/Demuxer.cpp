@@ -6,6 +6,8 @@
 
 #include<mutex>
 #include<thread>
+#include <ffmpeg/libavutil/imgutils.h>
+
 #include "utils.h"
 
 
@@ -93,6 +95,7 @@ int Demuxer::Open(std::string inputFile, int streamType) {
             return -4;
         }
         videoCodecCtx_->thread_count = 0;
+        //videoCodecCtx_->thread_type = FF_THREAD_FRAME;//FF_THREAD_SLICE;//FF_THREAD_FRAME;//1;
         if (avcodec_open2(videoCodecCtx_, videoCodec_, nullptr) < 0) {
             Log("Cannot open video codec");
             return -5;
@@ -175,7 +178,7 @@ void Demuxer::FrameDataToVector(AVFrame* frame, bool isAudio) {
 
 }
 
-int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe) {
+int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm) {
     if (demuxerEnd_ || (audioDecodeEof_ && videoDecodeEof_)) {
         return -1;
     }
@@ -293,10 +296,39 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe) {
                 got_nums_++;
                 if (got_nums_ % 40 == 0) {
                     int64_t post = NanoTime();
-                    Log("get decode size: %d, used %d, frame pts:%d, pkt_pts:%d, coded num:%d, disp num:%d width %d",
+                    Log("get decode size: %d, used %d, frame pts:%d, pkt_pts:%d, coded num:%d, disp num:%d width %d height %d channels %d stride %d %d %d format %d del %d",
                         decodedsize, (post - pre) /1000/ 1000, videoFrame_->pts, videoFrame_->pts,
-                        videoFrame_->coded_picture_number, videoFrame_->display_picture_number, videoFrame_->width);
+                        videoFrame_->coded_picture_number, videoFrame_->display_picture_number, videoFrame_->width,
+                        videoFrame_->height,
+                        videoFrame_->channels, videoFrame_->linesize[0], videoFrame_->linesize[1], videoFrame_->linesize[2],
+                        videoFrame_->format,videoFrame_->linesize[1] - videoFrame_->linesize[0]
+                        );
                 }
+                int lumaSize = videoFrame_->width * videoFrame_->height;
+                int cromaSize = videoFrame_->width/2 * videoFrame_->height/2;
+
+
+                AVFrame dst;
+
+                memset(&dst, 0, sizeof(dst));
+
+                int w = videoFrame_->width, h = videoFrame_->height;
+
+                dst.data[0] = (uint8_t *)(*data);
+                avpicture_fill( (AVPicture *)&dst, dst.data[0], AV_PIX_FMT_NV12, w, h);
+                struct SwsContext *convert_ctx=NULL;
+                AVPixelFormat src_pixfmt = (AVPixelFormat)videoFrame_->format;
+                AVPixelFormat dst_pixfmt = AV_PIX_FMT_NV12;
+                convert_ctx = sws_getContext(w, h, src_pixfmt, w, h, dst_pixfmt,
+                                             SWS_FAST_BILINEAR, NULL, NULL, NULL);
+                sws_scale(convert_ctx, videoFrame_->data, videoFrame_->linesize, 0, h,
+                          dst.data, dst.linesize);
+                sws_freeContext(convert_ctx);
+                tm = videoFrame_->pts;
+//                avpicture_free((AVPicture *)&dst);
+                //memcpy(*data, videoFrame_->data[0], lumaSize);
+
+
 
 
                 av_frame_unref(videoFrame_.get());

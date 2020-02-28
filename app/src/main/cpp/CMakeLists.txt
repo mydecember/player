@@ -5,6 +5,16 @@
 
 cmake_minimum_required(VERSION 3.4.1)
 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/base)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR} )
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/base/include)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}  OPENGL_SRC_LIST)
+find_library( EGL-lib
+        EGL )
+
+find_library( GLESv2-lib
+        GLESv2 )
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -15,10 +25,13 @@ add_library( # Sets the name of the library.
 
         # Sets the library as a shared library.
         SHARED
-        Demuxer.cpp
-        utils.cpp
-        # Provides a relative path to your source file(s).
-        native-lib.cpp)
+        HWVideoEncoder.cpp
+#        Demuxer.cpp
+#        utils.cpp
+#        # Provides a relative path to your source file(s).
+#        native-lib.cpp
+        ${OPENGL_SRC_LIST}
+        )
 
 
 #add_library(ffmpeg STATIC IMPORTED)
@@ -65,8 +78,11 @@ target_link_libraries( # Specifies the target library.
         ${CMAKE_SOURCE_DIR}/ffmpeg/libswresample.a
         # Links the target library to the log library
         # included in the NDK.
+        mediandk
         ${zlib}
-        ${log-lib})
+        ${log-lib}
+        ${EGL-lib}
+        ${GLESv2-lib})
 #target_link_libraries( # Specifies the target library.
 #        native-lib
 #        ffmpeg

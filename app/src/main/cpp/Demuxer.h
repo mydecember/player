@@ -12,6 +12,7 @@ extern "C" {
 #include <libavformat/avformat.h>
 #include <libavutil/frame.h>
 #include "libavcodec/avcodec.h"
+#include <libswscale/swscale.h>
 #ifdef __cplusplus
 }
 #endif
@@ -45,7 +46,7 @@ public:
     int Open(std::string inputFile, int streamType = 2);
     void SetLoop(bool loop);
     //
-    int GetFrame(uint8_t** data, int& len , int &got);
+    int GetFrame(uint8_t** data, int& len , int &got, int64_t& tm);
     int Close();
 private:
     void FlushDecoderBuffers();

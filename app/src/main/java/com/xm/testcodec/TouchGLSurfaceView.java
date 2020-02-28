@@ -6,8 +6,9 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.SurfaceView;
 
-public class TouchGLSurfaceView extends GLSurfaceView {
+public class TouchGLSurfaceView extends SurfaceView {
     interface TouchEventListener {
         void onClickUp(float x, float y);
         void onUp(float x, float y);

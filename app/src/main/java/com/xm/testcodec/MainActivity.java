@@ -9,25 +9,46 @@ import android.content.pm.PackageManager;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.opengles.GL10;
 
+/**
+ * if use GLSurfaceview  must implements GLSurfaceView.Renderer
+ * if use Surfaceview must implements SurfaceHolder.Callback
+ */
+public class MainActivity extends AppCompatActivity implements TouchGLSurfaceView.TouchEventListener,  SurfaceHolder.Callback{
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //glSurfaceView.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    final static String TAG = "codec";
     // Used to load the 'native-lib' library on application startup.
     static {
         System.loadLibrary("native-lib");
     }
 
     private Button btnStart;
-    private GLSurfaceView glSurfaceView;
+    private TouchGLSurfaceView glSurfaceView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkPermission();
+        Log.i(TAG, " RRRRRRRRRRRR onCreate  ");
 
         // Example of a call to a native method
 //        TextView tv = findViewById(R.id.sample_text);
@@ -40,7 +61,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        glSurfaceView = (GLSurfaceView)findViewById(R.id.surfaceView);
+        glSurfaceView = (TouchGLSurfaceView)findViewById(R.id.surfaceView);
+        glSurfaceView.setListener(this);
+        surfaceViewInit();
+    }
+
+    private void glSurfaceInit() {
+//        glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+//        glSurfaceView.setEGLContextClientVersion(3);
+//        glSurfaceView.setRenderer(this);
+//        glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+    }
+
+    private void surfaceViewInit() {
+        glSurfaceView.getHolder().addCallback(this);
     }
 
     private void checkPermission() {
@@ -55,10 +89,70 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    // TouchGLSurfaceView.TouchEventListener
+    @Override
+    public void onClickUp(float x, float y) {
+        Log.i(TAG, " click up " + x + "," + y);
+    }
+
+    @Override
+    public void onUp(float x, float y) {
+        Log.i(TAG, " touch down " + x + "," + y);
+    }
+
+    @Override
+    public void onDown(float x, float y) {
+        Log.i(TAG, " touch down " + x + "," + y);
+    }
+
+    @Override
+    public void onDrag(float sx, float sy, float dx, float dy, float cx, float cy) {
+        Log.i(TAG, " drag sx " + sx + " sy " + sy + " dx " + dx + " dy " + dy + " cx " + cx + " cy " + cy);
+    }
+
+    @Override
+    public void onScale(float dscale) {
+        Log.i(TAG, " scale " + dscale);
+    }
+    // implements GLSurfaceView.Renderer
+//    @Override
+//    public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+//
+//    }
+//
+//    @Override
+//    public void onSurfaceChanged(GL10 gl, int width, int height) {
+//
+//    }
+//
+//    @Override
+//    public void onDrawFrame(GL10 gl) {
+//
+//    }
+
+    //  SurfaceHolder.Callback
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        Log.i(TAG, " RRRRRRRRRRRRsurfaceCreated w ");
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        Log.i(TAG, " RRRRRRRRsurfaceChanged w " + width + " h " + height + " format " + format);
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.i(TAG, " RRRRRRRRRsurfaceDestroyed w ");
+    }
+
     /**
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
      */
     public native String stringFromJNI();
     public native void startJNI();
+    public native void startJNI2();
+
 }
