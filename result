@@ -1,0 +1,6 @@
+********** Crash dump: **********
+Build fingerprint: 'HUAWEI/HMA-AL00/HWHMA:10/HUAWEIHMA-AL00/10.0.0.188C00:user/release-keys'
+pid: 9350, tid: 9893, name: om.xm.testcodec  >>> com.xm.testcodec <<<
+signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x98
+Stack frame #00 pc 000000000001b060  /system/lib64/libandroid.so (ANativeWindow_setBuffersGeometry+16) (BuildId: d98cd12b5c84aaf027fff709255998e4)
+Stack frame #01 pc 000000000009beac  /data/app/com.xm.testcodec-GMpSCO5ak0FTRc3Vd7msrg==/lib/arm64/libnative-lib.so (EglBase::createSurface(ANativeWindow*)+116) (BuildId: 4e46a89022e3a7c0011060aecee9fdce0b33094e): Routine 

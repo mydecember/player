@@ -6,9 +6,9 @@
 
 #include<mutex>
 #include<thread>
-#include <ffmpeg/libavutil/imgutils.h>
 
-#include "utils.h"
+
+#include "base/utils.h"
 
 
 //using namespace media_ffmpeg;
@@ -294,7 +294,7 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm) {
             // Get a decoded video frame
             if (gotframe) {
                 got_nums_++;
-                if (got_nums_ % 40 == 0) {
+                if (got_nums_ % 600 == 0) {
                     int64_t post = NanoTime();
                     Log("get decode size: %d, used %d, frame pts:%d, pkt_pts:%d, coded num:%d, disp num:%d width %d height %d channels %d stride %d %d %d format %d del %d",
                         decodedsize, (post - pre) /1000/ 1000, videoFrame_->pts, videoFrame_->pts,
@@ -315,10 +315,10 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm) {
                 int w = videoFrame_->width, h = videoFrame_->height;
 
                 dst.data[0] = (uint8_t *)(*data);
-                avpicture_fill( (AVPicture *)&dst, dst.data[0], AV_PIX_FMT_NV12, w, h);
-                struct SwsContext *convert_ctx=NULL;
+                AVPixelFormat dst_pixfmt = AV_PIX_FMT_RGB24;//AV_PIX_FMT_NV12;
                 AVPixelFormat src_pixfmt = (AVPixelFormat)videoFrame_->format;
-                AVPixelFormat dst_pixfmt = AV_PIX_FMT_NV12;
+                avpicture_fill( (AVPicture *)&dst, dst.data[0], dst_pixfmt, w, h);
+                struct SwsContext *convert_ctx=NULL;
                 convert_ctx = sws_getContext(w, h, src_pixfmt, w, h, dst_pixfmt,
                                              SWS_FAST_BILINEAR, NULL, NULL, NULL);
                 sws_scale(convert_ctx, videoFrame_->data, videoFrame_->linesize, 0, h,

@@ -13,8 +13,11 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.xm.player.MiPlayer;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -43,9 +46,14 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
 
     private Button btnStart;
     private TouchGLSurfaceView glSurfaceView;
+    private MiPlayer player = new MiPlayer();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //去除title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//去掉Activity上面的状态栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         checkPermission();
         Log.i(TAG, " RRRRRRRRRRRR onCreate  ");
@@ -57,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startJNI();
+                //startJNI();
+                player.start();
             }
         });
 
@@ -109,11 +118,13 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
     @Override
     public void onDrag(float sx, float sy, float dx, float dy, float cx, float cy) {
         Log.i(TAG, " drag sx " + sx + " sy " + sy + " dx " + dx + " dy " + dy + " cx " + cx + " cy " + cy);
+        player.drag(sx, sy, cx, cy);
     }
 
     @Override
     public void onScale(float dscale) {
         Log.i(TAG, " scale " + dscale);
+        player.setScale(dscale);
     }
     // implements GLSurfaceView.Renderer
 //    @Override
@@ -135,16 +146,19 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i(TAG, " RRRRRRRRRRRRsurfaceCreated w ");
+        player.setDisplay(holder);
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         Log.i(TAG, " RRRRRRRRsurfaceChanged w " + width + " h " + height + " format " + format);
+        glSurfaceView.getHolder().setFixedSize(width, height);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.i(TAG, " RRRRRRRRRsurfaceDestroyed w ");
+        player.setDisplay(null);
     }
 
     /**

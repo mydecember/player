@@ -13,6 +13,7 @@ extern "C" {
 #include <libavutil/frame.h>
 #include "libavcodec/avcodec.h"
 #include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
 #ifdef __cplusplus
 }
 #endif

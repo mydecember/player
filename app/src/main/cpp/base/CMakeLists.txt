@@ -12,8 +12,13 @@ find_library( android-lib
         android )
 
 add_library(
-             base
-             STATIC
-             ${BASE_SRC_LIST} )
+            base
+            STATIC
+            ${BASE_SRC_LIST})
 
-
+target_link_libraries( # Specifies the target library.
+        base
+        android
+        ${log-lib}
+        ${EGL-lib}
+        ${GLESv2-lib})

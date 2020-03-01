@@ -3,10 +3,13 @@ package com.xm.testcodec;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.SurfaceView;
+
+import static com.xm.testcodec.MainActivity.TAG;
 
 public class TouchGLSurfaceView extends SurfaceView {
     interface TouchEventListener {
@@ -27,6 +30,15 @@ public class TouchGLSurfaceView extends SurfaceView {
     void setListener(TouchEventListener l) {
         listener = l;
     }
+
+
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        Log.i(TAG, "mmmmmmmm " + widthMeasureSpec+ "," + heightMeasureSpec);
+//        setMeasuredDimension(1080,1920);
+////        mMeasureHelper.doMeasure(widthMeasureSpec, heightMeasureSpec);
+////        setMeasuredDimension(mMeasureHelper.getMeasuredWidth(), mMeasureHelper.getMeasuredHeight());
+//    }
 
     private GestureDetector.SimpleOnGestureListener gestureListener = new GestureDetector.SimpleOnGestureListener() {
         @Override

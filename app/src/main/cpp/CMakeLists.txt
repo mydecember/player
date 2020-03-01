@@ -8,13 +8,23 @@ cmake_minimum_required(VERSION 3.4.1)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/base)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/base/include)
-aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}  OPENGL_SRC_LIST)
+aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}  players)
 find_library( EGL-lib
         EGL )
 
 find_library( GLESv2-lib
         GLESv2 )
 
+file(GLOB RENDER_SRCS
+        render/*.cpp
+        render/GlScreen.cpp
+        )
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/render )
+add_library(
+        glrender
+        STATIC
+        ${RENDER_SRCS}
+)
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -22,15 +32,15 @@ find_library( GLESv2-lib
 
 add_library( # Sets the name of the library.
         native-lib
-
         # Sets the library as a shared library.
         SHARED
-        HWVideoEncoder.cpp
 #        Demuxer.cpp
 #        utils.cpp
 #        # Provides a relative path to your source file(s).
 #        native-lib.cpp
-        ${OPENGL_SRC_LIST}
+
+        ${players}
+
         )
 
 
@@ -50,7 +60,6 @@ add_library( # Sets the name of the library.
 
 find_library( # Sets the name of the path variable.
         log-lib
-
         # Specifies the name of the NDK library that
         # you want CMake to locate.
         log)
@@ -65,10 +74,13 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_library(zlib z)
 find_package(Threads REQUIRED)
 
-
+SET_TARGET_PROPERTIES(native-lib PROPERTIES COMPILE_FLAGS " -Wdeprecated-declarations")
 
 target_link_libraries( # Specifies the target library.
         native-lib Threads::Threads
+        glrender
+        base
+        android
         ${CMAKE_SOURCE_DIR}/ffmpeg/libavformat.a
         ${CMAKE_SOURCE_DIR}/ffmpeg/libavdevice.a
         ${CMAKE_SOURCE_DIR}/ffmpeg/libavcodec.a

@@ -1,5 +1,6 @@
 package com.xm.player;
 
+import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
@@ -13,6 +14,7 @@ public class MiPlayer {
 
     public MiPlayer() {
         mPlayer = _nativeSetup(new WeakReference<MiPlayer>(this));
+        Log.i(TAG, "get player "+mPlayer);
     }
 
     public void setDataSource(String path) {
@@ -36,9 +38,13 @@ public class MiPlayer {
         _setVideoSurface(mPlayer, surface);
     }
 
-
+    public void start() {_start(mPlayer); }
     public void release() {
         _release(mPlayer);
+    }
+    public void setScale(float scale) {_scale(mPlayer, scale);}
+    public void drag(float x, float y, float xe, float ye) {
+        _drag(mPlayer, x, y, xe, ye);
     }
 
     protected void finalize() throws Throwable {
@@ -47,7 +53,10 @@ public class MiPlayer {
     }
 
     private native long _nativeSetup(Object player);
-    private native int _setDataSource(long mPlayer, String path);
+    private native void _setDataSource(long mPlayer, String path);
     private native void _setVideoSurface(long mPlayer, Surface surface);
+    private native void _start(long mPlayer);
+    private native void _scale(long mPlayer, float scale);
     private native void _release(long mPlayer);
+    private native void _drag(long mPlayer, float x, float y, float xe, float ye);
 }
