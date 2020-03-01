@@ -178,7 +178,7 @@ void Demuxer::FrameDataToVector(AVFrame* frame, bool isAudio) {
 
 }
 
-int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm) {
+int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVFrame* result) {
     if (demuxerEnd_ || (audioDecodeEof_ && videoDecodeEof_)) {
         return -1;
     }
@@ -193,6 +193,10 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm) {
 
             if (gotframe) {
                 Log(" zfq get video frame1  used ");
+                if (result) {
+                    av_frame_ref(result, videoFrame_.get());
+                }
+
                 av_frame_unref(videoFrame_.get());
                 //if (videoData_.size() != videoFrame_->linesize)
                 //*data = videoFrame_->pkt_pts;
@@ -311,26 +315,29 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm) {
                 AVFrame dst;
 
                 memset(&dst, 0, sizeof(dst));
-
+                //av_image_alloc
+                //av_frame_get_buffer
+                //av_image_fill_arrays
                 int w = videoFrame_->width, h = videoFrame_->height;
-
-                dst.data[0] = (uint8_t *)(*data);
-                AVPixelFormat dst_pixfmt = AV_PIX_FMT_RGB24;//AV_PIX_FMT_NV12;
-                AVPixelFormat src_pixfmt = (AVPixelFormat)videoFrame_->format;
-                avpicture_fill( (AVPicture *)&dst, dst.data[0], dst_pixfmt, w, h);
-                struct SwsContext *convert_ctx=NULL;
-                convert_ctx = sws_getContext(w, h, src_pixfmt, w, h, dst_pixfmt,
-                                             SWS_FAST_BILINEAR, NULL, NULL, NULL);
-                sws_scale(convert_ctx, videoFrame_->data, videoFrame_->linesize, 0, h,
-                          dst.data, dst.linesize);
-                sws_freeContext(convert_ctx);
+                if(data) {
+                    dst.data[0] = (uint8_t *)(*data);
+                    AVPixelFormat dst_pixfmt = AV_PIX_FMT_RGB24;//AV_PIX_FMT_NV12;
+                    AVPixelFormat src_pixfmt = (AVPixelFormat)videoFrame_->format;
+                    avpicture_fill( (AVPicture *)&dst, dst.data[0], dst_pixfmt, w, h);
+                    struct SwsContext *convert_ctx=NULL;
+                    convert_ctx = sws_getContext(w, h, src_pixfmt, w, h, dst_pixfmt,
+                                                 SWS_FAST_BILINEAR, NULL, NULL, NULL);
+                    sws_scale(convert_ctx, videoFrame_->data, videoFrame_->linesize, 0, h,
+                              dst.data, dst.linesize);
+                    sws_freeContext(convert_ctx);
+                }
+                if (result) {
+                    av_frame_ref(result, videoFrame_.get());
+                }
                 tm = videoFrame_->pts;
+
 //                avpicture_free((AVPicture *)&dst);
                 //memcpy(*data, videoFrame_->data[0], lumaSize);
-
-
-
-
                 av_frame_unref(videoFrame_.get());
             }
             assert(decodedsize == packet_->size);

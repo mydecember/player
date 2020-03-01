@@ -5,9 +5,14 @@
 
 cmake_minimum_required(VERSION 3.4.1)
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/base)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/base/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libyuv/include)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/base)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libyuv)
+
 aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}  players)
 find_library( EGL-lib
         EGL )
@@ -38,7 +43,6 @@ add_library( # Sets the name of the library.
 #        utils.cpp
 #        # Provides a relative path to your source file(s).
 #        native-lib.cpp
-
         ${players}
 
         )
@@ -80,6 +84,7 @@ target_link_libraries( # Specifies the target library.
         native-lib Threads::Threads
         glrender
         base
+        yuv
         android
         ${CMAKE_SOURCE_DIR}/ffmpeg/libavformat.a
         ${CMAKE_SOURCE_DIR}/ffmpeg/libavdevice.a

@@ -5,9 +5,9 @@
 #include <render/texture_render.h>
 #include <unistd.h>
 #include "Player.h"
-
+#include "libyuv/include/libyuv.h"
 Player::Player():running_(false) {
-
+    libyuv::FixedDiv(10, 5);
 }
 Player::~Player() {
 
@@ -57,12 +57,19 @@ void Player::Run() {
     int64_t tm;
     Log("1111111");
 
+    AVFrame * frame = av_frame_alloc();
+
     Log("222222222");
     while( ret == 0 && running_) {
         long want = 33000;
         pre = MilliTime();
-        while((ret = demuxer.GetFrame((uint8_t**)&data, len , got, tm)) == 0) {
+        while((ret = demuxer.GetFrame(NULL, len , got, tm, frame)) == 0) {
             if (got) {
+                libyuv::I420ToRGB24(frame->data[0], frame->linesize[0],
+                        frame->data[2], frame->linesize[2],
+                        frame->data[1], frame->linesize[1],
+                        data,frame->width*3, frame->width, frame->height);
+                av_frame_unref(frame);
                 display_->Display(data, len, W, H);
                 break;
             }
@@ -76,7 +83,7 @@ void Player::Run() {
     demuxer.Close();
     int64_t post = MilliTime();
     free(data);
-
+    av_frame_free(&frame);
     Log("decode used time %lld", (post - pre));
 }
 

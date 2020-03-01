@@ -37,7 +37,7 @@ void Run() {
     int64_t wantTime = 33;
     int64_t t1 = MilliTime();
     while( ret == 0) {
-        ret = demuxer.GetFrame((uint8_t**)&data, len , got, tm);
+        ret = demuxer.GetFrame((uint8_t**)&data, len , got, tm, NULL);
         if (got) {
             encoder.encodeFrame(tm, data, len);
             int64_t t2 = MilliTime();

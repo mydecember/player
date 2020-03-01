@@ -47,7 +47,7 @@ public:
     int Open(std::string inputFile, int streamType = 2);
     void SetLoop(bool loop);
     //
-    int GetFrame(uint8_t** data, int& len , int &got, int64_t& tm);
+    int GetFrame(uint8_t** data, int& len , int &got, int64_t& tm, AVFrame* result);
     int Close();
 private:
     void FlushDecoderBuffers();
