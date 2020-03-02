@@ -13,6 +13,7 @@ extern "C" {
 #include <libavutil/frame.h>
 #include "libavcodec/avcodec.h"
 #include <libswscale/swscale.h>
+#include <ffmpeg/libavutil/avstring.h>
 #include <libavutil/imgutils.h>
 #ifdef __cplusplus
 }
@@ -45,6 +46,8 @@ public:
     ~Demuxer();
     // streamType 1 audio only 2 video only 3 audio and video
     int Open(std::string inputFile, int streamType = 2);
+    int GetWidth();
+    int GetHeight();
     void SetLoop(bool loop);
     //
     int GetFrame(uint8_t** data, int& len , int &got, int64_t& tm, AVFrame* result);

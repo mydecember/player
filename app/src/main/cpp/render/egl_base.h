@@ -17,6 +17,8 @@ public:
     int makeCurrent();
     void unMakeCurrent();
     void release();
+    int getSurfaceWidth();
+    int getSurfaceHeight();
 
 private:
     EGLDisplay _egl_display;

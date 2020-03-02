@@ -86,6 +86,22 @@ int EglBase::makeCurrent()
         return -1;
 }
 
+int EglBase::getSurfaceWidth() {
+    EGLint width = 0;
+    if (!eglQuerySurface(_egl_display, _egl_surface, EGL_WIDTH, &width)) {
+        return 0;
+    }
+    return width;
+}
+
+int EglBase::getSurfaceHeight() {
+    EGLint height = 0;
+    if (!eglQuerySurface(_egl_display, _egl_surface, EGL_HEIGHT, &height)) {
+        return 0;
+    }
+    return height;
+}
+
 void EglBase::unMakeCurrent() {
     eglMakeCurrent(_egl_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 }

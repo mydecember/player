@@ -20,4 +20,36 @@ int64_t NanoTime() ;
 
 int64_t MacroTime() ;
 
+class FuncUsed {
+public:
+    FuncUsed(const char* fun):mName(fun) {
+        tm = MilliTime();
+        //Log("enter %s time %ld", mName, tm);
+    }
+    ~FuncUsed() {
+        long le = MilliTime();
+        Log("leave %s time %lld used time %ld", mName, le, (le-tm));
+    }
+private:
+    long tm;
+    const char* mName;
+};
+
+#define SCOPTED_LOG_IMP(X) FuncUsed log(X)
+#define SCOPTED_LOG SCOPTED_LOG_IMP(__func__)
+#define FUNCTION_LOG SCOPTED_LOG
+template<typename T>
+struct Average {
+    T total;
+    int cnt;
+    Average() : total(0), cnt(0) {}
+    void add(T v) {
+        total += v;
+        cnt ++;
+    }
+    T avg() {
+        return cnt == 0 ? 0 : total/cnt;
+    }
+};
+
 #endif //TESTCODEC_UTILS_H

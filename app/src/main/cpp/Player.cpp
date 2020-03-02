@@ -45,10 +45,12 @@ void Player::Drag(float x, float y, float xe, float ye) {
 void Player::Run() {
     Log("player run");
     Demuxer demuxer;
-    demuxer.Open("/sdcard/voip-data/c.mp4");
+    //demuxer.Open("/sdcard/voip-data/dou.mp4");
+    //demuxer.Open("rtmp://58.200.131.2:1935/livetv/hunantv");
+    demuxer.Open("http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8");
     int got;
-    int W = 1920;
-    int H = 1080;
+    int W = demuxer.GetWidth();
+    int H = demuxer.GetHeight();
     int len = W*H*3;
     uint8_t  *data  = (uint8_t  *)malloc(len ) ;
     int ret = 0;
@@ -69,15 +71,16 @@ void Player::Run() {
                         frame->data[2], frame->linesize[2],
                         frame->data[1], frame->linesize[1],
                         data,frame->width*3, frame->width, frame->height);
-                av_frame_unref(frame);
+
                 display_->Display(data, len, W, H);
+                av_frame_unref(frame);
                 break;
             }
         }
         long used = MilliTime() - pre;
-        //Log("used ms %d", used);
+        //Log("used ms %d pts %lld", used, tm);
         if (want - used*1000 >0)
-        usleep(want - used*1000);
+        usleep(want - used*1000 );
     }
     Log("to close ");
     demuxer.Close();

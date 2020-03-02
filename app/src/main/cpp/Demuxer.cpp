@@ -6,16 +6,42 @@
 
 #include<mutex>
 #include<thread>
-
-
+#include "libyuv.h"
 #include "base/utils.h"
+
+#define LOG_BUF_PREFIX_SIZE 512
+#define LOG_BUF_SIZE 2048
+static char logBufPrefix[LOG_BUF_PREFIX_SIZE];
+static char logBuffer[LOG_BUF_SIZE];
+static pthread_mutex_t cb_av_log_lock;
+
+
+
+static void log_callback_null(void *ptr, int level, const char *fmt, va_list vl){
+    if (level  > AV_LOG_ERROR)
+        return;
+
+    int cnt;
+    pthread_mutex_lock(&cb_av_log_lock);
+    cnt = snprintf(logBufPrefix, LOG_BUF_PREFIX_SIZE, "%s", fmt);
+    cnt = vsnprintf(logBuffer, LOG_BUF_SIZE, logBufPrefix, vl);
+    Log(" ffmpeg %s", logBuffer);
+    pthread_mutex_unlock(&cb_av_log_lock);
+}
 
 
 //using namespace media_ffmpeg;
 using namespace std;
 once_flag g_init_flag;
 void Register() {
+
+/* END */
+    av_log_set_level(AV_LOG_ERROR);
+    av_log_set_flags(AV_LOG_SKIP_REPEATED);
+    av_log_set_callback(log_callback_null);
+
     av_register_all();
+
 }
 
 Demuxer::Demuxer() :videoStreamId_(-1),
@@ -32,6 +58,7 @@ Demuxer::Demuxer() :videoStreamId_(-1),
                     audioDecodeEof_(true),
                     loop_(false){
     call_once(g_init_flag, Register);
+    got_nums_ = 0;
 
 }
 Demuxer::~Demuxer() {
@@ -40,7 +67,18 @@ Demuxer::~Demuxer() {
 int Demuxer::Open(std::string inputFile, int streamType) {
     streamType_ = streamType;
     Log("to open %s", inputFile.c_str());
-    int ret = avformat_open_input(&av_fmt_ctx, inputFile.c_str(), NULL, NULL);
+    AVDictionary *opts;// = NULL;
+
+
+    if (av_stristart(inputFile.c_str(), "rtmp", NULL) ||
+        av_stristart(inputFile.c_str(), "rtsp", NULL)) {
+        // There is total different meaning for 'timeout' option in rtmp
+        Log("remove 'timeout' option for rtmp.\n");
+        //av_dict_set(&opts, "timeout", NULL,0);
+    }
+    //av_dict_set_int(&opts, "skip-calc-frame-rate", 1, 0);
+
+    int ret = avformat_open_input(&av_fmt_ctx, inputFile.c_str(), NULL, &opts);
     if (ret != 0) {
         Log("open input error %d", ret);
         return -1;
@@ -94,7 +132,7 @@ int Demuxer::Open(std::string inputFile, int streamType) {
             Log("Cannot find video codec");
             return -4;
         }
-        videoCodecCtx_->thread_count = 0;
+        videoCodecCtx_->thread_count = 2;
         //videoCodecCtx_->thread_type = FF_THREAD_FRAME;//FF_THREAD_SLICE;//FF_THREAD_FRAME;//1;
         if (avcodec_open2(videoCodecCtx_, videoCodec_, nullptr) < 0) {
             Log("Cannot open video codec");
@@ -126,8 +164,15 @@ int Demuxer::Open(std::string inputFile, int streamType) {
     videoFrame_.reset(av_frame_alloc());
     demuxerEnd_ = false;
     packet_.reset(new AVPacket());
-    Log("open file ok video id %d audio id %d", videoStreamId_, audioStreamId_);
+    Log("open file ok video id %d audio id %d w:%d h%d", videoStreamId_, audioStreamId_,videoCodecCtx_->width, videoCodecCtx_->height);
     return ret;
+}
+
+int Demuxer::GetWidth() {
+    return videoCodecCtx_->width;
+}
+int Demuxer::GetHeight() {
+    return videoCodecCtx_->height;
 }
 
 int Demuxer::Close() {
@@ -298,8 +343,13 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVF
             // Get a decoded video frame
             if (gotframe) {
                 got_nums_++;
-                if (got_nums_ % 600 == 0) {
+                int64_t current_pos = av_rescale_q(videoFrame_->pts,   videoStream_->time_base, AV_TIME_BASE_Q);
+                tm = current_pos;//videoFrame_->pts;
+                //Log("stream tb %d %d time %lld", videoStream_->time_base.num, videoStream_->time_base.den, current_pos);
+
+                if (got_nums_ % 300 == 1) {
                     int64_t post = NanoTime();
+
                     Log("get decode size: %d, used %d, frame pts:%d, pkt_pts:%d, coded num:%d, disp num:%d width %d height %d channels %d stride %d %d %d format %d del %d",
                         decodedsize, (post - pre) /1000/ 1000, videoFrame_->pts, videoFrame_->pts,
                         videoFrame_->coded_picture_number, videoFrame_->display_picture_number, videoFrame_->width,
@@ -320,21 +370,34 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVF
                 //av_image_fill_arrays
                 int w = videoFrame_->width, h = videoFrame_->height;
                 if(data) {
-                    dst.data[0] = (uint8_t *)(*data);
-                    AVPixelFormat dst_pixfmt = AV_PIX_FMT_RGB24;//AV_PIX_FMT_NV12;
-                    AVPixelFormat src_pixfmt = (AVPixelFormat)videoFrame_->format;
-                    avpicture_fill( (AVPicture *)&dst, dst.data[0], dst_pixfmt, w, h);
-                    struct SwsContext *convert_ctx=NULL;
-                    convert_ctx = sws_getContext(w, h, src_pixfmt, w, h, dst_pixfmt,
-                                                 SWS_FAST_BILINEAR, NULL, NULL, NULL);
-                    sws_scale(convert_ctx, videoFrame_->data, videoFrame_->linesize, 0, h,
-                              dst.data, dst.linesize);
-                    sws_freeContext(convert_ctx);
+                    //FUNCTION_LOG;
+                    if (1) {
+                        dst.data[0] = (uint8_t *)(*data);
+                        AVPixelFormat dst_pixfmt = AV_PIX_FMT_NV12;//AV_PIX_FMT_RGB24;//AV_PIX_FMT_NV12;
+                        AVPixelFormat src_pixfmt = (AVPixelFormat)videoFrame_->format;
+                        avpicture_fill( (AVPicture *)&dst, dst.data[0], dst_pixfmt, w, h);
+                        struct SwsContext *convert_ctx=NULL;
+                        convert_ctx = sws_getContext(w, h, src_pixfmt, w, h, dst_pixfmt,
+                                                     SWS_FAST_BILINEAR, NULL, NULL, NULL);
+                        sws_scale(convert_ctx, videoFrame_->data, videoFrame_->linesize, 0, h,
+                                  dst.data, dst.linesize);
+                        sws_freeContext(convert_ctx);
+                    } else {
+
+                        libyuv::I420ToNV12(videoFrame_->data[0], videoFrame_->linesize[0],
+                                           videoFrame_->data[1], videoFrame_->linesize[1],
+                                           videoFrame_->data[2], videoFrame_->linesize[2],
+                                           *data, videoFrame_->width,
+                                           *data+ (videoFrame_->width*videoFrame_->height),videoFrame_->width,
+                                           videoFrame_->width, videoFrame_->height);
+                    }
+
+
                 }
                 if (result) {
                     av_frame_ref(result, videoFrame_.get());
                 }
-                tm = videoFrame_->pts;
+
 
 //                avpicture_free((AVPicture *)&dst);
                 //memcpy(*data, videoFrame_->data[0], lumaSize);

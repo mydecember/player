@@ -19,36 +19,42 @@ extern "C" {
 #include "libavcodec/jni.h"
 }
 
-void Run() {
+void Run(bool toEncoder, int tag) {
     Demuxer demuxer;
     demuxer.Open("/sdcard/voip-data/dou.mp4");
     int got;
-    int W = 1920;
-    int H = 1080;
+    int W = demuxer.GetWidth();
+    int H = demuxer.GetHeight();
     int len = W*H*3/2;
     uint8_t  *data  = (uint8_t  *)malloc(W*H*3/2 ) ;
     int64_t pre = MilliTime();
     HWVideoEncoder encoder;
     int64_t tm;
+    if (toEncoder)
     encoder.start("/sdcard/tt.mp4", W, H);
 
     int ret = 0;
     int64_t t = MilliTime();
-    int64_t wantTime = 33;
-    int64_t t1 = MilliTime();
+    int64_t getnums = 0;
     while( ret == 0) {
-        ret = demuxer.GetFrame((uint8_t**)&data, len , got, tm, NULL);
-        if (got) {
-            encoder.encodeFrame(tm, data, len);
-            int64_t t2 = MilliTime();
-
-            Log("used time %lld",(t2-t1) );
-            if (t2 - t < wantTime) {
-                //::usleep((wantTime - (t2 - t))*1000 );
+        int64_t u1 = MilliTime();
+        while((ret = demuxer.GetFrame((uint8_t**)&data, len , got, tm, NULL) )== 0) {
+            if ((ret == 0) && got) {
+                if (toEncoder)
+                encoder.encodeFrame(tm*1000, data, len);
+                break;
             }
-            wantTime += 33;
-            t1 = t2;
+        }
+        getnums++;
+        int64_t det = MilliTime() - t;
+        int64_t pre1 = 33*getnums;
 
+        int64_t used = MilliTime() - u1;
+        //Log("used ms %d", used);
+
+        if (pre1 - det > 0) {
+            usleep((pre1 - det)*1000);
+            Log(" %d sleep %lld", tag, (pre1-det));
         }
     }
     Log("to close ");
@@ -57,8 +63,11 @@ void Run() {
     free(data);
 
     Log("decode used time %lld", (post - pre));
-    encoder.stop();
-    encoder.release();
+    if (toEncoder) {
+        encoder.stop();
+        encoder.release();
+    }
+
 }
 
 std::thread* g_thread ;//= new std::thread(Run);
@@ -76,11 +85,41 @@ Java_com_xm_testcodec_MainActivity_startJNI(
         JNIEnv *env,
         jobject /* this */) {
     Log("to start");
-    g_thread = new std::thread(Run);
+    g_thread = new std::thread(Run, false, 0);
+    g_thread->detach();
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_xm_testcodec_MainActivity_startJNI1(
+        JNIEnv *env,
+        jobject /* this */) {
+    Log("to start");
+    g_thread = new std::thread(Run, false, 1);
     g_thread->detach();
 
-//    g_thread = new std::thread(Run);
-//    g_thread->detach();
+    g_thread = new std::thread(Run, false, 2);
+    g_thread->detach();
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_xm_testcodec_MainActivity_startJNI3(
+        JNIEnv *env,
+        jobject /* this */) {
+    Log("to start");
+    g_thread = new std::thread(Run, true, 1);
+    g_thread->detach();
+}
+
+extern "C" JNIEXPORT void JNICALL
+Java_com_xm_testcodec_MainActivity_startJNI2(
+        JNIEnv *env,
+        jobject /* this */) {
+    Log("to start");
+    g_thread = new std::thread(Run, true, 3);
+    g_thread->detach();
+
+    g_thread = new std::thread(Run, false, 4);
+    g_thread->detach();
 }
 
 extern "C"
@@ -112,6 +151,8 @@ Java_com_xm_player_MiPlayer__1setVideoSurface(
         ) {
     Log("set surface");
     Player* player = (Player*)p;
+    if (!player)
+        return;
     ANativeWindow *native_window = NULL;
     if (surface) {
         native_window = ANativeWindow_fromSurface(env, surface);
@@ -137,6 +178,8 @@ extern "C" JNIEXPORT void JNICALL
                 jlong p
                 ) {
     Player* player = (Player*)p;
+    if (!player)
+        return;
     player->Start();
 }
 
@@ -148,6 +191,8 @@ Java_com_xm_player_MiPlayer__1scale(
         jfloat value
 ) {
     Player* player = (Player*)p;
+    if (!player)
+        return;
     player->Scale(value);
 }
 
@@ -162,6 +207,8 @@ Java_com_xm_player_MiPlayer__1drag(
         jfloat ye
 ) {
     Player* player = (Player*)p;
+    if (!player)
+        return;
     Log("111 %f, %f, %f, %f", x, y, xe, ye);
     player->Drag(x, y, xe, ye);
 }

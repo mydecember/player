@@ -21,6 +21,8 @@ public:
     void release();
     void setScale(float scale);
 
+    void setScreenFrame(int sw, int wh, int w, int h);
+
 private:
     void prepareVertices();
 private:
@@ -38,6 +40,11 @@ private:
 
     float _scale;
     float _mvp[16];
+
+    int _sw;
+    int _sh;
+    int _w;
+    int _h;
     //float _center
 };
 

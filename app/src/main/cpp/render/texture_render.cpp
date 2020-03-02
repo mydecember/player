@@ -64,7 +64,6 @@ TextureRender::TextureRender(GLenum target)
 , _texture_id(0)
 , _program(0)
 , _scale(1.0){
-    prepareVertices();
 }
 TextureRender::~TextureRender()
 {
@@ -104,6 +103,15 @@ int TextureRender::draw(GLuint texture, float mvp[])
 {
     glUseProgram(_program);
     CHECK_ERROR(error);
+    glClearColor(0,0,0,1.0);
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+
+    glDisable(GL_DEPTH_TEST);
+//    glClear();
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(_target, texture);
     CHECK_ERROR(error);
@@ -152,16 +160,23 @@ void TextureRender::release()
     glDeleteTextures(1, ids);
 }
 
+void TextureRender::setScreenFrame(int sw, int sh, int w, int h) {
+    _sw = sw;
+    _sh = sh;
+    _w = w;
+    _h = h;
+    prepareVertices();
+}
 void TextureRender::setScale(float scale) {
     _scale *= scale;
     prepareVertices();
 }
 
 void TextureRender::prepareVertices() {
-    float renderWidth = 2163;
-    float renderHeight = 999;
-    float frameWidth = 1920;
-    float frameHegiht = 1080;
+    float renderWidth = _sw;
+    float renderHeight = _sh;
+    float frameWidth = _w;
+    float frameHegiht = _h;
     float sr = renderWidth/renderHeight;
     float sf = frameWidth/ frameHegiht;
     float scalex = 1.0;

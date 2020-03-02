@@ -47,6 +47,8 @@ private:
     Pointf dragStartCenter_;
     Pointf detPoint_;
     Pointf center_;
+    int screenW_;
+    int screenH_;
 
 };
 

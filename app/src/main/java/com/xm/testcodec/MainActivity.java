@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
     }
 
     private Button btnStart;
+    private Button btnStart1;
+    private Button btnStart2;
+    private Button btnStart3;
     private TouchGLSurfaceView glSurfaceView;
     private MiPlayer player = new MiPlayer();
     @Override
@@ -69,6 +72,34 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
                 player.start();
             }
         });
+
+        btnStart1 = (Button)findViewById(R.id.button1);
+        btnStart1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startJNI1();
+                //player.start();
+            }
+        });
+
+        btnStart2 = (Button)findViewById(R.id.button2);
+        btnStart2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startJNI2();
+                //player.start();
+            }
+        });
+
+        btnStart3 = (Button)findViewById(R.id.button3);
+        btnStart3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startJNI3();
+                //player.start();
+            }
+        });
+
 
         glSurfaceView = (TouchGLSurfaceView)findViewById(R.id.surfaceView);
         glSurfaceView.setListener(this);
@@ -152,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         Log.i(TAG, " RRRRRRRRsurfaceChanged w " + width + " h " + height + " format " + format);
-        glSurfaceView.getHolder().setFixedSize(width, height);
+        //glSurfaceView.getHolder().setFixedSize(width, height);
     }
 
     @Override
@@ -167,6 +198,8 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
      */
     public native String stringFromJNI();
     public native void startJNI();
+    public native void startJNI1();
     public native void startJNI2();
+    public native void startJNI3();
 
 }

@@ -5,7 +5,8 @@
 #include "GlScreen.h"
 #include "base/utils.h"
 GlScreen::GlScreen():scale_(1.0),center_(0.5,0.5) {
-
+screenW_ =0;
+screenH_ = 0;
 }
 GlScreen::~GlScreen() {
     //SetSurface(nullptr);
@@ -40,8 +41,8 @@ void GlScreen::SetDrag(float x, float y, float xe, float ye) {
         dragStartCenter_ = detPoint_;
     }
 //    Pointf v(x-xe, y-ye);
-    detPoint_.x = dragStartCenter_.x + (xe-x)/2163;
-    detPoint_.y = dragStartCenter_.y + (y - ye)/999;
+    detPoint_.x = dragStartCenter_.x + (xe-x)/screenW_;
+    detPoint_.y = dragStartCenter_.y + (y - ye)/screenH_;
     Log("-->%f %f %f %f", (xe-x) , (ye-y), detPoint_.x, detPoint_.y);
 
 }
@@ -56,6 +57,10 @@ void GlScreen::Display(uint8_t* data, int len, int w , int h) {
         eglBase_->makeCurrent();
         textureRender_.reset(new TextureRender(GL_TEXTURE_2D));
         textureRender_->init();
+        screenW_ = eglBase_->getSurfaceWidth();
+        screenH_ = eglBase_->getSurfaceHeight();
+        textureRender_->setScreenFrame(screenW_, screenH_, w, h);
+        Log("SSSSSSSSSSSSSSSSSSSs w %d %d", screenW_, screenH_);
         eglBase_->unMakeCurrent();
     }
 
