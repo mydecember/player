@@ -9,6 +9,7 @@
 #include "base/utils.h"
 #include "Player.h"
 #include "HWVideoEncoder.h"
+#include "VideoDecoder.h"
 #include <android/native_window_jni.h>
 #include <render/egl_base.h>
 #include <render/texture_render.h>
@@ -18,10 +19,24 @@ extern "C" {
 #include <libavformat/avformat.h>
 #include "libavcodec/jni.h"
 }
+JavaVM *jvm;
+JNIEnv *env;
 
 void Run(bool toEncoder, int tag) {
+    jvm->AttachCurrentThread(&env, 0);
+    string path = "/sdcard/voip-data/dou.mp4";
+    //string path = "/sdcard/0dexcam/clips/20200303_202426/clip0/main.mp4";
+//    VideoDecoder decoer;
+//    int w, h;
+//
+//    if (!decoer.load(path, w, h)) {
+//        Log("load error");
+//        return;
+//    }
+//    return;
+
     Demuxer demuxer;
-    demuxer.Open("/sdcard/voip-data/dou.mp4");
+    demuxer.Open(path);
     int got;
     int W = demuxer.GetWidth();
     int H = demuxer.GetHeight();
@@ -50,7 +65,7 @@ void Run(bool toEncoder, int tag) {
         int64_t pre1 = 33*getnums;
 
         int64_t used = MilliTime() - u1;
-        //Log("used ms %d", used);
+        Log("used ms %d", used);
 
         if (pre1 - det > 0) {
             usleep((pre1 - det)*1000);
@@ -67,7 +82,7 @@ void Run(bool toEncoder, int tag) {
         encoder.stop();
         encoder.release();
     }
-
+    jvm->DetachCurrentThread();
 }
 
 std::thread* g_thread ;//= new std::thread(Run);
@@ -87,6 +102,8 @@ Java_com_xm_testcodec_MainActivity_startJNI(
     Log("to start");
     g_thread = new std::thread(Run, false, 0);
     g_thread->detach();
+
+//    Run(false, 0);
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -106,6 +123,7 @@ Java_com_xm_testcodec_MainActivity_startJNI3(
         JNIEnv *env,
         jobject /* this */) {
     Log("to start");
+//    Run(true, 1);
     g_thread = new std::thread(Run, true, 1);
     g_thread->detach();
 }
@@ -126,6 +144,10 @@ extern "C"
 JNIEXPORT
 jint JNI_OnLoad(JavaVM *vm, void *res) {
     av_jni_set_java_vm(vm, 0);
+    jvm = vm;
+    if (vm->GetEnv((void **) &env, JNI_VERSION_1_6) != JNI_OK) {
+        return -1;
+    }
     // 返回jni版本
     return JNI_VERSION_1_4;
 }

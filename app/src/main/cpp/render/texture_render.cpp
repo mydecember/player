@@ -105,6 +105,7 @@ int TextureRender::draw(GLuint texture, float mvp[])
     CHECK_ERROR(error);
     glClearColor(0,0,0,1.0);
 
+    // 华为手机默认清除了，小米手机必须手动清楚
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glEnable(GL_CULL_FACE);

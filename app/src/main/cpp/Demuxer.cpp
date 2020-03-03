@@ -67,18 +67,18 @@ Demuxer::~Demuxer() {
 int Demuxer::Open(std::string inputFile, int streamType) {
     streamType_ = streamType;
     Log("to open %s", inputFile.c_str());
-    AVDictionary *opts;// = NULL;
+    AVDictionary *opts = NULL;// = NULL;
 
 
     if (av_stristart(inputFile.c_str(), "rtmp", NULL) ||
         av_stristart(inputFile.c_str(), "rtsp", NULL)) {
         // There is total different meaning for 'timeout' option in rtmp
         Log("remove 'timeout' option for rtmp.\n");
-        //av_dict_set(&opts, "timeout", NULL,0);
+        av_dict_set(&opts, "timeout", NULL,0);
     }
     //av_dict_set_int(&opts, "skip-calc-frame-rate", 1, 0);
 
-    int ret = avformat_open_input(&av_fmt_ctx, inputFile.c_str(), NULL, &opts);
+    int ret = avformat_open_input(&av_fmt_ctx, inputFile.c_str(), NULL, opts == NULL? NULL:&opts);
     if (ret != 0) {
         Log("open input error %d", ret);
         return -1;
@@ -370,7 +370,7 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVF
                 //av_image_fill_arrays
                 int w = videoFrame_->width, h = videoFrame_->height;
                 if(data) {
-                    //FUNCTION_LOG;
+                      //FUNCTION_LOG;
                     if (1) {
                         dst.data[0] = (uint8_t *)(*data);
                         AVPixelFormat dst_pixfmt = AV_PIX_FMT_NV12;//AV_PIX_FMT_RGB24;//AV_PIX_FMT_NV12;
@@ -382,6 +382,7 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVF
                         sws_scale(convert_ctx, videoFrame_->data, videoFrame_->linesize, 0, h,
                                   dst.data, dst.linesize);
                         sws_freeContext(convert_ctx);
+
                     } else {
 
                         libyuv::I420ToNV12(videoFrame_->data[0], videoFrame_->linesize[0],
@@ -398,12 +399,11 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVF
                     av_frame_ref(result, videoFrame_.get());
                 }
 
-
 //                avpicture_free((AVPicture *)&dst);
                 //memcpy(*data, videoFrame_->data[0], lumaSize);
                 av_frame_unref(videoFrame_.get());
             }
-            assert(decodedsize == packet_->size);
+            //assert(decodedsize == packet_->size);
             av_packet_unref(packet_.get());
             av_free_packet(packet_.get());
             return 0;

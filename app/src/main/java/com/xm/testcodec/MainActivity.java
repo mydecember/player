@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
     private Button btnStart2;
     private Button btnStart3;
     private TouchGLSurfaceView glSurfaceView;
-    private MiPlayer player = new MiPlayer();
+    //private MiPlayer player = new MiPlayer();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //startJNI();
-                player.start();
+                startJNI();
+                //player.start();
             }
         });
 
@@ -149,13 +149,13 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
     @Override
     public void onDrag(float sx, float sy, float dx, float dy, float cx, float cy) {
         Log.i(TAG, " drag sx " + sx + " sy " + sy + " dx " + dx + " dy " + dy + " cx " + cx + " cy " + cy);
-        player.drag(sx, sy, cx, cy);
+        //player.drag(sx, sy, cx, cy);
     }
 
     @Override
     public void onScale(float dscale) {
         Log.i(TAG, " scale " + dscale);
-        player.setScale(dscale);
+        //player.setScale(dscale);
     }
     // implements GLSurfaceView.Renderer
 //    @Override
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i(TAG, " RRRRRRRRRRRRsurfaceCreated w ");
-        player.setDisplay(holder);
+        //player.setDisplay(holder);
     }
 
     @Override
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.i(TAG, " RRRRRRRRRsurfaceDestroyed w ");
-        player.setDisplay(null);
+        //player.setDisplay(null);
     }
 
     /**
