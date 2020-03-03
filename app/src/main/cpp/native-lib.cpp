@@ -13,27 +13,31 @@
 #include <android/native_window_jni.h>
 #include <render/egl_base.h>
 #include <render/texture_render.h>
-
+#include "jvm.h"
 extern "C" {
 #include "libavcodec/avcodec.h"
 #include <libavformat/avformat.h>
 #include "libavcodec/jni.h"
 }
-JavaVM *jvm;
-JNIEnv *env;
 
 void Run(bool toEncoder, int tag) {
-    jvm->AttachCurrentThread(&env, 0);
-    string path = "/sdcard/voip-data/dou.mp4";
-    //string path = "/sdcard/0dexcam/clips/20200303_202426/clip0/main.mp4";
-//    VideoDecoder decoer;
-//    int w, h;
-//
-//    if (!decoer.load(path, w, h)) {
-//        Log("load error");
-//        return;
-//    }
-//    return;
+    //jvm->AttachCurrentThread(&env, 0);
+    bool other;
+    JNIEnv *env = getEnv(&other);
+    string path = "/sdcard/voip-data/1920.mp4";
+    //string path = "/sdcard/kk.mp4";
+    VideoDecoder decoer;
+    int w, h;
+    if (!decoer.load(path, w, h)) {
+        Log("load error");
+        if(other)
+        {
+            detatchEnv();
+        }
+        return;
+    }
+
+    //return;
 
     Demuxer demuxer;
     demuxer.Open(path);
@@ -45,8 +49,13 @@ void Run(bool toEncoder, int tag) {
     int64_t pre = MilliTime();
     HWVideoEncoder encoder;
     int64_t tm;
-    if (toEncoder)
-    encoder.start("/sdcard/tt.mp4", W, H);
+    if (toEncoder) {
+        bool ok = encoder.start("/sdcard/tt.mp4", W, H);
+        if (!ok) {
+            return;
+        }
+    }
+
 
     int ret = 0;
     int64_t t = MilliTime();
@@ -82,7 +91,7 @@ void Run(bool toEncoder, int tag) {
         encoder.stop();
         encoder.release();
     }
-    jvm->DetachCurrentThread();
+
 }
 
 std::thread* g_thread ;//= new std::thread(Run);
@@ -144,10 +153,7 @@ extern "C"
 JNIEXPORT
 jint JNI_OnLoad(JavaVM *vm, void *res) {
     av_jni_set_java_vm(vm, 0);
-    jvm = vm;
-    if (vm->GetEnv((void **) &env, JNI_VERSION_1_6) != JNI_OK) {
-        return -1;
-    }
+    initGlobalJvm(vm);
     // 返回jni版本
     return JNI_VERSION_1_4;
 }

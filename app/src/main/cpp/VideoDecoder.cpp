@@ -32,8 +32,19 @@ bool VideoDecoder::load(const string &path, int &W, int &H) {
     if (!extractor) {
         Log("extractor is error");
     }
-    media_status_t status = AMediaExtractor_setDataSource(extractor, path.c_str());
-    Log("to load path %s status %d", path.c_str(), status);
+    int fd = open(path.c_str(), O_RDONLY, 0444);
+    if (fd <= 0) {
+        Log("HWVideoencoder error !!!!!");
+        return false;
+    } else {
+        Log("HWVideoencoder ok !!!!!");
+    }
+
+    off64_t filelen= lseek(fd,0L,SEEK_END);
+    lseek(fd,0L,SEEK_SET);
+    media_status_t status = AMediaExtractor_setDataSourceFd(extractor, fd, 0, filelen);
+    //media_status_t status = AMediaExtractor_setDataSource(extractor, path.c_str());
+    Log("to load path %s status %d len %lld ", path.c_str(), status, filelen);
     size_t ntrack = AMediaExtractor_getTrackCount(extractor);
     for (int i = 0; i < ntrack; i++) {
         AMediaFormat * format = AMediaExtractor_getTrackFormat(extractor, i);

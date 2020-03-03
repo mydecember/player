@@ -48,6 +48,7 @@ static int calcBitrate(int H, int W) {
 bool HWVideoEncoder::start(const string& path, int W, int H, int orientation, bool withAudio) {
     fd = open(path.c_str(), O_CREAT | O_WRONLY, 0644);
     if (fd == -1) {
+        Log("HWVideoencoder error !!!!!");
         return false;
     }
 
@@ -65,7 +66,7 @@ bool HWVideoEncoder::start(const string& path, int W, int H, int orientation, bo
     AMediaFormat_setInt32(videoFormat, AMEDIAFORMAT_KEY_I_FRAME_INTERVAL, 5);
     const int COLOR_FormatYUV420Flexible            = 0x7F420888;
     const int COLOR_FormatRGBFlexible               = 0x7F36B888;// not supported
-    AMediaFormat_setInt32(videoFormat, AMEDIAFORMAT_KEY_COLOR_FORMAT, COLOR_FormatYUV420Flexible);
+    //AMediaFormat_setInt32(videoFormat, AMEDIAFORMAT_KEY_COLOR_FORMAT, COLOR_FormatYUV420Flexible);
     // seems not necessary
 //        uint8_t sps[2] = {0x12, 0x12};
 //        uint8_t pps[2] = {0x12, 0x12};
