@@ -1,0 +1,1134 @@
+diff --git a/app/src/main/cpp/Clip.cpp b/app/src/main/cpp/Clip.cpp
+index 482ea0e..3ec7abe 100644
+--- a/app/src/main/cpp/Clip.cpp
++++ b/app/src/main/cpp/Clip.cpp
+@@ -196,13 +196,17 @@ bool Frame::loadMeta(BinStream& in) {
+ 
+ /////////////////////////////////////////////////////////////////////
+ 
+-Clip::Clip(std::string file) : curFrame(-1), cache_index_(-1), fileName(file), isSaveDone(false) {
++Clip::Clip(std::string file) : curFrame(-1), cache_index_(-1), fileName(file), isSaveDone(false), memCache_(15*1024*1024) {
+     if (GConfig::instance.enableSaveFrame) {
+         Log("to open yuv file %s", file.c_str());
+         if (file != "") {
+             write_file_.Open(file, "w+");
+         }
+     }
++    if (!GConfig::instance.enableSaveFrame) {
++        memCache_.setEncoder(SAVE_WIDTH, SAVE_HEIGHT, 30, 0);
++    }
++
+     rgbCache_.create(SAVE_HEIGHT, SAVE_WIDTH, CV_8UC3);
+     yuvCache_.create(SAVE_HEIGHT + SAVE_HEIGHT / 2, SAVE_WIDTH, CV_8U);
+ }
+@@ -219,7 +223,11 @@ void Clip::saveDone() {
+         //write_file_.Close();
+         isSaveDone = true;
+         mediaSource.Start(write_file_.GetName());
++    } else {
++        memCache_.closeWrite();
++        memCache_.startReadCache();
+     }
++
+ }
+ 
+ void Clip::setFrameIndexDuration(int start, int end) {
+@@ -293,6 +301,11 @@ bool Clip::backward() {
+ void Clip::clear() {
+     frames.clear();
+     curFrame = -1;
++    if (!GConfig::instance.enableSaveFrame) {
++        memCache_.reset();
++        memCache_.setEncoder(SAVE_WIDTH, SAVE_HEIGHT, 30, 0);
++    }
++
+     if (GConfig::instance.enableSaveFrame) {
+         mediaSource.Stop();
+         write_file_.Close();
+@@ -304,9 +317,18 @@ void Clip::clear() {
+ }
+ 
+ void Clip::checkUpdateCache(int index) {
++
++    std::shared_ptr<MemNode> node = memCache_.readFrame();
++    if (node) {
++        memcpy(rgbCache_.data, node->data_, node->size_);
++        memCache_.nextFrame();
++        return;
++    }
++
+     if (index == cache_index_) {
+         return;
+     }
++
+     cache_index_ = index;
+     if (GConfig::instance.enableSaveFrame) {
+         if (isSaveDone) {
+@@ -329,9 +351,10 @@ void Clip::checkUpdateCache(int index) {
+         //Log("read used read used %ld , cvt used %ld",(t3-t1), (t2-t1));
+     } else {
+         // TODO: load from memory
+-        string& fdata = frameCache[cache_index_];
+-        Mat yuv(SAVE_HEIGHT*3/2, SAVE_WIDTH, CV_8U, (void*)fdata.data());
+-        CvtYVU2RGB(yuv, rgbCache_);
++//        string& fdata = frameCache[cache_index_];
++//        Mat yuv(SAVE_HEIGHT*3/2, SAVE_WIDTH, CV_8U, (void*)fdata.data());
++//        CvtYVU2RGB(yuv, rgbCache_);
++        CvtYVU2RGB(yuvCache_, rgbCache_);
+     }
+ }
+ 
+@@ -461,13 +484,16 @@ bool Clip::load(const string& path, int limit) {
+     return true;
+ }
+ 
+-int Clip::saveToFile(char* buffer, int len) {
++int Clip::saveToFile(char* buffer, int len, int64_t tm) {
++    FUNCTION_LOG;
+     if (GConfig::instance.enableSaveFrame) {
+         return write_file_.Write(buffer, len);
+     } else {
+-        if (buffer) {
+-            frameCache.emplace_back(buffer, len);
+-        }
++        memcpy(yuvCache_.data, buffer, len);
++        memCache_.write((uint8_t*)buffer, len, tm);
++//        if (buffer) {
++//            frameCache.emplace_back(buffer, len);
++//        }
+         return 0;
+     }
+ }
+diff --git a/app/src/main/cpp/Clip.h b/app/src/main/cpp/Clip.h
+index 08b3e4a..5bc8848 100644
+--- a/app/src/main/cpp/Clip.h
++++ b/app/src/main/cpp/Clip.h
+@@ -10,6 +10,7 @@
+ #include "Aligner2.h"
+ #include "MediaSource.h"
+ #include "GLScreen.h"
++#include "memcache/MemCache.h"
+ using Eigen::Matrix3f;
+ 
+ class Clip;
+@@ -64,6 +65,7 @@ public:
+     deque<PFrame> frames;
+     int curFrame;
+ 
++    MemCache memCache_;
+     WriteFile write_file_;
+     ///WriteFile read_file_;
+ 
+@@ -120,7 +122,7 @@ public:
+     void saveMp4(const string& path) const;
+     bool loadMp4(const string& path, int limit=0);
+ 
+-    int saveToFile(char* buffer, int len);
++    int saveToFile(char* buffer, int len, int64_t tm = 0);
+     int readFromFile(char* buffer, int len, int index = -1);
+ 
+     string getStatus() const;
+diff --git a/app/src/main/cpp/DexCam.cpp b/app/src/main/cpp/DexCam.cpp
+index ec1dac3..10e4993 100644
+--- a/app/src/main/cpp/DexCam.cpp
++++ b/app/src/main/cpp/DexCam.cpp
+@@ -738,6 +738,7 @@ void DexCam::FboUnBind() {
+ }
+ 
+ void DexCam::render(int64_t ts, int texid) {
++    FUNCTION_LOG;
+     LockGuard lg(renderLock);
+     double startT = Time();
+     bool newFrame = true;
+diff --git a/app/src/main/cpp/FuseClipEffect.cpp b/app/src/main/cpp/FuseClipEffect.cpp
+index 36e36f7..c19f129 100644
+--- a/app/src/main/cpp/FuseClipEffect.cpp
++++ b/app/src/main/cpp/FuseClipEffect.cpp
+@@ -4,6 +4,8 @@
+ #include "Stitching.h"
+ #include "VideoEncoder.h"
+ #include "Segmentation.h"
++#include "VideoDecoder.h"
++#include "AVDemuxer.h"
+ 
+ static const float maskRectSmoothAlpha = 0.4;
+ static const int segmentPerFrames = 5;
+@@ -206,6 +208,7 @@ void FuseClipEffect::tryAlignBase(Mat& Ic, Mat& mask) {
+ }
+ 
+ void FuseClipEffect::onNewFrame() {
++    FUNCTION_LOG;
+     double t0 = Time();
+     if (state == STATE_DONE) {
+         alignSuccessful = false;
+@@ -220,7 +223,7 @@ void FuseClipEffect::onNewFrame() {
+             Frame& f = clip0.addFrame();
+             //Log("to save width %d height %d", dexcam->previewYUV.dest->cols, dexcam->previewYUV.dest->rows);
+             double t0 = Time();
+-            clip0.saveToFile((char*)dexcam->curFrameYVU.data, dexcam->curFrameYVU.rows * dexcam->curFrameYVU.cols);
++
+             double t1 = Time();
+             dexcam->curFrameRGB.copyTo(f.rgb);
+             double t2 = Time();
+@@ -260,6 +263,7 @@ void FuseClipEffect::onNewFrame() {
+             }
+             f.ts = (dexcam->curTS - clip0baseTS) / 1000000 * 1000000;
+             f.warp = curFrameWarp;
++            clip0.saveToFile((char*)dexcam->curFrameYVU.data, dexcam->curFrameYVU.rows * dexcam->curFrameYVU.cols, f.ts);
+         }
+     } else if (state == STATE_CLIP0_DONE) {
+         Mat Ic, emptyMask;
+@@ -271,7 +275,6 @@ void FuseClipEffect::onNewFrame() {
+             changeToStateDone();
+         } else {
+             Frame& f = clip1.addFrame();
+-            clip1.saveToFile((char*)dexcam->curFrameYVU.data, dexcam->curFrameYVU.rows * dexcam->curFrameYVU.cols);
+             dexcam->curFrameRGB.copyTo(f.rgb);
+             if (clip1.size() == 1) {
+                 int mW = f.rgb.cols / Frame::MaskScale;
+@@ -296,6 +299,7 @@ void FuseClipEffect::onNewFrame() {
+             tryAlignBase(Ic, f.mask);
+             f.ts = (dexcam->curTS - clip1baseTS) / 1000000 * 1000000;
+             f.warp = curFrameWarp;
++            clip1.saveToFile((char*)dexcam->curFrameYVU.data, dexcam->curFrameYVU.rows * dexcam->curFrameYVU.cols, f.ts);
+         }
+     }
+     if (STATE_RECORD_CLIP1 != state && STATE_RECORD_CLIP0 != state && state != STATE_DONE && enableSegmentForWhiteCorner){
+@@ -309,6 +313,61 @@ void FuseClipEffect::onNewFrame() {
+     dexcam->warpPerf->update(Time()-t0);
+ }
+ 
++void Run(bool toencoder) {
++    Log("zzzzzzzzzzzz");
++
++    VideoDecoder decoder;
++    int W;
++    int H;
++//    std::string path = "/sdcard/voip-data/dou1.mp4";
++    std::string path = "/sdcard/voip-data/dou.mp4";
++
++    if (!decoder.load(path, W, H)) {
++        Log("load error");
++        return;
++    }
++    int64_t ts;
++    uint8_t*    data;
++    size_t len;
++    Mat rgb(H,W, CV_8UC3);
++    VideoEncoder encoder;
++    int64_t pre = MilliTime();
++    if (toencoder) {
++        encoder.start("/sdcard/voip-data/re.mp4", W, H);
++    }
++
++    int getcount = 0;
++    while (true) {
++        //FUNCTION_LOG;
++        if (!decoder.decodeFrame(ts, &data, len)) {
++            break;
++        }
++//        Mat yuv(H*3/2, W, CV_8U, data);
++//        CvtYUV2RGB(yuv, rgb);
++        if (toencoder) {
++            encoder.encodeFrame(ts, data, len);
++        }
++        getcount++;
++        int64_t now = MilliTime();
++        int64_t dur = getcount*33 - (now - pre);
++        if (dur > 0) {
++           // Log("sleep %lld", dur);
++            usleep((dur*1000));
++        } else {
++           // Log("do not sleep");
++        }
++
++    }
++    decoder.release();
++    if (toencoder) {
++        encoder.stop();
++        encoder.release();
++    }
++
++    Log("thread run used %lld", (MilliTime() - pre));
++
++}
++std::thread* thread;
+ bool FuseClipEffect::onCommand(const string &cmd) {
+     static string ENABLE_SCRIPT = "enable_script ";
+     static string ALIGN_MODE = "align_mode ";
+@@ -325,6 +384,13 @@ bool FuseClipEffect::onCommand(const string &cmd) {
+         cancelAll();
+         return true;
+     } else if (cmd == "save") {
++//        thread = new std::thread(Run, true);
++//        thread->detach();
++
++//        thread = new std::thread(Run, false);
++//        thread->detach();
++
++//        return true;
+         onSave(string());
+         return true;
+     } else if (StartsWith(cmd, "save2 ")) {
+@@ -523,6 +589,7 @@ void FuseClipEffect::drawRect(Frame *from, Frame* to) {
+ 
+ 
+ void FuseClipEffect::onRenderPreview() {
++    FUNCTION_LOG;
+     if (!GConfig::instance.enableRender) {
+         return;
+     }
+diff --git a/app/src/main/cpp/FuseClipEffect.h b/app/src/main/cpp/FuseClipEffect.h
+index 8aa3666..0af2d0d 100644
+--- a/app/src/main/cpp/FuseClipEffect.h
++++ b/app/src/main/cpp/FuseClipEffect.h
+@@ -9,7 +9,6 @@
+ 
+ class VideoEncoder;
+ class GraphcutStitch;
+-
+ class FuseClipEffect : public CamEffect {
+ public:
+     FuseClipEffect();
+diff --git a/app/src/main/cpp/GLScreen.cpp b/app/src/main/cpp/GLScreen.cpp
+index dd392fd..78ac1fe 100644
+--- a/app/src/main/cpp/GLScreen.cpp
++++ b/app/src/main/cpp/GLScreen.cpp
+@@ -203,9 +203,10 @@ const char * MixerFSH = "#version 300 es\n" STRINGFY(
+             if (hasFrontTexture != 0) {
+                 vec3 pos1 = wrapMatri * vec3(v_texCoord.x * width, v_texCoord.y * height, 1.0);
+                 vec2 pos = vec2(pos1.x / pos1.z / width, pos1.y / pos1.z / height);
+-                float alpha = clamp(texture(s_texture_mask, v_texCoord).r , 0.0, 1.0);
++//                float alpha = clamp(texture(s_texture_mask, v_texCoord).r , 0.0, 1.0);
++                float alpha = clamp(texture(s_texture_mask, pos).r , 0.0, 1.0);
+                 if (pos.x >= 0.999 || pos.x <= 0.001 || pos.y >= 0.999 || pos.y <= 0.001) {
+-                    alpha = 0.0;
++                    //alpha = 0.0;
+                 }
+                 if (hasBackTexture != 0) {
+                     outColor = mix(texture(s_texture_back, v_texCoord), texture(s_texture_front, pos), alpha);
+diff --git a/app/src/main/cpp/Segmentation.cpp b/app/src/main/cpp/Segmentation.cpp
+index e8f7d40..aa8ecc4 100644
+--- a/app/src/main/cpp/Segmentation.cpp
++++ b/app/src/main/cpp/Segmentation.cpp
+@@ -357,7 +357,7 @@ bool SegmentPersonXSeg(Mat& frameRGB, Mat& mask, const string& debugSavePrefix,
+     cv::resize(desttmp, mask, cv::Size(mask.cols, mask.rows), 0, 0, cv::INTER_LINEAR);
+     cv::threshold(mask, mask, 0, 255, cv::THRESH_BINARY);
+     double t3 = Time();
+-    Log("snpe run prepare %.2lfms run %.1lfms output %.2lfms all: %.1lfms", (t1-t0)*1000, (t2-t1)*1000, (t3-t2)*1000, (t3-t0)*1000);
++    //Log("snpe run prepare %.2lfms run %.1lfms output %.2lfms all: %.1lfms", (t1-t0)*1000, (t2-t1)*1000, (t3-t2)*1000, (t3-t0)*1000);
+     return true;
+ }
+ 
+diff --git a/app/src/main/cpp/memcache/HWDecoder.cpp b/app/src/main/cpp/memcache/HWDecoder.cpp
+index 00b0f84..a772549 100644
+--- a/app/src/main/cpp/memcache/HWDecoder.cpp
++++ b/app/src/main/cpp/memcache/HWDecoder.cpp
+@@ -3,3 +3,134 @@
+ //
+ 
+ #include "HWDecoder.h"
++#include "utils.h"
++HWDecoder::HWDecoder() {
++
++}
++
++HWDecoder::~HWDecoder() {
++
++}
++
++bool HWDecoder::Init(int w, int h, const std::vector<uint8_t> sps, const std::vector<uint8_t> pps) {
++    outIndex_ = -1;
++    nFrame = 0;
++    std::string mine = "video/avc";
++    AMediaFormat * format = AMediaFormat_new();
++    AMediaFormat_setString(format, AMEDIAFORMAT_KEY_MIME, mine.c_str());
++
++    AMediaFormat_setInt32(format, AMEDIAFORMAT_KEY_WIDTH, w);
++    AMediaFormat_setInt32(format, AMEDIAFORMAT_KEY_HEIGHT, h);
++//
++    AMediaFormat_setBuffer(format, "csd-0", (void*)sps.data(), sps.size());
++    AMediaFormat_setBuffer(format, "csd-1", (void*)pps.data(), pps.size());
++    Log("sps size %d pps size %d", sps.size(), pps.size());
++    Log("== decoder mine %s", mine.c_str());
++    codec = AMediaCodec_createDecoderByType(mine.c_str());
++    if (!codec) {
++        Log("==== create codec failed: %s", mine.c_str());
++        AMediaFormat_delete(format);
++        Release();
++        return false;
++    }
++    media_status_t ret;
++    ret = AMediaCodec_configure(codec, format, NULL, NULL, 0);
++    if (ret != AMEDIA_OK) {
++        Log("==== configure failed: %d", ret);
++        Release();
++        return false;
++    }
++    AMediaFormat_delete(format);
++    if ((ret = AMediaCodec_start(codec)) != AMEDIA_OK) {
++        Log("== AMediaCodec_start failed: %d", ret);
++        Release();
++        return false;
++    };
++    nFrame = 0;
++    return true;
++}
++
++bool HWDecoder::DecodeFrame(int64_t& ts, const uint8_t* data, size_t len) {
++    //Log("to decode size %d ts %lld", len, ts);
++    int index = AMediaCodec_dequeueInputBuffer(codec, -1);
++    if (index >= 0) {
++        size_t ibufsize;
++        uint8_t * ibuf = AMediaCodec_getInputBuffer(codec, index, &ibufsize);
++
++        if (len <= 0 || data == NULL) {
++            Log("== extractor reach EOF");
++            // End of Stream
++            AMediaCodec_queueInputBuffer(codec, index, 0, 0, 0, AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM);
++        } else {
++            memcpy(ibuf, data, len);
++            AMediaCodec_queueInputBuffer(codec, index, 0, len, ts, 0);
++        }
++    } else {
++        Log("Decoder something wrong !!!!");
++        return false;
++    }
++    return true;
++}
++
++int HWDecoder::GetDecodedFrame(uint8_t **frame, int &frameLen, int64_t& frameTs) {
++    AMediaCodecBufferInfo info;
++    *frame = NULL;
++    frameLen = 0;
++    frameTs = 0;
++    outIndex_ = AMediaCodec_dequeueOutputBuffer(codec, &info, 0);
++    if (outIndex_ == AMEDIACODEC_INFO_TRY_AGAIN_LATER) {
++        Log("== AMEDIACODEC_INFO_TRY_AGAIN_LATER");
++    } else if (outIndex_ == AMEDIACODEC_INFO_OUTPUT_FORMAT_CHANGED) {
++        Log("== AMEDIACODEC_INFO_OUTPUT_FORMAT_CHANGED");
++        AMediaFormat* format_ = AMediaCodec_getOutputFormat(codec);
++        int videoStride;
++        AMediaFormat_getInt32(format_, AMEDIAFORMAT_KEY_STRIDE, &videoStride);
++        //AMediaFormat_getInt32(format_, AMEDIAFORMAT_KEY_SLICE_HEIGHT, &slice_height);
++        int width, height;
++        AMediaFormat_getInt32(format_, AMEDIAFORMAT_KEY_WIDTH, &width);
++        AMediaFormat_getInt32(format_, AMEDIAFORMAT_KEY_HEIGHT, &height);
++        int format;
++        AMediaFormat_getInt32(format_, AMEDIAFORMAT_KEY_COLOR_FORMAT, &format);
++        Log("decoder w %d h %d", width, height);
++        Log("decoder stride %d %d", videoStride, format);
++        Log("decoder format %s", AMediaFormat_toString(format_));
++
++    } else if (outIndex_ < 0) {
++        Log("== should not happen oIdx==%d", outIndex_);
++    } else {
++        if (info.flags & AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM) {
++            // reach stream end
++            outIndex_ = -1;
++            AMediaCodec_releaseOutputBuffer(codec, outIndex_, false);
++            return -1;
++        }
++        size_t obufsize = 0;
++        uint8_t* obuf = AMediaCodec_getOutputBuffer(codec, outIndex_, &obufsize);
++        if (obuf && info.size > 0) {
++            *frame = obuf;
++            frameLen = info.size;
++            frameTs = info.presentationTimeUs;
++            nFrame++;
++            //Log("get decoded size %d", info.size);
++            return 0;
++        }
++    }
++    AMediaCodec_releaseOutputBuffer(codec, outIndex_, false);
++    outIndex_ = -1;
++    return 0;
++}
++void HWDecoder::ReleaseFrame() {
++    if (outIndex_ < 0) {
++        return;
++    }
++    AMediaCodec_releaseOutputBuffer(codec, outIndex_, false);
++}
++
++void HWDecoder::Release() {
++    if (codec) {
++        outIndex_ = 0;
++        AMediaCodec_stop(codec);
++        AMediaCodec_delete(codec);
++        codec = NULL;
++    }
++}
+\ No newline at end of file
+diff --git a/app/src/main/cpp/memcache/HWDecoder.h b/app/src/main/cpp/memcache/HWDecoder.h
+index cd8d7b8..bd034d6 100644
+--- a/app/src/main/cpp/memcache/HWDecoder.h
++++ b/app/src/main/cpp/memcache/HWDecoder.h
+@@ -6,8 +6,26 @@
+ #define DEXCAM_HWDECODER_H
+ 
+ 
++#include <media/NdkMediaCodec.h>
++#include <vector>
+ class HWDecoder {
++public:
+ 
++    HWDecoder();
++    ~HWDecoder();
++
++    bool Init(int w, int h, const std::vector<uint8_t> sps, const std::vector<uint8_t> pps);
++
++    bool DecodeFrame(int64_t& ts, const uint8_t* data, size_t len);
++
++    int GetDecodedFrame(uint8_t **frame, int &frameLen, int64_t& frameTs);
++    void ReleaseFrame();
++    void Release();
++
++private:
++    AMediaCodec * codec;
++    ssize_t outIndex_;
++    int nFrame;
+ };
+ 
+ 
+diff --git a/app/src/main/cpp/memcache/HWEncoder.cpp b/app/src/main/cpp/memcache/HWEncoder.cpp
+index 2ddf846..867b6bf 100644
+--- a/app/src/main/cpp/memcache/HWEncoder.cpp
++++ b/app/src/main/cpp/memcache/HWEncoder.cpp
+@@ -5,6 +5,7 @@
+ #include "HWEncoder.h"
+ #include "utils.h"
+ static void CheckNalU(uint8_t* buffer, int len) {
++    return;
+     int index = 0;
+     int pre = 0;
+     for (int i = 0; i < len - 4; ) {
+@@ -34,7 +35,9 @@ static int calcBitrate(int H, int W) {
+     return H * W * 32;
+ }
+ 
+-HWEncoder::HWEncoder():codec(NULL),width(0), height(0),fps(0),bps(0),nFrame(0) {
++HWEncoder::HWEncoder():codec(NULL),width(0), height(0),fps(0),bps(0),nFrame(0)
++,firstEncodeFrame_(false)
++,outIndex_(-1){
+ }
+ 
+ HWEncoder::~HWEncoder() {
+@@ -46,7 +49,10 @@ bool HWEncoder::init(int W, int H, int fps, int bps) {
+     height = H;
+     this->fps =fps;
+     this->bps = calcBitrate(H, W);
+-
++    cacheSize_ = 0;
++    outIndex_ = -1;
++    sps.clear();
++    pps.clear();
+     const char * vmine = "video/avc";
+     AMediaFormat *videoFormat = AMediaFormat_new();
+     AMediaFormat_setString(videoFormat, AMEDIAFORMAT_KEY_MIME, vmine);
+@@ -74,6 +80,11 @@ bool HWEncoder::init(int W, int H, int fps, int bps) {
+         return false;
+     }
+     AMediaFormat_delete(videoFormat);
++    if ((ret = AMediaCodec_start(codec)) != AMEDIA_OK) {
++        Log("== AMediaCodec_start failed: %d", ret);
++    };
++    firstEncodeFrame_ = false;
++    Log("======== init encoder ok");
+     return true;
+ }
+ 
+@@ -158,12 +169,109 @@ int HWEncoder::encodeFrame(int64_t ints, const uint8_t* indata, size_t inlen, ui
+     return 0;
+ }
+ 
+-void HWEncoder::release() {
+-    if (codec) {
+-        AMediaCodec_stop(codec);
++int HWEncoder::encodeFrame(int64_t ints, const uint8_t* indata, size_t inlen) {
++    if (!codec) {
++        Log("=====encodeFrame failed: codec closed");
++        return -1;
++    }
++    ssize_t index = AMediaCodec_dequeueInputBuffer(codec, -1);
++    size_t ibufsize = 0;
++    if (index >= 0) {
++        uint8_t * ibuf = AMediaCodec_getInputBuffer(codec, index, &ibufsize);
++        if (ibufsize > 0) {
++            if (inlen > ibufsize) {
++                Log("len(%zu) > ibufsize(%zu)", inlen, ibufsize);
++                return -1;
++            }
++            if (indata && inlen > 0) {
++                //Log("== input %zu  ibufsize %zu", len, ibufsize);
++                memcpy(ibuf, indata, inlen);
++                AMediaCodec_queueInputBuffer(codec, index, 0, inlen, ints / 1000, 0);
++                nFrame++;
++                cacheSize_++;
++            } else {
++                Log("== input EOS");
++                AMediaCodec_queueInputBuffer(codec, index, 0, 0, ints / 1000, AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM);
++            }
++        }
++        return 0;
++    } else {
++        Log("dequeue input  error");
++        return -1;
++    }
++}
++
++int HWEncoder::getEncodedPacket(uint8_t **frame, int &frameLen, int64_t& frameTs) {
++    AMediaCodecBufferInfo info;
++    memset(&info, 0, sizeof(info));
++    *frame = NULL;
++    frameLen = 0;
++    frameTs = 0;
++    outIndex_ = AMediaCodec_dequeueOutputBuffer(codec, &info, 1000);
++    if (outIndex_ < 0) {
++        if (outIndex_ == AMEDIACODEC_INFO_OUTPUT_FORMAT_CHANGED) {
++            AMediaFormat * format = AMediaCodec_getOutputFormat(codec);
++            void *bytes;
++            size_t bytesize = 0;
++            if(!AMediaFormat_getBuffer(format, "csd-0", &bytes, &bytesize)) {
++                Log("sps error");
++            }
++            sps.resize(bytesize);
++            memcpy(sps.data(), bytes, bytesize);
++            CheckNalU((uint8_t*)bytes, bytesize);
++
++            if(!AMediaFormat_getBuffer(format, "csd-1", &bytes, &bytesize)) {
++                Log("pps error");
++            }
++            pps.resize(bytesize);
++            memcpy(pps.data(), bytes, bytesize);
++            CheckNalU((uint8_t*)bytes, bytesize);
++        }
++        //Log("nnnnnnnnnnnn %d", outIndex_);
++        return 0;
+     }
++    size_t obufsize = 0;
++    uint8_t* obuf = AMediaCodec_getOutputBuffer(codec, outIndex_, &obufsize);
+ 
++    if (((info.flags & AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM) != 0)) {
++        AMediaCodec_releaseOutputBuffer(codec, outIndex_, false);
++        Log("encoder read EOF");
++        return -1;
++    }
++
++    if ((info.flags & AMEDIACODEC_BUFFER_FLAG_CODEC_CONFIG) != 0) {
++        info.size = 0;
++    }
++    if (info.size > 0 ) {
++        if (obuf) {
++            CheckNalU(obuf, info.size);
++            *frame = obuf;
++            frameLen = info.size;
++            frameTs = info.presentationTimeUs;
++            cacheSize_--;
++            if (nFrame % 300 == 0) {
++                Log("cache size %d", cacheSize_);
++            }
++
++            return 0;
++        }
++    }
++    AMediaCodec_releaseOutputBuffer(codec, outIndex_, false);
++    outIndex_ = -1;
++    return 0;
++}
++
++void HWEncoder::releaseFrame() {
++    if (outIndex_ < 0) {
++        return;
++    }
++    AMediaCodec_releaseOutputBuffer(codec, outIndex_, false);
++}
++
++void HWEncoder::release() {
++    firstEncodeFrame_ = false;
+     if (codec) {
++        AMediaCodec_stop(codec);
+         AMediaCodec_delete(codec);
+         codec = NULL;
+     }
+diff --git a/app/src/main/cpp/memcache/HWEncoder.h b/app/src/main/cpp/memcache/HWEncoder.h
+index e137a37..94f1570 100644
+--- a/app/src/main/cpp/memcache/HWEncoder.h
++++ b/app/src/main/cpp/memcache/HWEncoder.h
+@@ -10,7 +10,7 @@
+ #include <media/NdkMediaMuxer.h>
+ #include <string>
+ #include <vector>
+-
++#include "MediaSource.h"
+ class HWEncoder {
+ public:
+     HWEncoder();
+@@ -24,8 +24,12 @@ public:
+      * @param len frame buffer size
+      */
+     int encodeFrame(int64_t ints, const uint8_t* indata, size_t inlen, uint8_t **frame, int &frameLen, int64_t& frameTs);
+-
++    int encodeFrame(int64_t ints, const uint8_t* indata, size_t inlen);
++    int getEncodedPacket(uint8_t **frame, int &frameLen, int64_t& frameTs);
++    void releaseFrame();
+     void release();
++    const std::vector<uint8_t> getSPS() {return sps;}
++    const std::vector<uint8_t> getPPS() {return pps;}
+ 
+ private:
+ 
+@@ -34,10 +38,12 @@ private:
+     int height;
+     int fps;
+     int bps;
+-    bool started;
+     int nFrame;
+     std::vector<uint8_t> sps;
+     std::vector<uint8_t> pps;
++    bool firstEncodeFrame_;
++    ssize_t outIndex_;
++    int cacheSize_;
+ };
+ 
+ 
+diff --git a/app/src/main/cpp/memcache/MemCache.cpp b/app/src/main/cpp/memcache/MemCache.cpp
+index 0ecd237..0e90baa 100644
+--- a/app/src/main/cpp/memcache/MemCache.cpp
++++ b/app/src/main/cpp/memcache/MemCache.cpp
+@@ -3,7 +3,95 @@
+ //
+ 
+ #include "MemCache.h"
+-MemCache::MemCache(size_t size):currentOffset(0), totalSize(size) {
++
++
++
++SyncQueue::SyncQueue() {
++
++}
++
++SyncQueue::~SyncQueue() {
++    conditionList_.notify_one();
++    conditionQueue_.notify_one();
++}
++
++void SyncQueue::InitQueue(int nodeSize, int nodeNums) {
++    queue_.empty();
++    if (!list_.empty() && list_.front()->size_ == nodeSize && list_.size() == nodeNums) {
++        return;
++    }
++    for (int i =0; i < nodeNums; ++i) {
++        list_.push_back(std::make_shared<MemNode>(nodeSize));
++    }
++}
++
++shared_ptr<MemNode> SyncQueue::GetFreeNode() {
++    std::unique_lock<std::mutex> lock(listMutex_);
++    if (list_.empty()) {
++        //Log("nnnnnnnnnnn wait get free node");
++        conditionList_.wait(lock);
++        if (list_.empty()) {
++            return nullptr;
++        }
++    }
++    shared_ptr<MemNode> node = list_.front();
++    list_.pop_front();
++    return node;
++}
++
++shared_ptr<MemNode> SyncQueue::GetQueueNode(long long durationMs) {
++    std::unique_lock<std::mutex> lock(queueMutex_);
++    if (queue_.empty()) {
++        if (conditionQueue_.wait_for(lock, std::chrono::milliseconds(durationMs)) == std::cv_status::timeout) {
++            Log("wait time out %lld", durationMs);
++            if (queue_.empty()) {
++                return nullptr;
++            }
++        }
++    }
++    shared_ptr<MemNode> node = queue_.front();
++    queue_.pop_front();
++    return node;
++}
++
++void SyncQueue::Enqueue(shared_ptr<MemNode> node) {
++    {
++        std::unique_lock<std::mutex> lock(queueMutex_);
++        queue_.push_back(node);
++    }
++    conditionQueue_.notify_one();
++
++}
++
++void SyncQueue::releaseNode(shared_ptr<MemNode> node) {
++    {
++        std::unique_lock<std::mutex> lock(listMutex_);
++        list_.push_back(node);
++    }
++    conditionList_.notify_one();
++}
++
++void SyncQueue::TrigerEvent() {
++    conditionList_.notify_all();
++    conditionQueue_.notify_all();
++}
++void SyncQueue::Reset() {
++    while(queue_.size()) {
++        auto node = queue_.front();
++        queue_.pop_front();
++        list_.push_back(node);
++    }
++}
++
++//    std::deque<shared_ptr<MemNode>> queue_;
++//    std::list<shared_ptr<MemNode>> list_;
++//    std::mutex queueMutex_;
++//    std::mutex listMutex_;
++
++
++
++
++MemCache::MemCache(size_t size):writePos_(0), totalSize(size), writeThreadRunning_(false), currentSize_(0), readThreadRunning_(0) {
+     mem_ = (uint8_t*)malloc(size);
+ }
+ 
+@@ -11,22 +99,194 @@ MemCache::~MemCache() {
+     delete(mem_);
+ }
+ 
++void MemCache::reset() {
++    Log("reset 1111111");
++    closeWrite();
++    Log("reset 22222222");
++    if (readThreadRunning_) {
++        readThreadRunning_ = false;
++        if (readThread_) {
++            readQueue_.TrigerEvent();
++            Log("reset 3333333");
++            readThread_->join();
++            Log("reset 4444444");
++            videoDecoder.Release();
++        }
++    }
++    packetSizes.empty();
++    packetTimes.empty();
++    packetOffsets.empty();
++    currentSize_ = 0;
++    writePos_ = 0;
++    readIndex_ = 0;
++    currentNode_.reset();
++    Log("reset 5555555");
++    readQueue_.Reset();
++    Log("reset 6666666");
++    writeQueue_.Reset();
++    Log("reset 777777");
++}
++
+ bool MemCache::setEncoder(int W, int H, int fps, int bps) {
+-    videoEncoder.init(W, H, fps, bps);
++    bool ret = videoEncoder.init(W, H, fps, bps);
++    if (ret) {
++        writeThreadRunning_ = true;
++        writeThread_.reset(new std::thread(&MemCache::readFrameFromEncoder, this));
++        writeQueue_.InitQueue(W*H*3/2, 5);
++    }
++    return ret;
+ }
+ 
+ int MemCache::write(const uint8_t* data, int len, int64_t tm) {
++    //FUNCTION_LOG;
++    if (data == NULL || len == 0) {
++        return 0;
++    }
++    std::shared_ptr<MemNode> node = writeQueue_.GetFreeNode();
++    node->SetNode(data, len ,tm);
++    writeQueue_.Enqueue(node);
++    return len;
++}
++
++void MemCache::closeWrite() {
++    if (writeThreadRunning_) {
++        FUNCTION_LOG;
++        Log("to wait thread end");
++        std::shared_ptr<MemNode> node = writeQueue_.GetFreeNode();
++        node->SetNode(NULL, 0 ,0);
++        writeQueue_.Enqueue(node);
++        writeThreadRunning_ = false;
++        writeThread_->join();
++        writeThread_.reset();
++        videoEncoder.release();
++        Log("thread ended");
++    }
++    Log("Memcache write closed ");
++}
++
++void MemCache::readFrameFromEncoder() {
++    long long waitMS = 60000;
++    while(1) {
++        if (!writeThreadRunning_) {
++            waitMS = 0;
++        }
++        std::shared_ptr<MemNode> node = writeQueue_.GetQueueNode(waitMS);
++        if (node) {
++            videoEncoder.encodeFrame(node->tm_, node->data_, node->size_);
++            writeQueue_.releaseNode(node);
++        }
++        while(1) {
++            uint8_t *packet;
++            int64_t tm;
++            int pakcetLen;
++            //Log("TTTTTTTTTT to read ");
++            int ret = videoEncoder.getEncodedPacket(&packet, pakcetLen, tm);
++            if (ret < 0) {
++                Log("read thread end &&&&&&&&&&&&&");
++                writeThreadRunning_ = false;
++                return;
++            }
++            if (packet != NULL && pakcetLen > 0) {
++                packetSizes.push_back(pakcetLen);
++                packetTimes.push_back(tm);
++                if (writePos_ + (int64_t)pakcetLen > totalSize) {
++                    mem_ = (uint8_t*)realloc(mem_, (size_t)(totalSize * 1.2));
++                    totalSize = (int64_t)(totalSize * 1.2);
++                    Log("warning size increased %lld", totalSize);
++                }
++                memcpy((void*)(mem_ + writePos_), packet, pakcetLen);
++                packetOffsets.push_back(writePos_);
++                writePos_ += pakcetLen;
++                currentSize_ += pakcetLen;
++                videoEncoder.releaseFrame();
++                //Log("get encoded frame len %d, cur %lld total %lld", pakcetLen, writePos_, totalSize);
++                // if read data continue read
++                continue;
++            }
++            break;
++        }
++    }
++}
++
++
++
++/////////////////////////////
++/////////////////////read
++
++void MemCache::startReadCache() {
++    readQueue_.InitQueue(1280*960*3, 10);
++    readIndex_ = 0;
++    readThreadRunning_ = true;
++    videoDecoder.Init(1280,960, videoEncoder.getSPS(), videoEncoder.getPPS());
++    currentNode_.reset();
++    readThread_.reset(new std::thread(&MemCache::readFrameFromDecoder, this));
++}
++
++void MemCache::restartCache() {
++    readIndex_ = 0;
++}
++
++std::shared_ptr<MemNode> MemCache::readFrame() {
++    FUNCTION_LOG;
++    if (currentNode_) {
++        return currentNode_;
++    }
++
++    currentNode_ = readQueue_.GetQueueNode(3000);
++    if (currentNode_ == nullptr) {
++        Log("some thing wrong may exit!!!");
++    }
++    return currentNode_;
++}
++
++void MemCache::nextFrame() {
++    if (currentNode_) {
++        readQueue_.releaseNode(currentNode_);
++        currentNode_.reset();
++    }
++    readFrame();
++}
++
++void MemCache::readFrameFromDecoder() {
++    bool running = true;
++    while(readThreadRunning_) {
++        std::shared_ptr<MemNode> node = readQueue_.GetFreeNode();
++        if (node == nullptr) {
++            continue;
++        }
++        uint8_t* data = mem_ + packetOffsets[readIndex_];
++        int64_t packetLen = packetSizes[readIndex_];
++        int64_t packetTime = packetTimes[readIndex_];
++        readIndex_ = (readIndex_+1)%packetSizes.size();
++        videoDecoder.DecodeFrame(packetTime, data, packetLen);
++        uint8_t *frame;
++        int64_t tm;
++        int frameLen;
++        int ret = videoDecoder.GetDecodedFrame(&frame, frameLen, tm);
++        if (ret < 0) {
++            Log("readframe thread end");
++            writeThreadRunning_ = false;
++            return;
++        }
++        if (frame && frameLen > 0) {
++            Mat rgb(960, 1280, CV_8UC3, node->data_);
++            Mat yvu(960*3/2, 1280, CV_8U, frame);
++            CvtYVU2RGB(yvu, rgb);
+ 
++            node->tm_ = tm;
++            node->size_ = rgb.rows*rgb.cols*rgb.channels();
++            //node->SetNode(frame, frameLen, tm);
+ 
++            videoDecoder.ReleaseFrame();
++            readQueue_.Enqueue(node);
++        } else {
++            readQueue_.releaseNode(node);
++        }
+ 
+-    indexSize.push_back(len);
+-    indexTime.push_back(tm);
+-    if (currentOffset + len < totalSize) {
+-        mem_ = (uint8_t*)realloc(mem_, (size_t)(totalSize * 1.2));
+     }
+-    memcpy((void*)(mem_ + currentOffset), data, len);
++    Log("RRRRRRRRRRRRRR read decoder thread end&&&&&&&");
+ }
+ 
+-int MemCache::close() {
++void MemCache::OnMessage(Message* msg) {
+ 
+ }
+\ No newline at end of file
+diff --git a/app/src/main/cpp/memcache/MemCache.h b/app/src/main/cpp/memcache/MemCache.h
+index 69a1bd5..750201f 100644
+--- a/app/src/main/cpp/memcache/MemCache.h
++++ b/app/src/main/cpp/memcache/MemCache.h
+@@ -5,36 +5,99 @@
+ #ifndef DEXCAM_MEMCACHE_H
+ #define DEXCAM_MEMCACHE_H
+ 
++#include <queue>
+ #include "HWEncoder.h"
+ #include "HWDecoder.h"
+ #include "utils.h"
+ 
+-//struct MemNode {
+-//    int64_t tm_;
+-//    uint8_t* data_;
+-//    MemNode(int64_t tm, uint8_t *data, int len){
+-//        tm_ = tm;
+-//        data = (uint8_t*) malloc(len);
+-//        memcpy(data_, data, len);
+-//    }
+-//    ~MemNode() {
+-//        delete data_;
+-//    }
+-//};
+-class MemCache {
++struct MemNode {
++    int64_t tm_;
++    uint8_t* data_;
++    int size_;
++    int capicity_;
++    MemNode(int size){
++        tm_ = 0;
++        capicity_ = size;
++        size_ = 0;
++        data_ = (uint8_t*) malloc(size);
++    }
++    ~MemNode() {
++        delete data_;
++    }
++    void SetNode(const uint8_t*data, int len, int64_t tm) {
++        if (data && len > 0) {
++            memcpy(data_, data, len);
++        }
++        size_ = len;
++        tm_ = tm;
++    }
++};
++
++class SyncQueue {
++public:
++    SyncQueue();
++    ~SyncQueue();
++    void InitQueue(int nodeSize, int nodeNums);
++    shared_ptr<MemNode> GetFreeNode();
++    shared_ptr<MemNode> GetQueueNode(long long durationMs = -1);
++    void Enqueue(shared_ptr<MemNode> node);
++    void releaseNode(shared_ptr<MemNode> node);
++    void TrigerEvent();
++    void Reset();
++
++private:
++    std::deque<shared_ptr<MemNode>> queue_;
++    std::list<shared_ptr<MemNode>> list_;
++    std::mutex queueMutex_;
++    std::mutex listMutex_;
++    std::condition_variable conditionList_;
++    std::condition_variable conditionQueue_;
++};
++
++
++class MemCache:public MessageHandler {
+ public:
+     MemCache(size_t size);
+     ~MemCache();
+     bool setEncoder(int W, int H, int fps, int bps);
+     int write(const uint8_t* data, int len, int64_t tm);
+-    int close();
++    void closeWrite();
++
++    void reset();
++
++    // read
++    void startReadCache();
++    void restartCache();
++    std::shared_ptr<MemNode> readFrame();
++    void nextFrame();
++
+ private:
+-    std::vector<int64_t> indexSize;
+-    std::vector<int64_t> indexTime;
++    virtual void OnMessage(Message* msg);
++    void readFrameFromEncoder();
++    void readFrameFromDecoder();
++
++private:
++    std::vector<int64_t> packetSizes;
++    std::vector<int64_t> packetTimes;
++    std::vector<int64_t> packetOffsets;
+     HWEncoder videoEncoder;
++    HWDecoder videoDecoder;
+     uint8_t* mem_;
++    // capacity of mem
+     int64_t totalSize;
+-    int64_t currentOffset;
++    // usefull data size
++    int64_t currentSize_;
++    int64_t writePos_;
++
++    int64_t readIndex_;
++
++    unique_ptr<std::thread> writeThread_;
++    unique_ptr<std::thread> readThread_;
++    bool readThreadRunning_;
++    bool writeThreadRunning_;
++    SyncQueue writeQueue_;
++    SyncQueue readQueue_;
++    std::shared_ptr<MemNode> currentNode_;
+ };
+ 
+ 
+diff --git a/app/src/main/java/com/decster/dexcam/DexCam.java b/app/src/main/java/com/decster/dexcam/DexCam.java
+index a4921c6..c99f72d 100644
+--- a/app/src/main/java/com/decster/dexcam/DexCam.java
++++ b/app/src/main/java/com/decster/dexcam/DexCam.java
+@@ -823,6 +823,10 @@ public class DexCam implements TouchGLSurfaceView.TouchEventListener {
+             int uRowStride = img.getPlanes()[1].getRowStride();
+             ByteBuffer vBuffer = img.getPlanes()[2].getBuffer();
+             int vRowStride = img.getPlanes()[2].getRowStride();
++            img.getPlanes()[1].getPixelStride();
++//            Log.i(TAG, " Y row stride "+ img.getPlanes()[0].getRowStride() + " pix stride " + img.getPlanes()[0].getPixelStride());
++//            Log.i(TAG, " U row stride "+ img.getPlanes()[1].getRowStride() + " pix stride " + img.getPlanes()[1].getPixelStride());
++//            Log.i(TAG, " V row stride "+ img.getPlanes()[2].getRowStride() + " pix stride " + img.getPlanes()[2].getPixelStride());
+             nativeAddFrame(ts, yBuffer, yRowStride, uBuffer, uRowStride, vBuffer, vRowStride, img.getWidth(), img.getHeight());
+             if (listener!=null) {
+                 listener.requestRender();
