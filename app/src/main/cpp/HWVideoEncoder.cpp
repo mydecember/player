@@ -66,7 +66,7 @@ bool HWVideoEncoder::start(const string& path, int W, int H, int orientation, bo
     AMediaFormat_setInt32(videoFormat, AMEDIAFORMAT_KEY_I_FRAME_INTERVAL, 5);
     const int COLOR_FormatYUV420Flexible            = 0x7F420888;
     const int COLOR_FormatRGBFlexible               = 0x7F36B888;// not supported
-    //AMediaFormat_setInt32(videoFormat, AMEDIAFORMAT_KEY_COLOR_FORMAT, COLOR_FormatYUV420Flexible);
+    AMediaFormat_setInt32(videoFormat, AMEDIAFORMAT_KEY_COLOR_FORMAT, COLOR_FormatYUV420Flexible);
     // seems not necessary
 //        uint8_t sps[2] = {0x12, 0x12};
 //        uint8_t pps[2] = {0x12, 0x12};
@@ -159,12 +159,12 @@ void HWVideoEncoder::encodeFrame(int64_t ts, uint8_t* data, size_t len) {
             if (data) {
                 //Log("== input %zu  ibufsize %zu", len, ibufsize);
                 memcpy(ibuf, data, len);
-                AMediaCodec_queueInputBuffer(videoCodec, index, 0, len, ts / 1000, 0);
+                AMediaCodec_queueInputBuffer(videoCodec, index, 0, len, ts , 0);
                 nFrame++;
                 lastFrameTs = ts;
             } else {
                 //Log("== input EOS");
-                AMediaCodec_queueInputBuffer(videoCodec, index, 0, 0, ts / 1000, AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM);
+                AMediaCodec_queueInputBuffer(videoCodec, index, 0, 0, ts , AMEDIACODEC_BUFFER_FLAG_END_OF_STREAM);
             }
         }
     } else {
@@ -203,12 +203,13 @@ void HWVideoEncoder::encodeFrame(int64_t ts, uint8_t* data, size_t len) {
         uint8_t* obuf = AMediaCodec_getOutputBuffer(videoCodec, outIndex, &obufsize);
 
         if ((info.flags & AMEDIACODEC_BUFFER_FLAG_CODEC_CONFIG) != 0) {
+            Log("encode get sps pps");
             info.size = 0;
         }
 
         if (info.size > 0 ) {
             if (obuf && mVideoTrack >= 0) {
-                //Log("=== out %d", info.size);
+                Log("encode get out %lldms key:%d", info.presentationTimeUs/1000, info.flags);
                 media_status_t ret;
                 if ((ret = AMediaMuxer_writeSampleData(muxer, mVideoTrack, obuf, &info)) != 0) {
                     Log("== error muxer_writeSampleData: %d", ret);

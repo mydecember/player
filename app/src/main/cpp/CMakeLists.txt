@@ -9,6 +9,7 @@ cmake_minimum_required(VERSION 3.4.1)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/base/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/libyuv/include)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/x264/include )
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/base)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libyuv)
@@ -46,6 +47,8 @@ add_library( # Sets the name of the library.
         ${players}
         VideoDecoder.cpp
         HWVideoEncoder.cpp
+        UERead.cpp
+        Muxer.cpp
         )
 
 
@@ -94,6 +97,7 @@ target_link_libraries( # Specifies the target library.
         ${CMAKE_SOURCE_DIR}/ffmpeg/libavfilter.a
         ${CMAKE_SOURCE_DIR}/ffmpeg/libswscale.a
         ${CMAKE_SOURCE_DIR}/ffmpeg/libswresample.a
+        ${CMAKE_SOURCE_DIR}/x264/lib/libx264.a
         # Links the target library to the log library
         # included in the NDK.
         mediandk

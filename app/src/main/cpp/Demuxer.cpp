@@ -8,6 +8,7 @@
 #include<thread>
 #include "libyuv.h"
 #include "base/utils.h"
+#include "UERead.h"
 
 #define LOG_BUF_PREFIX_SIZE 512
 #define LOG_BUF_SIZE 2048
@@ -15,7 +16,41 @@ static char logBufPrefix[LOG_BUF_PREFIX_SIZE];
 static char logBuffer[LOG_BUF_SIZE];
 static pthread_mutex_t cb_av_log_lock;
 
+char static SliceType(int typeNum) {
+    char c = 'N';
+    switch(typeNum) {
+        case 0:
+        case 3:
+        case 5:
+        case 8:
+            c = 'P';
+            break;
+        case 1:
+        case 6:
+            c = 'B';
+            break;
+        case 2:
+        case 4:
+        case 7:
+        case 9:
+            c = 'I';
+            break;
+        default:
+            break;
+    }
+    return c;
+}
+void static checkSliceType(uint8_t *data, int len) {
 
+    bs_t bst;
+    int NRI = (data[4] >>5);
+    int nalType = ((data[4]&0x1F));
+    bs_init(&bst, data + 5, len - 5);
+    bool firstMb = bs_read_ue(&bst);
+    int sliceType = bs_read_ue(&bst);
+    int ppsId =bs_read_ue(&bst);
+    Log(" ===== nalType %d first mb %d sliceType %d:%c ppsId %d",nalType, firstMb, sliceType,SliceType(sliceType), ppsId);
+}
 
 static void log_callback_null(void *ptr, int level, const char *fmt, va_list vl){
     if (level  > AV_LOG_ERROR)
@@ -32,8 +67,8 @@ static void log_callback_null(void *ptr, int level, const char *fmt, va_list vl)
 
 //using namespace media_ffmpeg;
 using namespace std;
-once_flag g_init_flag;
-void Register() {
+static once_flag g_init_flag;
+static  void Register() {
 
 /* END */
     av_log_set_level(AV_LOG_ERROR);
@@ -304,7 +339,7 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVF
             }
             return -1;
         }
-
+    //checkSliceType(packet_->data, packet_->size);
         if (packet_->stream_index == audioStreamId_)
         {
             do {
@@ -344,14 +379,13 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVF
             if (gotframe) {
                 got_nums_++;
                 int64_t current_pos = av_rescale_q(videoFrame_->pts,   videoStream_->time_base, AV_TIME_BASE_Q);
-                tm = current_pos;//videoFrame_->pts;
+                videoFrame_->pts = current_pos;
+                tm = current_pos/1000*1000;//videoFrame_->pts;
                 //Log("stream tb %d %d time %lld", videoStream_->time_base.num, videoStream_->time_base.den, current_pos);
-
-                if (got_nums_ % 300 == 1) {
+                if (got_nums_ % 1 == 0) {
                     int64_t post = NanoTime();
-
-                    Log("get decode size: %d, used %d, frame pts:%d, pkt_pts:%d, coded num:%d, disp num:%d width %d height %d channels %d stride %d %d %d format %d del %d",
-                        decodedsize, (post - pre) /1000/ 1000, videoFrame_->pts, videoFrame_->pts,
+                    Log("get decode size: %d, tm:%lldms used %d, frame pts:%d, pkt_pts:%d, coded num:%d, disp num:%d width %d height %d channels %d stride %d %d %d format %d del %d",
+                        decodedsize, tm/1000, (post - pre) /1000/ 1000, videoFrame_->pts, videoFrame_->pts,
                         videoFrame_->coded_picture_number, videoFrame_->display_picture_number, videoFrame_->width,
                         videoFrame_->height,
                         videoFrame_->channels, videoFrame_->linesize[0], videoFrame_->linesize[1], videoFrame_->linesize[2],
@@ -371,7 +405,7 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVF
                 int w = videoFrame_->width, h = videoFrame_->height;
                 if(data) {
                       //FUNCTION_LOG;
-                    if (1) {
+                    if (0) {
                         dst.data[0] = (uint8_t *)(*data);
                         AVPixelFormat dst_pixfmt = AV_PIX_FMT_NV12;//AV_PIX_FMT_RGB24;//AV_PIX_FMT_NV12;
                         AVPixelFormat src_pixfmt = (AVPixelFormat)videoFrame_->format;

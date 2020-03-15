@@ -14,6 +14,8 @@
 #include <render/egl_base.h>
 #include <render/texture_render.h>
 #include "jvm.h"
+#include "Muxer.h"
+
 extern "C" {
 #include "libavcodec/avcodec.h"
 #include <libavformat/avformat.h>
@@ -21,23 +23,30 @@ extern "C" {
 }
 
 void Run(bool toEncoder, int tag) {
-    //jvm->AttachCurrentThread(&env, 0);
-    bool other;
-    JNIEnv *env = getEnv(&other);
     string path = "/sdcard/voip-data/1920.mp4";
-    //string path = "/sdcard/kk.mp4";
-    VideoDecoder decoer;
-    int w, h;
-    if (!decoer.load(path, w, h)) {
-        Log("load error");
-        if(other)
-        {
-            detatchEnv();
-        }
-        return;
-    }
+    //jvm->AttachCurrentThread(&env, 0);
+//    bool other;
+//    JNIEnv *env = getEnv(&other);
+
+//    //string path = "/sdcard/kk.mp4";
+//    VideoDecoder decoer;
+//    int w, h;
+//    if (!decoer.load(path, w, h)) {
+//        Log("load error");
+//        if(other)
+//        {
+//            detatchEnv();
+//        }
+//        return;
+//    }
 
     //return;
+
+    Muxer  muxer;
+    int muxerInit = muxer.InitEncoder();
+    if (!muxerInit) {
+        return ;
+    }
 
     Demuxer demuxer;
     demuxer.Open(path);
@@ -60,12 +69,17 @@ void Run(bool toEncoder, int tag) {
     int ret = 0;
     int64_t t = MilliTime();
     int64_t getnums = 0;
+    AVFrame * frame = av_frame_alloc();
+
     while( ret == 0) {
         int64_t u1 = MilliTime();
-        while((ret = demuxer.GetFrame((uint8_t**)&data, len , got, tm, NULL) )== 0) {
+        while((ret = demuxer.GetFrame((uint8_t**)&data, len , got, tm, frame) )== 0) {
             if ((ret == 0) && got) {
-                if (toEncoder)
-                encoder.encodeFrame(tm*1000, data, len);
+                if (toEncoder) {
+                    //encoder.encodeFrame(tm, data, len);
+                    muxer.Encode(frame);
+                }
+
                 break;
             }
         }
@@ -74,11 +88,11 @@ void Run(bool toEncoder, int tag) {
         int64_t pre1 = 33*getnums;
 
         int64_t used = MilliTime() - u1;
-        Log("used ms %d", used);
+        //Log("used ms %d", used);
 
         if (pre1 - det > 0) {
             usleep((pre1 - det)*1000);
-            Log(" %d sleep %lld", tag, (pre1-det));
+            //Log(" %d sleep %lld", tag, (pre1-det));
         }
     }
     Log("to close ");
