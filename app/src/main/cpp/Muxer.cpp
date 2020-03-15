@@ -46,7 +46,8 @@ void static checkSliceType(uint8_t *data, int len) {
     bool firstMb = bs_read_ue(&bst);
     int sliceType = bs_read_ue(&bst);
     int ppsId =bs_read_ue(&bst);
-    Log(" ===== nalType %d first mb %d sliceType %d:%c ppsId %d NRI %d",nalType, firstMb, sliceType,SliceType(sliceType), ppsId, NRI);
+    Log(" ===== nalType %d first mb %：：q!"
+        " d sliceType %d:%c ppsId %d NRI %d",nalType, firstMb, sliceType,SliceType(sliceType), ppsId, NRI);
 }
 static void log_callback_null(void *ptr, int level, const char *fmt, va_list vl){
 //    if (level  > AV_LOG_ERROR)
@@ -59,6 +60,7 @@ static void log_callback_null(void *ptr, int level, const char *fmt, va_list vl)
     Log(" ffmpeg %s", logBuffer);
     pthread_mutex_unlock(&cb_av_log_lock);
 }
+
 
 static  void Register() {
     av_register_all();
