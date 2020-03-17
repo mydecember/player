@@ -46,10 +46,8 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
 
     private Button btnStart;
     private Button btnStart1;
-    private Button btnStart2;
-    private Button btnStart3;
     private TouchGLSurfaceView glSurfaceView;
-    //private MiPlayer player = new MiPlayer();
+    private MiPlayer player = new MiPlayer();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +66,7 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startJNI();
-                //player.start();
+                player.start();
             }
         });
 
@@ -77,29 +74,9 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
         btnStart1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startJNI1();
-                //player.start();
-            }
-        });
-
-        btnStart2 = (Button)findViewById(R.id.button2);
-        btnStart2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startJNI2();
-                //player.start();
-            }
-        });
-
-        btnStart3 = (Button)findViewById(R.id.button3);
-        btnStart3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 startJNI3();
-                //player.start();
             }
         });
-
 
         glSurfaceView = (TouchGLSurfaceView)findViewById(R.id.surfaceView);
         glSurfaceView.setListener(this);
@@ -149,13 +126,13 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
     @Override
     public void onDrag(float sx, float sy, float dx, float dy, float cx, float cy) {
         Log.i(TAG, " drag sx " + sx + " sy " + sy + " dx " + dx + " dy " + dy + " cx " + cx + " cy " + cy);
-        //player.drag(sx, sy, cx, cy);
+        player.drag(sx, sy, cx, cy);
     }
 
     @Override
     public void onScale(float dscale) {
         Log.i(TAG, " scale " + dscale);
-        //player.setScale(dscale);
+        player.setScale(dscale);
     }
     // implements GLSurfaceView.Renderer
 //    @Override
@@ -177,19 +154,19 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i(TAG, " RRRRRRRRRRRRsurfaceCreated w ");
-        //player.setDisplay(holder);
+        player.setDisplay(holder);
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         Log.i(TAG, " RRRRRRRRsurfaceChanged w " + width + " h " + height + " format " + format);
-        //glSurfaceView.getHolder().setFixedSize(width, height);
+        glSurfaceView.getHolder().setFixedSize(width, height);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         Log.i(TAG, " RRRRRRRRRsurfaceDestroyed w ");
-        //player.setDisplay(null);
+        player.setDisplay(null);
     }
 
     /**
@@ -198,8 +175,6 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
      */
     public native String stringFromJNI();
     public native void startJNI();
-    public native void startJNI1();
-    public native void startJNI2();
     public native void startJNI3();
 
 }

@@ -141,28 +141,6 @@ Java_com_xm_testcodec_MainActivity_startJNI1(
     g_thread->detach();
 }
 
-extern "C" JNIEXPORT void JNICALL
-Java_com_xm_testcodec_MainActivity_startJNI3(
-        JNIEnv *env,
-        jobject /* this */) {
-    Log("to start");
-//    Run(true, 1);
-    g_thread = new std::thread(Run, true, 1);
-    g_thread->detach();
-}
-
-extern "C" JNIEXPORT void JNICALL
-Java_com_xm_testcodec_MainActivity_startJNI2(
-        JNIEnv *env,
-        jobject /* this */) {
-    Log("to start");
-    g_thread = new std::thread(Run, true, 3);
-    g_thread->detach();
-
-    g_thread = new std::thread(Run, false, 4);
-    g_thread->detach();
-}
-
 extern "C"
 JNIEXPORT
 jint JNI_OnLoad(JavaVM *vm, void *res) {
