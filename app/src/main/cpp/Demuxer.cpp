@@ -169,10 +169,14 @@ int Demuxer::Open(std::string inputFile, int streamType) {
         }
         videoCodecCtx_->thread_count = 2;
         //videoCodecCtx_->thread_type = FF_THREAD_FRAME;//FF_THREAD_SLICE;//FF_THREAD_FRAME;//1;
-        if (avcodec_open2(videoCodecCtx_, videoCodec_, nullptr) < 0) {
+        AVDictionary *opts;
+//        av_dict_set(&opts, "threads", "auto", 0);
+//        av_dict_set(&opts, "refcounted_frames", "1", 0);
+        if (avcodec_open2(videoCodecCtx_, videoCodec_, &opts) < 0) {
             Log("Cannot open video codec");
             return -5;
         }
+        Log("open video stream ok");
     }
 
     if (audioStreamId_ >= 0) {
@@ -181,14 +185,40 @@ int Demuxer::Open(std::string inputFile, int streamType) {
         audioStream_ = av_fmt_ctx->streams[audioStreamId_];
         audioStream_->discard = AVDISCARD_DEFAULT;
         AVCodec* audioCodec_ = nullptr;
-        audioCodecCtx_ = audioStream_->codec;
+        // two method
+        if (0) {
+            audioCodecCtx_ = audioStream_->codec;
+            audioCodec_ = avcodec_find_decoder(audioCodecCtx_->codec_id);
+            if (audioCodec_ == nullptr) {
+                audioCodecCtx_ = nullptr;
+                Log("Cannot find audio codec");
+                return -1;
+            }
+        } else {
+            audioCodec_ = avcodec_find_decoder(audioStream_->codecpar->codec_id);
+            if (!audioCodec_) {
+                Log("not find audio decoder");
+                return -1;
+            }
+            /* Allocate a codec context for the decoder */
+            audioCodecCtx_ = avcodec_alloc_context3(audioCodec_);
+            if (!audioCodecCtx_) {
+                Log("Failed to allocate the %s codec context",
+                        av_get_media_type_string(AVMEDIA_TYPE_AUDIO));
+                return AVERROR(ENOMEM);
+            }
 
-        audioCodec_ = avcodec_find_decoder(audioCodecCtx_->codec_id);
-        if (audioCodec_ == nullptr) {
-            audioCodecCtx_ = nullptr;
-            Log("Cannot find audio codec");
+            /* Copy codec parameters from input stream to output codec context */
+            if ((ret = avcodec_parameters_to_context(audioCodecCtx_, audioStream_->codecpar)) < 0) {
+                Log("Failed to copy %s codec parameters to decoder context\n",
+                        av_get_media_type_string(AVMEDIA_TYPE_AUDIO));
+                return ret;
+            }
         }
-        else if (avcodec_open2(audioCodecCtx_, audioCodec_, nullptr) < 0) {
+        AVDictionary *opts;
+        av_dict_set(&opts, "refcounted_frames", "1", 0);
+
+        if (avcodec_open2(audioCodecCtx_, audioCodec_, &opts) < 0) {
             Log("Cannot open audio codec");
         }
         else {
@@ -342,20 +372,23 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVF
     //checkSliceType(packet_->data, packet_->size);
         if (packet_->stream_index == audioStreamId_)
         {
+            Log("get audio frame pts %lld size %lld timebase %lld tm %lldms", packet_->pts, packet_->size,
+                    audioStream_->time_base.den,
+                    av_rescale_q(packet_->pts, audioStream_->time_base, {1,1000}));
             do {
                 int decodedsize = avcodec_decode_audio4(audioCodecCtx_, audioFrame_.get(), &gotframe, packet_.get());
 
                 if (decodedsize <= 0 || gotframe <= 0) {
                     break;
                 }
-
-                // LOG(LS_INFO, TRIVAL_MODULE) << "decode audio frame pts " << audioFrame_->pts
-                //                             << " pkt_pts " << audioFrame_->pkt_pts
-                //                             << " pakcet pts " << packet_->pts
-                //                             << " sample rate: " << audioCodecCtx_->sample_rate
-                //                             << " channels: " << audioCodecCtx_->channels
-                //                             << " audioFormat: " << audioCodecCtx_->sample_fmt
-                //                             << " sameples: " << audioFrame_->nb_samples;
+                Log("GGGGGGGGG");
+//                 Log("decode audio frame pts:%lld pts:%lld sample rate:%d channel:%d audioformat:%d sample:%d "
+//                                             ,audioFrame_->pts
+//                                             , packet_->pts
+//                                             ,audioCodecCtx_->sample_rate
+//                                             ,audioCodecCtx_->channels
+//                                             ,audioCodecCtx_->sample_fmt
+//                                             ,audioFrame_->nb_samples);
                 av_frame_unref(audioFrame_.get());
                 packet_->size -= decodedsize;
                 packet_->data += decodedsize;
@@ -384,8 +417,9 @@ int Demuxer::GetFrame(uint8_t** data, int& len , int &gotframe, int64_t& tm, AVF
                 //Log("stream tb %d %d time %lld", videoStream_->time_base.num, videoStream_->time_base.den, current_pos);
                 if (got_nums_ % 1 == 0) {
                     int64_t post = NanoTime();
-                    Log("get decode size: %d, tm:%lldms used %d, frame pts:%d, pkt_pts:%d, coded num:%d, disp num:%d width %d height %d channels %d stride %d %d %d format %d del %d",
-                        decodedsize, tm/1000, (post - pre) /1000/ 1000, videoFrame_->pts, videoFrame_->pts,
+                    Log("get decode timebase %lld size: %d, tm:%lldms used %d, frame pts:%d, pkt_pts:%d, coded num:%d, disp num:%d width %d height %d channels %d stride %d %d %d format %d del %d",
+                        videoStream_->time_base.den,
+                            decodedsize, tm/1000, (post - pre) /1000/ 1000, videoFrame_->pts, videoFrame_->pts,
                         videoFrame_->coded_picture_number, videoFrame_->display_picture_number, videoFrame_->width,
                         videoFrame_->height,
                         videoFrame_->channels, videoFrame_->linesize[0], videoFrame_->linesize[1], videoFrame_->linesize[2],

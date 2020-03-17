@@ -47,7 +47,10 @@ void Player::Run() {
     Demuxer demuxer;
     //demuxer.Open("/sdcard/voip-data/dou.mp4");
     //demuxer.Open("rtmp://58.200.131.2:1935/livetv/hunantv");
-    demuxer.Open("http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8");
+    if (demuxer.Open("http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8", 3)) {
+        Log("open error");
+        return ;
+    }
     int got;
     int W = demuxer.GetWidth();
     int H = demuxer.GetHeight();
