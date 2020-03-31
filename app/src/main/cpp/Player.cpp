@@ -45,12 +45,12 @@ void Player::Drag(float x, float y, float xe, float ye) {
 void Player::Run() {
     Log("player run");
     Demuxer demuxer;
-    //demuxer.Open("/sdcard/voip-data/dou.mp4");
+    demuxer.Open("/sdcard/voip-data/dou.mp4");
     //demuxer.Open("rtmp://58.200.131.2:1935/livetv/hunantv");
-    if (demuxer.Open("http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8", 3)) {
-        Log("open error");
-        return ;
-    }
+//    if (demuxer.Open("http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8", 3)) {
+//        Log("open error");
+//        return ;
+//    }
     int got;
     int W = demuxer.GetWidth();
     int H = demuxer.GetHeight();

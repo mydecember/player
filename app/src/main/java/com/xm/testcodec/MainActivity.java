@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
         btnStart1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startJNI3();
+                startJNI1();
             }
         });
 
@@ -175,6 +175,6 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
      */
     public native String stringFromJNI();
     public native void startJNI();
-    public native void startJNI3();
+    public native void startJNI1();
 
 }

@@ -169,10 +169,11 @@ int Demuxer::Open(std::string inputFile, int streamType) {
         }
         videoCodecCtx_->thread_count = 2;
         //videoCodecCtx_->thread_type = FF_THREAD_FRAME;//FF_THREAD_SLICE;//FF_THREAD_FRAME;//1;
-        AVDictionary *opts;
+//        AVDictionary *opt;
 //        av_dict_set(&opts, "threads", "auto", 0);
 //        av_dict_set(&opts, "refcounted_frames", "1", 0);
-        if (avcodec_open2(videoCodecCtx_, videoCodec_, &opts) < 0) {
+        if (avcodec_open2(videoCodecCtx_, videoCodec_, NULL) < 0) {
+//        if (avcodec_open2(videoCodecCtx_, videoCodec_, &opt) < 0) {
             Log("Cannot open video codec");
             return -5;
         }
@@ -215,10 +216,10 @@ int Demuxer::Open(std::string inputFile, int streamType) {
                 return ret;
             }
         }
-        AVDictionary *opts;
-        av_dict_set(&opts, "refcounted_frames", "1", 0);
+        AVDictionary *opt;
+        av_dict_set(&opt, "refcounted_frames", "1", 0);
 
-        if (avcodec_open2(audioCodecCtx_, audioCodec_, &opts) < 0) {
+        if (avcodec_open2(audioCodecCtx_, audioCodec_, &opt) < 0) {
             Log("Cannot open audio codec");
         }
         else {

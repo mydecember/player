@@ -134,11 +134,9 @@ Java_com_xm_testcodec_MainActivity_startJNI1(
         JNIEnv *env,
         jobject /* this */) {
     Log("to start");
-    g_thread = new std::thread(Run, false, 1);
+    g_thread = new std::thread(Run, true, 1);
     g_thread->detach();
 
-    g_thread = new std::thread(Run, false, 2);
-    g_thread->detach();
 }
 
 extern "C"

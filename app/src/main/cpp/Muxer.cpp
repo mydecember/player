@@ -7,6 +7,8 @@
 #include<mutex>
 #include<thread>
 #include <base/utils.h>
+#include <unistd.h>
+
 #define LOG_BUF_PREFIX_SIZE 512
 #define LOG_BUF_SIZE 2048
 static char logBufPrefix[LOG_BUF_PREFIX_SIZE];
@@ -36,6 +38,37 @@ char static SliceType(int typeNum) {
             break;
     }
     return c;
+}
+int GetNALUS(uint8_t *data, int len) {
+    int n = 0;
+    int pre = 0;
+    for (int i = 0; i < len; ) {
+        if (data[i] == 0 &&data[i+1] == 0 ) {
+            if (data[i+2] == 1 ) {
+                n++;
+                Log("get encoder fra nalu type %d", ((data[i+3]&0x1F)));
+                if (pre != 0)
+                Log("get encoder fram nalu4 size %d", (i - pre)  );
+                pre = i+3;
+                i += 2;
+            } else if (data[i+2] == 0 &&data[i+3] ==1) {
+                Log("get encoder fra nalu type %d", ((data[i+4]&0x1F)));
+                if (pre != 0)
+                Log("get encoder fram nalu3 size %d", (i - pre)  );
+                pre = i+4;
+                i+=3;
+                n++;
+            } else {
+                i++;
+            }
+        } else {
+            i++;
+        }
+    }
+
+        Log("get encoder fram nalu size %d", len - pre  );
+
+    return n;
 }
 void static checkSliceType(uint8_t *data, int len) {
 
@@ -108,6 +141,7 @@ bool Muxer::InitEncoder() {
     codecContext_->pix_fmt = AV_PIX_FMT_YUV420P;
 
     av_opt_set(codecContext_->priv_data, "preset", "superfast", 0);
+    av_opt_set_int(codecContext_->priv_data, "slice-max-size", 1000, 0);
 
     /* open it */
     if ((ret =avcodec_open2(codecContext_, codec_, NULL)) < 0) {
@@ -136,7 +170,10 @@ void Muxer::Encode(AVFrame* frame) {
                                               NULL);
         int pict_type = sd ? sd[4] : AV_PICTURE_TYPE_NONE;
 
-        Log("get encoder frame  (size=%5d) slice type %d newtype %d\n", pkt.size, codecContext_->coded_frame->pict_type, pict_type);
+        Log("get encoder frame  (size=%5d) slice type %d newtype %d nalus %d\n", pkt.size,
+                codecContext_->coded_frame->pict_type, pict_type,
+            GetNALUS(pkt.data, pkt.size));
+        sleep(2);
         av_packet_unref(&pkt);
     } else {
         Log("nnnnnnn");
