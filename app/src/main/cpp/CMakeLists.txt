@@ -31,6 +31,18 @@ add_library(
         STATIC
         ${RENDER_SRCS}
 )
+
+file(GLOB devices
+        audio_device/*.cpp
+        )
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/audio_device )
+add_library(
+        audiodevice
+        STATIC
+        ${devices}
+)
+
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
@@ -45,6 +57,7 @@ add_library( # Sets the name of the library.
 #        # Provides a relative path to your source file(s).
 #        native-lib.cpp
         ${players}
+        ${audiodevice}
         VideoDecoder.cpp
         HWVideoEncoder.cpp
         UERead.cpp
