@@ -32,14 +32,16 @@ add_library(
         ${RENDER_SRCS}
 )
 
-file(GLOB devices
+file(GLOB DEVICE_SRCS
         audio_device/*.cpp
+        audio_device/OpenSLESRecorder.cpp
+        audio_device/OpenSLESCommon.cpp
         )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/audio_device )
 add_library(
         audiodevice
         STATIC
-        ${devices}
+        ${DEVICE_SRCS}
 )
 
 
@@ -57,7 +59,6 @@ add_library( # Sets the name of the library.
 #        # Provides a relative path to your source file(s).
 #        native-lib.cpp
         ${players}
-        ${audiodevice}
         VideoDecoder.cpp
         HWVideoEncoder.cpp
         UERead.cpp
@@ -102,7 +103,9 @@ target_link_libraries( # Specifies the target library.
         glrender
         base
         yuv
+        audiodevice
         android
+        OpenSLES
         ${CMAKE_SOURCE_DIR}/ffmpeg/libavformat.a
         ${CMAKE_SOURCE_DIR}/ffmpeg/libavdevice.a
         ${CMAKE_SOURCE_DIR}/ffmpeg/libavcodec.a

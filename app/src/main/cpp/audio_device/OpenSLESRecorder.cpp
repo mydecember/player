@@ -2,6 +2,7 @@
 // Created by zfq on 2020/3/31.
 //
 
+#include <unistd.h>
 #include "OpenSLESRecorder.h"
 #include "base/utils.h"
 #define VOID_RETURN
@@ -10,11 +11,11 @@
   do {                                                           \
     SLresult err = (op);                                         \
     if (err != SL_RESULT_SUCCESS) {                              \
-      Log("OpenSL error: %d" err);                               \
-      assert(false);                                             \
+      Log("OpenSL error: %d",  err);                 \
       return ret_val;                                            \
     }                                                            \
   } while (0)
+
 static const SLEngineOption kOption[] = {
         { SL_ENGINEOPTION_THREADSAFE, static_cast<SLuint32>(SL_BOOLEAN_TRUE) },
 };
@@ -23,6 +24,15 @@ OpenSLESRecorder::OpenSLESRecorder() {
     opensl_buffer_num_ = 2;
     rec_sampling_rate_ = 48000;
     enable_stereo_ = true;
+    mic_initialized_ = false;
+    recording_delay_ = 0;
+    active_queue_ = 0;
+    recording_ = false;
+    number_callback_time_exceeded_ = 0;
+    sles_engine_ = nullptr;
+    sles_engine_itf_ = nullptr;
+    sles_recorder_ = nullptr;
+    sles_recorder_itf_ = nullptr;
 }
 
 OpenSLESRecorder::~OpenSLESRecorder() {
@@ -31,12 +41,8 @@ OpenSLESRecorder::~OpenSLESRecorder() {
 
 int32_t OpenSLESRecorder::InitMicrophone() {
     // Set up OpenSL engine.
-    OPENSL_RETURN_ON_FAILURE(slCreateEngine(&sles_engine_, 1, kOption, 0,
-                                            NULL, NULL),
-                             -1);
-    OPENSL_RETURN_ON_FAILURE((*sles_engine_)->Realize(sles_engine_,
-                                                      SL_BOOLEAN_FALSE),
-                             -1);
+    OPENSL_RETURN_ON_FAILURE(slCreateEngine(&sles_engine_, 1, kOption, 0, NULL, NULL), -1);
+    OPENSL_RETURN_ON_FAILURE((*sles_engine_)->Realize(sles_engine_,SL_BOOLEAN_FALSE), -1);
     OPENSL_RETURN_ON_FAILURE((*sles_engine_)->GetInterface(sles_engine_,
                                                            SL_IID_ENGINE,
                                                            &sles_engine_itf_),
@@ -52,38 +58,155 @@ int32_t OpenSLESRecorder::InitMicrophone() {
 int OpenSLESRecorder::InitSampleRate()
 {
     UpdateSampleRate();
-    audio_buffer_->SetRecordingSampleRate(rec_sampling_rate_);
-    audio_buffer_->SetRecordingChannels(enable_stereo_ ? 2 : 1);
+//    audio_buffer_->SetRecordingSampleRate(rec_sampling_rate_);
+//    audio_buffer_->SetRecordingChannels(enable_stereo_ ? 2 : 1);
     UpdateRecordingDelay();
     AllocateBuffers();
     return 0;
 }
 
+void OpenSLESRecorder::UpdateRecordingDelay()
+{
+    // TODO(hellner): Add accurate delay estimate.
+    // On average half the current buffer will have been filled with audio.
+    int outstanding_samples =
+            (TotalBuffersUsed() - 0.5) * buffer_size_samples_pre_channel();
+    recording_delay_ = (int)(outstanding_samples / (rec_sampling_rate_ / 1000.0));
+}
+
+int OpenSLESRecorder::buffer_size_samples_pre_channel() const
+{
+    // Since there is no low latency recording, use buffer size corresponding to
+    // 10ms of data since that's the framesize WebRTC uses. Getting any other
+    // size would require patching together buffers somewhere before passing them
+    // to WebRTC.
+    return rec_sampling_rate_ * 10 / 1000;
+}
+
 void OpenSLESRecorder::UpdateSampleRate()
 {
-    // 0 is using the default value.
-//    if (rec_sampling_rate_ == 0) {
-//        rec_sampling_rate_ = kDefaultSampleRate;
-//        LOG(LS_INFO, AUDIO_DEVICE_MODULE) << "Set the recording sample rate to be:" << rec_sampling_rate_ << std::endl;
-//
-//        if (DevicesSpecify::getInstance()->isTvMode()) {
-//            LOG(LS_INFO, AUDIO_DEVICE_MODULE) << "For xiaomi machine, we set the sample rate to be the 16000 so we can enable hw AEC." << std::endl;
-//            rec_sampling_rate_ = kDefaultXiaomiDeviceSampleRate;
-//        } else if (audio_manager_.get() != NULL && audio_manager_->low_latency_supported()) {
-//            rec_sampling_rate_ = audio_manager_->native_output_sample_rate();
-//            LOG(LS_INFO, AUDIO_DEVICE_MODULE) << "Set the recording sample rate to be:" << rec_sampling_rate_ << " because of low latency support."<< std::endl;
-//        }
-//    }
-//
-//    LOG(LS_INFO, AUDIO_DEVICE_MODULE) << "Update the recording sample rate to be: " << (int)rec_sampling_rate_;
+    rec_sampling_rate_ = kDefaultSampleRate;
+    Log("pdate the recording sample rate to be: %d", (int)rec_sampling_rate_);
 }
 
 int32_t OpenSLESRecorder::StartRecording() {
-
+    int res = CreateAudioRecorder();
+    if (res != SL_RESULT_SUCCESS) {
+       Log("create audio recoder error %d", res);
+    }
+    res =  (*sles_recorder_sbq_itf_)->RegisterCallback(sles_recorder_sbq_itf_, RecorderSimpleBufferQueueCallback, this);
+    if (res != SL_RESULT_SUCCESS) {
+        Log("RegisterCallback error %d", res);
+        return -1;
+    }
+    if (!EnqueueAllBuffers()) {
+        return -1;
+    }
+    recording_ = true;
+    res = (*sles_recorder_itf_)->SetRecordState(sles_recorder_itf_, SL_RECORDSTATE_RECORDING);
+    if (res != SL_RESULT_SUCCESS) {
+        Log("SetRecordState error");
+        return -1;
+    }
+    Log("StartRecording finished.");
+    return 0;
 }
 
 int32_t OpenSLESRecorder::StopRecording() {
+    Log("Set record state to stopped.threadID:");
+    if (sles_recorder_itf_) {
+        OPENSL_RETURN_ON_FAILURE(
+                (*sles_recorder_itf_)->SetRecordState(sles_recorder_itf_,
+                                                      SL_RECORDSTATE_STOPPED),
+                -1);
+    }
+    Log( "Try to destory the recorder.threadID:");
+    // by zijwu, we sleep 200 to avoid deadlock inside the OpenSLES.
+    // The bug link:https://android-review.googlesource.com/#/c/105606/
+    // It will happen when the hardware send data to callback, and at the same time
+    // we try to destroy the recorder. So the solution is sleep 200ms to make sure the
+    // OpenSLES callback thread has stopped, then we try to destroy the recorder.
+    usleep(200000);
+    DestroyAudioRecorder();
+    recording_ = false;
 
+    Log("StopRecording finished.");
+    return 0;
+}
+
+void OpenSLESRecorder::AllocateBuffers() {
+    // Allocate the memory area to be used.
+    rec_buf_.reset(new std::unique_ptr<int8_t[]>[TotalBuffersUsed()]);
+    for (int i = 0; i < TotalBuffersUsed(); ++i) {
+        rec_buf_[i].reset(new int8_t[buffer_size_bytes()]);
+    }
+}
+
+bool OpenSLESRecorder::EnqueueAllBuffers() {
+    active_queue_ = 0;
+    for (int i = 0; i < opensl_buffer_num_; ++i) {
+        memset(rec_buf_[i].get(), 0, buffer_size_bytes());
+        int res = (*sles_recorder_sbq_itf_)->Enqueue(sles_recorder_sbq_itf_,
+                reinterpret_cast<void*>(rec_buf_[i].get()),
+                buffer_size_bytes());
+        if (res != SL_RESULT_SUCCESS ) {
+            Log("enqueue error");
+            return false;
+        }
+    }
+    return true;
+}
+
+int OpenSLESRecorder::buffer_size_samples_pre_channel() {
+    return rec_sampling_rate_ * 10 / 1000;
+}
+
+int OpenSLESRecorder::buffer_size_bytes() const
+{
+    return buffer_size_samples_pre_channel() * (enable_stereo_ ? 2 : 1) * sizeof(int16_t);
+}
+
+void OpenSLESRecorder::RecorderSimpleBufferQueueCallback(
+        SLAndroidSimpleBufferQueueItf queue_itf,
+        void* context) {
+    OpenSLESRecorder* audio_device = reinterpret_cast<OpenSLESRecorder*>(context);
+    uint32_t startTime = MilliTime();
+
+    static int64_t pre = 0;
+    int64_t now = MilliTime();
+    Log("get audio samples %lld", (now - pre));
+    pre = now;
+    audio_device->RecorderSimpleBufferQueueCallbackHandler(queue_itf);
+    uint32_t endTime = MilliTime();
+    int usedTime = endTime - startTime;
+
+    if (usedTime > audio_device->opensl_buffer_num_ * 10)
+    {
+        static int maxTime = 0;
+        maxTime = std::max(maxTime, usedTime);
+       Log("The opensles audio record call back didn't finished in %lld ms, and used: %d, number_callback_time_exceeded_ %d maxTime %d",
+               audio_device->opensl_buffer_num_*10,
+               usedTime,
+               audio_device->number_callback_time_exceeded_,
+               maxTime);
+        audio_device->number_callback_time_exceeded_ ++;
+    }
+}
+
+void OpenSLESRecorder::RecorderSimpleBufferQueueCallbackHandler(SLAndroidSimpleBufferQueueItf queueItf) {
+    // There is at least one spot available in the fifo.
+    int8_t* audio = rec_buf_[active_queue_].get();
+    active_queue_ = (active_queue_ + 1) % TotalBuffersUsed();
+    int next_free_buffer =
+            (active_queue_ + opensl_buffer_num_ - 1) % TotalBuffersUsed();
+    int res = (*sles_recorder_sbq_itf_)->Enqueue(
+            sles_recorder_sbq_itf_,
+            reinterpret_cast<void*>(rec_buf_[next_free_buffer].get()),
+            buffer_size_bytes());
+    if (res != SL_RESULT_SUCCESS) {
+        Log("Enqueue error next_free_buffer %d", next_free_buffer);
+        return;
+    }
 }
 
 int OpenSLESRecorder::TotalBuffersUsed() const
@@ -129,68 +252,62 @@ int OpenSLESRecorder::CreateAudioRecorder() {
 
     SLresult res = (*sles_engine_itf_)->CreateAudioRecorder(sles_engine_itf_,
                                                             &sles_recorder_, &audio_source, &audio_sink, kNumInterfaces, id, req);
-    CHECK_RESULT_GOTO_CLEANUP(AUDIO_DEVICE_MODULE, OPENSL_SUCCESS(res), "create audio recorder failed with:" << res);
+    if (res != SL_RESULT_SUCCESS) {
+        Log("create audio recorder failed with %d", res);
+        goto cleanup;
+    }
 
     SLAndroidConfigurationItf configItf;
     /* Get the Android configuration interface which is explicit */
     res = (*sles_recorder_)->GetInterface(sles_recorder_, SL_IID_ANDROIDCONFIGURATION, (void*)&configItf);
-    CHECK_RESULT_GOTO_CLEANUP(AUDIO_DEVICE_MODULE, OPENSL_SUCCESS(res), "create get the configuration interface failed with:" << res);
-
-    force_mode = IniSettings::getInstance()->getString("webrtc/force_opensl_mic_mode", "");
-    force_mode = string_tolower(force_mode);
-    if ((DevicesSpecify::getInstance()->needSetModeToCommunication() && force_mode == "") || force_mode == "communication") {
-        needToSetMode = true;
-        voiceMode = SL_ANDROID_RECORDING_PRESET_VOICE_COMMUNICATION;
-        LOG(LS_INFO, AUDIO_DEVICE_MODULE) << "Set the recording mode to voice communication to enable HW AEC ." << std::endl;
-    } else if ((DevicesSpecify::getInstance()->needSetModeToRecognition() && force_mode == "") || force_mode == "recognition") {
-        needToSetMode = true;
-        voiceMode = SL_ANDROID_RECORDING_PRESET_VOICE_RECOGNITION;
-        LOG(LS_INFO, AUDIO_DEVICE_MODULE) << "Set the recording mode to voice recognition to disable HW AEC ." << std::endl;
-    } else if ((DevicesSpecify::getInstance()->needSetModeToNormal() && force_mode == "") || force_mode == "generic") {
-        needToSetMode = true;
-        voiceMode = SL_ANDROID_RECORDING_PRESET_GENERIC;
-        LOG(LS_INFO, AUDIO_DEVICE_MODULE) << "Set the recording mode to generic to disable HW AEC ." << std::endl;
-    }
-    else {
-        needToSetMode = true;
-        voiceMode = SL_ANDROID_RECORDING_PRESET_VOICE_COMMUNICATION;
-        LOG(LS_INFO, AUDIO_DEVICE_MODULE) << "default mode: Set the recording mode to voice communication to enable HW AEC ." << std::endl;
+    if (res != SL_RESULT_SUCCESS) {
+        Log("create get the configuration interface failed with %d", res);
+        goto cleanup;
     }
 
-    LOG(LS_INFO, AUDIO_DEVICE_MODULE) << " Set the recording mode before getSetting: " << voiceMode;
-    {
-        Emptyable<int> tmp = properties_.get<int>("opensl.recording.mode");
-        if (!tmp.isEmpty()) {
-            needToSetMode = true;
-            voiceMode = tmp;
-        }
-    }
+    needToSetMode = true;
+    voiceMode = SL_ANDROID_RECORDING_PRESET_VOICE_COMMUNICATION;
 
-    LOG(LS_INFO, AUDIO_DEVICE_MODULE) << " Set the recording mode after getSetting: " << voiceMode;
+    Log(" Set the recording mode after getSetting: " , voiceMode);
     if (needToSetMode)
     {
         res = (*configItf)->SetConfiguration(configItf,SL_ANDROID_KEY_RECORDING_PRESET,&voiceMode, sizeof(SLuint32));
-        CHECK_RESULT_GOTO_CLEANUP(AUDIO_DEVICE_MODULE, OPENSL_SUCCESS(res), "use hardware AEC failed with:" << res);
+        if (res != SL_RESULT_SUCCESS) {
+            Log("use hardware AEC failed with %d", res);
+            goto cleanup;
+        }
     }
 
     // Realize the recorder in synchronous mode.
     // This function may failed if other app (forground/background sensative) using the mic with an
     // different sample rate with error:SL_RESULT_CONTENT_UNSUPPORTED.
     res = (*sles_recorder_)->Realize(sles_recorder_, SL_BOOLEAN_FALSE);
-    CHECK_RESULT_GOTO_CLEANUP(AUDIO_DEVICE_MODULE, OPENSL_SUCCESS(res), "realize recorder failed with:" << res);
+    if (res != SL_RESULT_SUCCESS) {
+        Log("realize recorder failed with %d", res);
+        goto cleanup;
+    }
 
     res = (*sles_recorder_)->GetInterface(sles_recorder_, SL_IID_RECORD, static_cast<void*>(&sles_recorder_itf_));
-    CHECK_RESULT_GOTO_CLEANUP(AUDIO_DEVICE_MODULE, OPENSL_SUCCESS(res), "get record interface failed with:" << res);
+    if (res != SL_RESULT_SUCCESS) {
+        Log("get record interface failed with %d", res);
+        goto cleanup;
+    }
 
     res = (*sles_recorder_)->GetInterface(sles_recorder_, SL_IID_ANDROIDSIMPLEBUFFERQUEUE, static_cast<void*>(&sles_recorder_sbq_itf_));
-    CHECK_RESULT_GOTO_CLEANUP(AUDIO_DEVICE_MODULE, OPENSL_SUCCESS(res), "get recorder buffer queue interface failed with:" << res);
+    if (res != SL_RESULT_SUCCESS) {
+        Log("get recorder buffer queue interface failed with %d", res);
+        goto cleanup;
+    }
+    Log("CreateAudioRecorder success");
     return 0;
-
     cleanup:
     DestroyAudioRecorder();
-    return OPENSLES_RECORDER_FAILED;
+    return -1;
 }
 
+void OpenSLESRecorder::DestroyAudioRecorder() {
+
+}
 
 
 

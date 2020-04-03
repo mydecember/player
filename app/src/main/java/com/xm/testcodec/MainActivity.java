@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
         btnStart1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startJNI1();
+                startJNI();
             }
         });
 
@@ -96,7 +96,9 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
 
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}; // 选择你需要申请的权限
+            String[] permissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                                Manifest.permission.CAMERA,
+                                                Manifest.permission.RECORD_AUDIO}; // 选择你需要申请的权限
             for (int i = 0; i < permissions.length; i++) {
                 int state = ContextCompat.checkSelfPermission(this, permissions[i]);
                 if (state != PackageManager.PERMISSION_GRANTED) { // 判断权限的状态
@@ -175,6 +177,5 @@ public class MainActivity extends AppCompatActivity implements TouchGLSurfaceVie
      */
     public native String stringFromJNI();
     public native void startJNI();
-    public native void startJNI1();
 
 }

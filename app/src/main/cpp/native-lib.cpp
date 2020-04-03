@@ -15,7 +15,7 @@
 #include <render/texture_render.h>
 #include "jvm.h"
 #include "Muxer.h"
-
+#include "audio_device/OpenSLESRecorder.h"
 extern "C" {
 #include "libavcodec/avcodec.h"
 #include <libavformat/avformat.h>
@@ -126,17 +126,6 @@ Java_com_xm_testcodec_MainActivity_startJNI(
     g_thread = new std::thread(Run, false, 0);
     g_thread->detach();
 
-//    Run(false, 0);
-}
-
-extern "C" JNIEXPORT void JNICALL
-Java_com_xm_testcodec_MainActivity_startJNI1(
-        JNIEnv *env,
-        jobject /* this */) {
-    Log("to start");
-    g_thread = new std::thread(Run, true, 1);
-    g_thread->detach();
-
 }
 
 extern "C"
@@ -195,6 +184,11 @@ extern "C" JNIEXPORT void JNICALL
                 jobject /* this */,
                 jlong p
                 ) {
+    OpenSLESRecorder* recoder = new OpenSLESRecorder();
+    recoder->InitMicrophone();
+    recoder->StartRecording();
+
+    return;
     Player* player = (Player*)p;
     if (!player)
         return;

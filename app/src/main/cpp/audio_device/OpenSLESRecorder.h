@@ -8,6 +8,7 @@
 #include <SLES/OpenSLES.h>
 #include <SLES/OpenSLES_Android.h>
 #include <SLES/OpenSLES_AndroidConfiguration.h>
+#include <memory>
 
 class OpenSLESRecorder {
 public:
@@ -31,6 +32,17 @@ private:
     void CalculateNumFifoBuffersNeeded();
     int InitSampleRate();
     void UpdateSampleRate();
+    void DestroyAudioRecorder();
+    void UpdateRecordingDelay();
+    int buffer_size_samples_pre_channel() const;
+    static void RecorderSimpleBufferQueueCallback(
+                                            SLAndroidSimpleBufferQueueItf queue_itf,
+                                            void* context);
+    void RecorderSimpleBufferQueueCallbackHandler(SLAndroidSimpleBufferQueueItf queueItf);
+    void AllocateBuffers();
+    int buffer_size_bytes() const;
+    int buffer_size_samples_pre_channel();
+    bool EnqueueAllBuffers();
 
 private:
     // OpenSL handles
@@ -45,6 +57,13 @@ private:
     int opensl_buffer_num_;
     uint32_t rec_sampling_rate_;
     bool enable_stereo_;
+    bool mic_initialized_;
+    uint32_t recording_delay_;
+    int active_queue_;
+    bool recording_;
+    int number_callback_time_exceeded_;
+
+    std::unique_ptr<std::unique_ptr<int8_t[]>[]> rec_buf_;
 };
 
 

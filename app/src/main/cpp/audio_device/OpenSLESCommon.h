@@ -5,7 +5,7 @@
 #ifndef TESTCODEC_OPENSLESCOMMON_H
 #define TESTCODEC_OPENSLESCOMMON_H
 #include <SLES/OpenSLES.h>
-
+#include "SLES/OpenSLES_Android.h"
 class OpenSLESCommon {
 
 };
@@ -27,5 +27,13 @@ protected:
 };
 
 SLDataFormat_PCM CreatePcmConfiguration(int sample_rate, bool stereo);
+#define CHECK_RESULT_GOTO_CLEANUP(res, msg) \
+    { \
+       if (!(res)) \
+       { \
+            Log("%s", msg.c_str()); \
+            goto cleanup; \
+       } \
+    } \
 
 #endif //TESTCODEC_OPENSLESCOMMON_H
