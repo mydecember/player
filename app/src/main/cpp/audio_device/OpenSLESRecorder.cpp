@@ -80,7 +80,7 @@ int OpenSLESRecorder::buffer_size_samples_pre_channel() const
     // 10ms of data since that's the framesize WebRTC uses. Getting any other
     // size would require patching together buffers somewhere before passing them
     // to WebRTC.
-    return rec_sampling_rate_ * 10 / 1000;
+    return rec_sampling_rate_ * 20 / 1000;
 }
 
 void OpenSLESRecorder::UpdateSampleRate()
@@ -171,11 +171,6 @@ void OpenSLESRecorder::RecorderSimpleBufferQueueCallback(
         void* context) {
     OpenSLESRecorder* audio_device = reinterpret_cast<OpenSLESRecorder*>(context);
     uint32_t startTime = MilliTime();
-
-    static int64_t pre = 0;
-    int64_t now = MilliTime();
-    Log("get audio samples %lld", (now - pre));
-    pre = now;
     audio_device->RecorderSimpleBufferQueueCallbackHandler(queue_itf);
     uint32_t endTime = MilliTime();
     int usedTime = endTime - startTime;
@@ -196,6 +191,17 @@ void OpenSLESRecorder::RecorderSimpleBufferQueueCallback(
 void OpenSLESRecorder::RecorderSimpleBufferQueueCallbackHandler(SLAndroidSimpleBufferQueueItf queueItf) {
     // There is at least one spot available in the fifo.
     int8_t* audio = rec_buf_[active_queue_].get();
+
+    static int64_t pre = 0;
+    int64_t now = MilliTime();
+    Log("get audio %lld samples used %lld  sample reate %d",
+            buffer_size_samples_pre_channel(),
+            (now - pre),
+            rec_sampling_rate_);
+    pre = now;
+    DECLARE_DUMP_FILE("/sdcard/reco.pcm", dumpfile);
+    DUMP_UTIL_FILE_WRITE(dumpfile, audio, buffer_size_bytes());
+
     active_queue_ = (active_queue_ + 1) % TotalBuffersUsed();
     int next_free_buffer =
             (active_queue_ + opensl_buffer_num_ - 1) % TotalBuffersUsed();

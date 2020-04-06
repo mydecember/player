@@ -16,6 +16,7 @@
 #include "jvm.h"
 #include "Muxer.h"
 #include "audio_device/OpenSLESRecorder.h"
+#include "audio_device/OpenSLESPlayer.h"
 extern "C" {
 #include "libavcodec/avcodec.h"
 #include <libavformat/avformat.h>
@@ -184,11 +185,16 @@ extern "C" JNIEXPORT void JNICALL
                 jobject /* this */,
                 jlong p
                 ) {
-    OpenSLESRecorder* recoder = new OpenSLESRecorder();
-    recoder->InitMicrophone();
-    recoder->StartRecording();
-
-    return;
+    //recoder
+//    OpenSLESRecorder* recoder = new OpenSLESRecorder();
+//    recoder->InitMicrophone();
+//    recoder->StartRecording();
+    // player
+//    OpenSLESPlayer *audioPlayer = new OpenSLESPlayer();
+//    audioPlayer->InitSpeaker();
+//    audioPlayer->SetStereoPlayout(true);
+//    audioPlayer->SetPlayoutSampleRate(44100);
+//    audioPlayer->StartPlayout();
     Player* player = (Player*)p;
     if (!player)
         return;

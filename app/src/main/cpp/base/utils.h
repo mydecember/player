@@ -18,6 +18,8 @@
 #include <set>
 #include <sys/stat.h>
 #include <dirent.h>
+#include "string"
+#include <sstream>
 
 using namespace std;
 #define CHECK_NULL_CODE(obj, code)         if (!obj)  return code;
@@ -84,6 +86,36 @@ private:
     long tm;
     const char* mName;
 };
+#define LOG \
+    Logging(__FILE__, __LINE__).stream()
+
+class Logging {
+public:
+    Logging(std::string file, int line) {
+        file_ = file;
+        line_ = line;
+        print_stream_<<"["<<file_<<":"<<line_<<"]";
+    }
+
+    ~Logging() {
+        std::unique_lock<mutex> lk(mutex_);
+        Log("%s", print_stream_.str().c_str());
+    }
+//    static Logging* GetInstance(){
+//        static Logging log = Logging();
+//        return &log;
+//    }
+
+    std::ostream& stream() {
+        return print_stream_;
+    }
+private:
+    std::ostringstream print_stream_;
+    std::mutex mutex_;
+    std::string file_;
+    std::string line_;
+
+};
 
 #define SCOPTED_LOG_IMP(X) FuncUsed log(X)
 #define SCOPTED_LOG SCOPTED_LOG_IMP(__func__)
@@ -101,5 +133,17 @@ struct Average {
         return cnt == 0 ? 0 : total/cnt;
     }
 };
+
+#define DECLARE_DUMP_FILE(file_name, variable_name) \
+    static FILE* variable_name = NULL; \
+    if (!(variable_name)) \
+    { \
+       variable_name = fopen(file_name, "wb"); \
+    }
+
+#define DUMP_UTIL_FILE_WRITE(variable_name,  data, len) \
+    if (variable_name) { \
+        fwrite(data, len, sizeof(char), variable_name); \
+    }
 
 #endif //TESTCODEC_UTILS_H

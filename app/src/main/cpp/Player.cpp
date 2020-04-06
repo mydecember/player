@@ -8,9 +8,10 @@
 #include "libyuv/include/libyuv.h"
 Player::Player():running_(false) {
     libyuv::FixedDiv(10, 5);
+    audioPlayer_.reset(new OpenSLESPlayer());
 }
 Player::~Player() {
-
+    audioPlayer_->StopPlayout();
 }
 void Player::Open(std::string url) {
 
@@ -45,7 +46,7 @@ void Player::Drag(float x, float y, float xe, float ye) {
 void Player::Run() {
     Log("player run");
     Demuxer demuxer;
-    demuxer.Open("/sdcard/voip-data/dou.mp4");
+    demuxer.Open("/sdcard/voip-data/dou.mp4", 3);
     //demuxer.Open("rtmp://58.200.131.2:1935/livetv/hunantv");
 //    if (demuxer.Open("http://ivi.bupt.edu.cn/hls/cctv1hd.m3u8", 3)) {
 //        Log("open error");
@@ -63,7 +64,9 @@ void Player::Run() {
     Log("1111111");
 
     AVFrame * frame = av_frame_alloc();
-
+    audioPlayer_->SetStereoPlayout(2);
+    audioPlayer_->SetPlayoutSampleRate(44100);
+    audioPlayer_->StartPlayout();
     Log("222222222");
     while( ret == 0 && running_) {
         long want = 33000;

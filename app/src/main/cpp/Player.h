@@ -15,6 +15,7 @@
 #include "render/egl_base.h"
 #include "render/texture_render.h"
 #include "render/GlScreen.h"
+#include "audio_device/OpenSLESPlayer.h"
 class Player {
 public:
     Player();
@@ -35,6 +36,7 @@ private:
     std::mutex lock_;
     std::unique_ptr<GlScreen> display_;
     ANativeWindow* window_;
+    std::unique_ptr<OpenSLESPlayer> audioPlayer_;
 };
 
 

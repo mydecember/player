@@ -36,6 +36,7 @@ file(GLOB DEVICE_SRCS
         audio_device/*.cpp
         audio_device/OpenSLESRecorder.cpp
         audio_device/OpenSLESCommon.cpp
+        audio_device/OpenSLESPlayer.cpp
         )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/audio_device )
 add_library(

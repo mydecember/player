@@ -215,6 +215,9 @@ int Demuxer::Open(std::string inputFile, int streamType) {
                         av_get_media_type_string(AVMEDIA_TYPE_AUDIO));
                 return ret;
             }
+            audioCodecCtx_->sample_rate;
+            audioCodecCtx_->channels;
+            audioCodecCtx_->sample_fmt;
         }
         AVDictionary *opt;
         av_dict_set(&opt, "refcounted_frames", "1", 0);

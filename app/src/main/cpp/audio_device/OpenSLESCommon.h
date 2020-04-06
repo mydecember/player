@@ -13,7 +13,8 @@ enum {
     kDefaultSampleRate = 44100,
     kDefaultBufSizeInSamples = kDefaultSampleRate * 10 / 1000,
 };
-
+#define OPENSLES_RECORDER_FAILED 0x80000001
+#define OPENSLES_PLAYER_FAILED 0x80000002
 #define kDefaultXiaomiDeviceSampleRate 16000
 
 class PlayoutDelayProvider
@@ -34,6 +35,6 @@ SLDataFormat_PCM CreatePcmConfiguration(int sample_rate, bool stereo);
             Log("%s", msg.c_str()); \
             goto cleanup; \
        } \
-    } \
+    }
 
 #endif //TESTCODEC_OPENSLESCOMMON_H

@@ -49,7 +49,9 @@ public:
     int GetWidth();
     int GetHeight();
     void SetLoop(bool loop);
-    //
+    int GetVoiceChannels();
+    int GetVoiceSamplesRate();
+
     int GetFrame(uint8_t** data, int& len , int &got, int64_t& tm, AVFrame* result);
     int Close();
 private:
